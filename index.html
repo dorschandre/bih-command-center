@@ -93,7 +93,7 @@
 </style>
 </head>
 <body>
-<div class="proto-banner">BIH COMMAND CENTER · R2.0 FASE 1 · Supabase REST direto · 7 módulos dinâmicos · fallback estático automático</div>
+<div class="proto-banner">BIH COMMAND CENTER · R2.0 FASE 1 · Supabase REST direto · 8 módulos dinâmicos · fallback estático automático</div>
 
 <div class="layout">
   <aside class="sidebar">
@@ -137,11 +137,11 @@
       <table>
         <thead><tr><th>Mission Order</th><th>Objetivo</th><th>Status</th><th>Responsável</th></tr></thead>
         <tbody>
-          <tr><td class="mono">MO-048</td><td>Ativar MOD-10 Artifact LIVE</td><td><span class="pill badge-active">ATIVA</span></td><td>Regente</td></tr>
+          <tr><td class="mono">MO-049</td><td>Ativar MOD-11 Commit/Push LIVE</td><td><span class="pill badge-active">ATIVA</span></td><td>Regente</td></tr>
+          <tr><td class="mono">MO-048</td><td>Ativar MOD-10 Artifact LIVE</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
           <tr><td class="mono">MO-047</td><td>Ativar MOD-07 Council Center LIVE</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
           <tr><td class="mono">MO-046</td><td>Restaurar index.html + MOD-02 LIVE</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
           <tr><td class="mono">MO-044</td><td>Criar tabela bih_decisions Fase 2 P0</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
-          <tr><td class="mono">MO-041</td><td>Atualizar Supabase BMS 63,75%</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
           <tr><td class="mono">MO-040</td><td>Definir Command Center R2 Fase 2 Roadmap</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
           <tr><td class="mono">MO-037</td><td>Migrar index.html para REST direto</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
         </tbody>
@@ -177,8 +177,8 @@
           <tr><td>VAL-012</td><td class="mono">bih_decisions · tabela Supabase</td><td>Infraestrutura</td><td><span class="pill badge-done">CRIADA · 3 seeds</span></td></tr>
           <tr><td>VAL-013</td><td class="mono">MOD-02 Decision Queue LIVE</td><td>Binding</td><td><span class="pill badge-done">MO-046 CUMPRIDA</span></td></tr>
           <tr><td>VAL-014</td><td class="mono">MOD-07 Council Center LIVE</td><td>Binding</td><td><span class="pill badge-done">MO-047 CUMPRIDA</span></td></tr>
-          <tr><td>VAL-015</td><td class="mono">bih_artifacts · tabela Supabase · 5 seeds</td><td>Infraestrutura</td><td><span class="pill badge-done">CRIADA · MO-048</span></td></tr>
-          <tr><td>VAL-016</td><td class="mono">MOD-10 Artifact Center LIVE</td><td>Binding</td><td><span class="pill badge-active">MO-048 ATIVA</span></td></tr>
+          <tr><td>VAL-015</td><td class="mono">bih_artifacts · MOD-10 LIVE</td><td>Binding</td><td><span class="pill badge-done">MO-048 CUMPRIDA</span></td></tr>
+          <tr><td>VAL-016</td><td class="mono">bih_commits · MOD-11 LIVE</td><td>Binding</td><td><span class="pill badge-active">MO-049 ATIVA</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -246,10 +246,10 @@
   </section>
 
   <section id="m8">
-    <div class="sec-head"><div class="n">08</div><h2>Supabase Decision Center</h2><span class="tag tag-green">LIVE · 6 tabelas ativas</span></div>
+    <div class="sec-head"><div class="n">08</div><h2>Supabase Decision Center</h2><span class="tag tag-green">LIVE · 7 tabelas ativas</span></div>
     <div class="card">
       <p>Status: <span class="pill badge-done">SUPABASE_FASE1_OPERACIONAL</span></p>
-      <p style="margin-top:8px">BCS <b>17/18</b> · Tabelas ativas: <code>bih_missions</code> · <code>bih_bms</code> · <code>bih_blockers</code> · <code>bih_decisions</code> · <code>bih_council_records</code> · <code>bih_artifacts</code></p>
+      <p style="margin-top:8px">BCS <b>17/18</b> · Tabelas: <code>bih_missions</code> · <code>bih_bms</code> · <code>bih_blockers</code> · <code>bih_decisions</code> · <code>bih_council_records</code> · <code>bih_artifacts</code> · <code>bih_commits</code></p>
       <p class="small muted" style="margin-top:8px"><b>Segurança:</b> RLS ativo · anon key pública por design · service_role nunca no frontend · dados de clientes = zero expostos.</p>
     </div>
   </section>
@@ -289,14 +289,18 @@
   </section>
 
   <section id="m11">
-    <div class="sec-head"><div class="n">11</div><h2>Commit / Push Tracker</h2><span class="tag tag-green">branch: elegant-thompson-BlbpT</span></div>
-    <div class="card">
+    <div class="sec-head">
+      <div class="n">11</div><h2>Commit / Push Tracker</h2>
+      <span class="tag tag-gold" id="tag-m11">⏳ carregando...</span>
+    </div>
+    <div class="card" id="card-m11">
       <table>
-        <thead><tr><th>Hash</th><th>Missão</th><th>Repositório</th><th>Push</th></tr></thead>
+        <thead><tr><th>Código</th><th>Hash</th><th>Missão</th><th>Repositório</th><th>Push</th></tr></thead>
         <tbody>
-          <tr><td class="mono">8a9314b</td><td>MO-047 · checkpoint council LIVE</td><td>Andre_AI_Workspace</td><td class="check">✓</td></tr>
-          <tr><td class="mono">71dfe1a</td><td>MO-039 + MO-040 · checkpoint + roadmap</td><td>Andre_AI_Workspace</td><td class="check">✓</td></tr>
-          <tr><td class="mono">a5fbdc0</td><td>MO-010 Governança 100</td><td>Andre_AI_Workspace</td><td class="check">✓</td></tr>
+          <tr><td class="mono">COMMIT-001</td><td class="mono">8a9314b</td><td>MO-047 · checkpoint council LIVE</td><td>Andre_AI_Workspace</td><td class="check">✓</td></tr>
+          <tr><td class="mono">COMMIT-002</td><td class="mono">71dfe1a</td><td>MO-039/040 · checkpoint + roadmap</td><td>Andre_AI_Workspace</td><td class="check">✓</td></tr>
+          <tr><td class="mono">COMMIT-003</td><td class="mono">a5fbdc0</td><td>MO-010 · Governança 100</td><td>Andre_AI_Workspace</td><td class="check">✓</td></tr>
+          <tr><td class="mono">COMMIT-004</td><td class="mono">bih-cc</td><td>MO-046/047/048 · index.html público</td><td>bih-command-center</td><td class="check">✓</td></tr>
         </tbody>
       </table>
     </div>
@@ -325,11 +329,10 @@
       <span class="tag tag-gold" id="tag-m13">⏳ carregando...</span>
     </div>
     <div class="card" id="card-m13">
-      <p><b>Missão Ativa:</b> <code>MO-048</code> — ATIVAR_MOD10_ARTIFACT_LIVE</p>
+      <p><b>Missão Ativa:</b> <code>MO-049</code> — ATIVAR_MOD11_COMMITS_LIVE</p>
       <p style="margin-top:8px"><b>Próximas missões:</b></p>
       <ul style="margin:8px 0 0 16px; font-size:12px; color:var(--text-secondary);">
-        <li style="margin-bottom:4px">MO-048 · MOD-10 Artifact LIVE (ativa)</li>
-        <li style="margin-bottom:4px">MO-049 · MOD-11 Commits LIVE (Fase 2)</li>
+        <li style="margin-bottom:4px">MO-049 · MOD-11 Commits LIVE (ativa)</li>
         <li style="margin-bottom:4px">MO-050 · Release Gate CC R2 Fase 2</li>
         <li style="margin-bottom:4px">MO-042 · Followup B-04 C-01 PLD (Andre)</li>
         <li>MO-043 · B-05 município piloto (deadline 04/07)</li>
@@ -369,8 +372,8 @@
           <div class="li check">✓ 15 GitHub Pages propagação &lt;90s</div>
           <div class="li check">✓ 16 MOD-02 Decision Queue ● LIVE</div>
           <div class="li check">✓ 17 MOD-07 Council LIVE · 2 records</div>
-          <div class="li">⏳ 18 MOD-10 Artifact LIVE · badge + códigos (fix)</div>
-          <div class="li muted">— 19 MOD-11 Commits LIVE (Fase 2)</div>
+          <div class="li check">✓ 18 MOD-10 Artifact LIVE · 5 artifacts</div>
+          <div class="li">⏳ 19 MOD-11 Commits LIVE (MO-049)</div>
           <div class="li muted">— 20 Release Gate Fase 2</div>
         </div>
       </div>
@@ -378,25 +381,25 @@
   </section>
 
   <section id="m16">
-    <div class="sec-head"><div class="n">16</div><h2>Release Gate</h2><span class="tag tag-green">R2.0 Fase 1 · LIVE</span></div>
+    <div class="sec-head"><div class="n">16</div><h2>Release Gate</h2><span class="tag tag-gold">R2.0 Fase 2 · em execução</span></div>
     <div class="card">
       <table>
         <thead><tr><th>Item</th><th>Status</th></tr></thead>
         <tbody>
-          <tr><td>Versão</td><td>R2.0 Fase 1</td></tr>
+          <tr><td>Versão</td><td>R2.0 Fase 1 → Fase 2</td></tr>
           <tr><td>Nível</td><td><span class="pill badge-done">OPERACIONAL_LIVE</span></td></tr>
-          <tr><td>Arquitetura</td><td>REST direto · fetch() nativo · AbortController 9s</td></tr>
-          <tr><td>Módulos dinâmicos ativos</td><td>MOD-01 · MOD-02 · MOD-04 · MOD-07 · MOD-10 · MOD-12 · MOD-13</td></tr>
+          <tr><td>Arquitetura</td><td>REST direto · fetch() nativo · AbortController 9s · 8 fetches paralelos</td></tr>
+          <tr><td>Módulos dinâmicos ativos</td><td>MOD-01 · MOD-02 · MOD-04 · MOD-07 · MOD-10 · MOD-11 · MOD-12 · MOD-13</td></tr>
           <tr><td>Validado por</td><td>Andre Dorsch · iPad · Safari · 2026-06-21</td></tr>
           <tr><td>URL pública</td><td><code>https://dorschandre.github.io/bih-command-center/</code></td></tr>
-          <tr><td>Próxima evolução</td><td>R2.0 Fase 2 — MOD-11 Commits LIVE · Release Gate</td></tr>
+          <tr><td>Próxima evolução</td><td>MO-050 · Release Gate CC R2 Fase 2</td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
   <footer>
-    BIH Command Center R2.0 Fase 1 · Bigdata in Business · 2026-06-21 · MO-048 fix · OPERACIONAL_LIVE ·
+    BIH Command Center R2.0 Fase 1 · Bigdata in Business · 2026-06-21 · MO-049 · OPERACIONAL_LIVE ·
     repo: dorschandre/bih-command-center · fonte canônica: André_AI_Workspace (privado)
   </footer>
   </main>
@@ -411,11 +414,11 @@ var SB_ANON = 'sb_publishable_9kSVpttbV9EXvv06rEAX4g_9JFdAnXM';
 var TIMEOUT = 9000;
 
 var FB_MISSIONS = [
-  {mo_number:48,mo_code:'ATIVAR_MOD10_ARTIFACT_LIVE',status:'ATIVA',observacoes:'MOD-10 em ativação'},
+  {mo_number:49,mo_code:'ATIVAR_MOD11_COMMITS_LIVE',status:'ATIVA',observacoes:'MOD-11 em ativação'},
+  {mo_number:48,mo_code:'ATIVAR_MOD10_ARTIFACT_LIVE',status:'CUMPRIDA',observacoes:'MOD-10 LIVE · 5 artifacts'},
   {mo_number:47,mo_code:'ATIVAR_MOD07_COUNCIL_CENTER_LIVE',status:'CUMPRIDA',observacoes:'MOD-07 LIVE · 2 records'},
   {mo_number:46,mo_code:'RESTAURAR_INDEX_HTML_PUBLICO_MOD02',status:'CUMPRIDA',observacoes:'MOD-02 LIVE · 3 decisões'},
   {mo_number:44,mo_code:'CRIAR_TABELA_BIH_DECISIONS_FASE2_P0',status:'CUMPRIDA',observacoes:'tabela criada'},
-  {mo_number:41,mo_code:'ATUALIZAR_SUPABASE_BMS_63',status:'CUMPRIDA',observacoes:'BMS 63,75%'},
   {mo_number:40,mo_code:'DEFINIR_COMMAND_CENTER_R2_FASE2_ROADMAP',status:'CUMPRIDA',observacoes:'roadmap criado'},
   {mo_number:37,mo_code:'MIGRAR_INDEX_HTML_PARA_REST_DIRETO',status:'CUMPRIDA',observacoes:'REST direto ativo'}
 ];
@@ -437,6 +440,13 @@ var FB_BLOCKERS = [
   {codigo:'B-05',descricao:'Município piloto não identificado',tipo:'INSTITUCIONAL',status:'ATIVO'}
 ];
 
+var FB_COMMITS = [
+  {codigo:'COMMIT-001',hash:'8a9314b',missao:'MO-047 · checkpoint council LIVE',repositorio:'Andre_AI_Workspace',branch:'claude/elegant-thompson-BlbpT',push_confirmado:true},
+  {codigo:'COMMIT-002',hash:'71dfe1a',missao:'MO-039 + MO-040 · checkpoint + roadmap',repositorio:'Andre_AI_Workspace',branch:'claude/elegant-thompson-BlbpT',push_confirmado:true},
+  {codigo:'COMMIT-003',hash:'a5fbdc0',missao:'MO-010 · Governança 100',repositorio:'Andre_AI_Workspace',branch:'claude/elegant-thompson-BlbpT',push_confirmado:true},
+  {codigo:'COMMIT-004',hash:'bih-command-center',missao:'MO-046/047/048 · index.html público',repositorio:'bih-command-center',branch:'main',push_confirmado:true}
+];
+
 var FB_ARTIFACTS = [
   {codigo:'ART-001',nome:'BIH_CHECKPOINT_COMMAND_CENTER_PUBLICO_20260621.md',tipo:'Checkpoint',missao:'MO-039',commit_hash:'71dfe1a',repositorio:'Andre_AI_Workspace'},
   {codigo:'ART-002',nome:'BIH_COMMAND_CENTER_R2_FASE2_ROADMAP_V1.md',tipo:'Roadmap',missao:'MO-040',commit_hash:'71dfe1a',repositorio:'Andre_AI_Workspace'},
@@ -449,7 +459,7 @@ var FB_COUNCIL = [
   {codigo:'CR-002',tema:'BIH Next Level Operating Model',bcs:'15.5/18',recomendacao:'CONDITIONAL',status:'ATIVO',
    observacoes:'5 perspectivas: C1 Mercado · C2 Risco · C3 Econômico · C4 Execução · C5 Estratégia'},
   {codigo:'CR-SUPABASE-F1',tema:'Supabase Fase 1',bcs:'17/18',recomendacao:'APROVADO · LIVE',status:'APROVADO',
-   observacoes:'Supabase Fase 1 LIVE · 6 tabelas operacionais · RLS ativo · 2026-06-21'}
+   observacoes:'Supabase Fase 1 LIVE · 7 tabelas operacionais · RLS ativo · 2026-06-21'}
 ];
 
 function setTag(id, isLive, liveText, fbText) {
@@ -489,7 +499,7 @@ function renderMissions(data, isLive) {
   var card = document.getElementById('card-m1'); if (!card) return;
   var html = '<table><thead><tr><th>Mission Order</th><th>Objetivo</th><th>Status</th><th>Responsável</th></tr></thead><tbody>';
   rows.forEach(function(m) {
-    var st = m.status==='ATIVA' ? pill('ATIVA','gold') : m.status==='CUMPRIDA' ? pill('CUMPRIDA','green') : pill(m.status,'orange');
+    var st = m.status==='ATIVA'?pill('ATIVA','gold'):m.status==='CUMPRIDA'?pill('CUMPRIDA','green'):pill(m.status,'orange');
     html += '<tr><td class="mono">MO-'+String(m.mo_number).padStart(3,'0')+'</td>'
       +'<td>'+(m.mo_code||'—')+'</td><td>'+st+'</td><td>'+(m.responsavel||'Regente')+'</td></tr>';
   });
@@ -572,12 +582,34 @@ function renderNextMission(data, isLive) {
   if (m.observacoes) html += '<p class="small muted" style="margin-top:6px">'+m.observacoes+'</p>';
   html += '<p style="margin-top:10px"><b>Próximas missões:</b></p>'
     +'<ul style="margin:8px 0 0 16px;font-size:12px;color:var(--text-secondary);">'
-    +'<li style="margin-bottom:4px">MO-048 · MOD-10 Artifact LIVE (ativa)</li>'
-    +'<li style="margin-bottom:4px">MO-049 · MOD-11 Commits LIVE (Fase 2)</li>'
+    +'<li style="margin-bottom:4px">MO-049 · MOD-11 Commits LIVE (ativa)</li>'
     +'<li style="margin-bottom:4px">MO-050 · Release Gate CC R2 Fase 2</li>'
     +'<li style="margin-bottom:4px">MO-042 · Followup B-04 C-01 PLD (Andre)</li>'
     +'<li>MO-043 · B-05 município piloto (deadline 04/07)</li></ul>';
   card.innerHTML = html;
+}
+
+function renderCommits(data, isLive) {
+  var rows = (isLive && data && data.length) ? data : FB_COMMITS;
+  var pushed = rows.filter(function(c){ return c.push_confirmado; }).length;
+  setTag('tag-m11', isLive,
+    '● LIVE · '+pushed+' pushed',
+    '◌ '+pushed+' pushed');
+  var card = document.getElementById('card-m11'); if (!card) return;
+  var h = '<table><thead><tr><th>Código</th><th>Hash</th><th>Missão</th><th>Repositório</th><th>Push</th></tr></thead><tbody>';
+  rows.forEach(function(c) {
+    var pushMark = c.push_confirmado
+      ? '<span style="color:var(--green);font-weight:700">✓</span>'
+      : '<span style="color:var(--gold)">⏳</span>';
+    h += '<tr>'
+      +'<td class="mono">'+(c.codigo||'—')+'</td>'
+      +'<td class="mono">'+(c.hash||'—')+'</td>'
+      +'<td class="small">'+(c.missao||'—')+'</td>'
+      +'<td class="small muted">'+(c.repositorio||'—')+'</td>'
+      +'<td>'+pushMark+'</td>'
+      +'</tr>';
+  });
+  card.innerHTML = h + '</tbody></table>';
 }
 
 function renderArtifacts(data, isLive) {
@@ -610,7 +642,7 @@ function renderCouncil(data, isLive) {
     var isAprov = r.recomendacao && r.recomendacao.indexOf('APROV')>-1;
     var isCond  = r.recomendacao && r.recomendacao.indexOf('COND')>-1;
     var cls = isAprov?'badge-done':isCond?'badge-active':'';
-    var rec = cls ? '<span class="pill '+cls+'">'+(r.recomendacao||'—')+'</span>' : (r.recomendacao||'—');
+    var rec = cls?'<span class="pill '+cls+'">'+(r.recomendacao||'—')+'</span>':(r.recomendacao||'—');
     h += '<tr><td class="mono">'+(r.codigo||'—')+'</td><td>'+(r.tema||'—')+'</td>'
       +'<td><b>'+(r.bcs||'—')+'</b></td><td>'+rec+'</td></tr>';
   });
@@ -628,9 +660,10 @@ function bootstrap() {
   var p5 = sbFetch('bih_missions','select=mo_number,mo_code,status,observacoes&order=mo_number.desc&limit=20');
   var p6 = sbFetch('bih_council_records','select=codigo,tema,bcs,recomendacao,status,observacoes&visibilidade=eq.publica&is_active=eq.true&order=created_at.asc&limit=10');
   var p7 = sbFetch('bih_artifacts','select=codigo,nome,tipo,missao,commit_hash,repositorio&visibilidade=eq.publica&is_active=eq.true&order=created_at.asc&limit=20');
+  var p8 = sbFetch('bih_commits','select=codigo,hash,missao,repositorio,branch,push_confirmado&visibilidade=eq.publica&is_active=eq.true&order=created_at.desc&limit=20');
 
-  Promise.allSettled([p1,p2,p3,p4,p5,p6,p7]).then(function(results) {
-    var r1=results[0],r2=results[1],r3=results[2],r4=results[3],r5=results[4],r6=results[5],r7=results[6];
+  Promise.allSettled([p1,p2,p3,p4,p5,p6,p7,p8]).then(function(results) {
+    var r1=results[0],r2=results[1],r3=results[2],r4=results[3],r5=results[4],r6=results[5],r7=results[6],r8=results[7];
     renderMissions(r1.status==='fulfilled'?r1.value:null, r1.status==='fulfilled'&&r1.value&&r1.value.length>0);
     renderDecisions(r2.status==='fulfilled'?r2.value:null, r2.status==='fulfilled'&&r2.value&&r2.value.length>0);
     renderBMS(r3.status==='fulfilled'&&r3.value&&r3.value.length>0?r3.value[0]:null, r3.status==='fulfilled'&&r3.value&&r3.value.length>0);
@@ -638,6 +671,7 @@ function bootstrap() {
     renderNextMission(r5.status==='fulfilled'?r5.value:null, r5.status==='fulfilled'&&r5.value&&r5.value.length>0);
     renderCouncil(r6.status==='fulfilled'?r6.value:null, r6.status==='fulfilled'&&r6.value&&r6.value.length>0);
     renderArtifacts(r7.status==='fulfilled'?r7.value:null, r7.status==='fulfilled'&&r7.value&&r7.value.length>0);
+    renderCommits(r8.status==='fulfilled'?r8.value:null, r8.status==='fulfilled'&&r8.value&&r8.value.length>0);
   });
 }
 
