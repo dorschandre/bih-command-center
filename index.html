@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIH Command Center R2.0 — Bigdata in Business</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg-base:#06090f; --bg-surface:#0d1117; --bg-card:#111827; --bg-card2:#161d2b;
+    --border:#1e2a3a; --border-light:#243044;
+    --indigo:#1b0d79; --indigo-light:#4f46e5; --gold:#f6c300; --gold-dim:#c99b00;
+    --text-primary:#f0f4ff; --text-secondary:#8899b0; --text-muted:#4d5f75;
+    --red:#ef4444; --orange:#f97316; --yellow:#eab308; --green:#22c55e; --blue:#3a9ef5; --purple:#a78bfa;
+    --sidebar-w:230px; --header-h:60px;
+  }
+  html,body { background:var(--bg-base); color:var(--text-primary);
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif; font-size:13px; line-height:1.5; min-height:100vh; }
+  a { color:inherit; text-decoration:none; }
+  .proto-banner { position:fixed; top:0; left:0; right:0; z-index:1000;
+    background:linear-gradient(90deg,#1b5e20,#2e7d32); color:#e8f5e9; text-align:center;
+    padding:6px 12px; font-size:11px; font-weight:600; letter-spacing:.04em; }
+  .layout { display:grid; grid-template-columns:var(--sidebar-w) 1fr; min-height:100vh; padding-top:28px; }
+  .sidebar { background:linear-gradient(180deg,#0d0a2e,#080618); border-right:1px solid var(--border);
+    position:sticky; top:28px; height:calc(100vh - 28px); overflow-y:auto; }
+  .sidebar-logo { padding:18px 16px 14px; border-bottom:1px solid var(--border); }
+  .sidebar-logo .brand { font-size:11px; font-weight:700; letter-spacing:.1em; color:var(--gold); text-transform:uppercase; }
+  .sidebar-logo .sub { font-size:10px; color:var(--text-muted); margin-top:2px; }
+  .sidebar-logo .rel { font-size:10px; color:var(--green); margin-top:4px; font-weight:600; }
+  .nav-item { display:flex; align-items:center; gap:8px; padding:8px 16px; font-size:12px;
+    color:var(--text-secondary); border-left:2px solid transparent; cursor:pointer; }
+  .nav-item:hover { background:rgba(79,70,229,.12); color:var(--text-primary); border-left-color:var(--indigo-light); }
+  .nav-num { font-size:9px; color:var(--text-muted); min-width:16px; }
+  .header { height:var(--header-h); border-bottom:1px solid var(--border); background:var(--bg-surface);
+    display:flex; align-items:center; justify-content:space-between; padding:0 24px; position:sticky; top:28px; z-index:500; }
+  .header h1 { font-size:15px; font-weight:700; }
+  .header .bms-pill { background:var(--indigo); color:#fff; padding:5px 14px; border-radius:20px; font-weight:700; font-size:13px; }
+  .header .bms-pill span { color:var(--gold); }
+  .main { padding:24px; max-width:1400px; }
+  section { margin-bottom:32px; scroll-margin-top:100px; }
+  .sec-head { display:flex; align-items:center; gap:10px; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .sec-head .n { background:var(--indigo); color:var(--gold); font-size:11px; font-weight:700; width:24px; height:24px;
+    border-radius:6px; display:flex; align-items:center; justify-content:center; }
+  .sec-head h2 { font-size:15px; font-weight:700; }
+  .sec-head .tag { margin-left:auto; font-size:10px; padding:3px 10px; border-radius:12px; font-weight:600; }
+  .tag-green { background:rgba(34,197,94,.15); color:var(--green); }
+  .tag-gold { background:rgba(246,195,0,.15); color:var(--gold); }
+  .tag-blue { background:rgba(58,158,245,.15); color:var(--blue); }
+  .tag-red { background:rgba(239,68,68,.15); color:var(--red); }
+  .tag-orange { background:rgba(249,115,22,.15); color:var(--orange); }
+  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:12px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  table { width:100%; border-collapse:collapse; font-size:12px; }
+  th,td { text-align:left; padding:7px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { color:var(--text-muted); font-size:10px; text-transform:uppercase; letter-spacing:.05em; }
+  td.mono, .mono { font-family:'SF Mono',Consolas,monospace; font-size:11px; }
+  .bms-row { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+  .bms-label { width:160px; font-size:12px; }
+  .bms-bar { flex:1; height:14px; background:var(--bg-card2); border-radius:7px; overflow:hidden; }
+  .bms-fill { height:100%; border-radius:7px; background:linear-gradient(90deg,var(--indigo-light),var(--gold)); }
+  .bms-val { width:50px; text-align:right; font-weight:700; font-size:12px; }
+  .bms-delta { width:60px; text-align:right; font-size:11px; color:var(--green); }
+  .pill { display:inline-block; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; }
+  .li { padding:6px 0; border-bottom:1px solid var(--border); font-size:12px; }
+  .li:last-child { border-bottom:none; }
+  .muted { color:var(--text-secondary); }
+  .small { font-size:11px; }
+  code { background:var(--bg-card2); padding:1px 5px; border-radius:4px; font-size:11px; color:var(--gold); }
+  .check { color:var(--green); }
+  .hier { display:flex; gap:8px; align-items:center; margin:6px 0; }
+  .hier .step { background:var(--bg-card2); border:1px solid var(--border); border-radius:6px; padding:6px 10px; font-size:11px; }
+  footer { padding:20px 24px; border-top:1px solid var(--border); color:var(--text-muted); font-size:11px; }
+  @media (max-width:900px) {
+    .layout { grid-template-columns:1fr; }
+    .sidebar { display:none; }
+    .grid2,.grid3 { grid-template-columns:1fr; }
+    .bms-label { width:120px; }
+  }
+  .bih-live-badge { margin-left:6px; }
+</style>
+<script>
+window.BIH_SUPABASE_CONFIG = {
+  url:     "https://pqifjircfhdohdgrttqr.supabase.co",
+  anonKey: "sb_publishable_9kSVpttbV9EXvv06rEAX4g_9JFdAnXM"
+};
+</script>
+<script src="assets/js/bih_config.js" onerror="void(0)"></script>
+<script src="assets/js/bih_supabase_client.js"></script>
+<script src="assets/js/bih_data_layer.js"></script>
+<script src="assets/js/bih_command_center_bindings.js"></script>
+</head>
+<body>
+<div class="proto-banner">BIH COMMAND CENTER · R2.0 FASE 1 · conectado ao Supabase · 3 módulos LIVE · fallback estático ativo</div>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand">BIH Command Center</div>
+      <div class="sub">Bigdata in Business</div>
+      <div class="rel">● R2.0 · BMS 63%</div>
+    </div>
+    <a class="nav-item" href="#m1"><span class="nav-num">01</span> Mission Control</a>
+    <a class="nav-item" href="#m2"><span class="nav-num">02</span> Decision Queue</a>
+    <a class="nav-item" href="#m3"><span class="nav-num">03</span> Validation Queue</a>
+    <a class="nav-item" href="#m4"><span class="nav-num">04</span> BMS Center</a>
+    <a class="nav-item" href="#m5"><span class="nav-num">05</span> Governance Center</a>
+    <a class="nav-item" href="#m6"><span class="nav-num">06</span> Digital Workforce</a>
+    <a class="nav-item" href="#m7"><span class="nav-num">07</span> Council Center</a>
+    <a class="nav-item" href="#m8"><span class="nav-num">08</span> Supabase Decision</a>
+    <a class="nav-item" href="#m9"><span class="nav-num">09</span> Compliance / PLD</a>
+    <a class="nav-item" href="#m10"><span class="nav-num">10</span> Artifact Center</a>
+    <a class="nav-item" href="#m11"><span class="nav-num">11</span> Commit / Push</a>
+    <a class="nav-item" href="#m12"><span class="nav-num">12</span> Blocker Center</a>
+    <a class="nav-item" href="#m13"><span class="nav-num">13</span> Next Mission</a>
+    <a class="nav-item" href="#m14"><span class="nav-num">14</span> Single Response</a>
+    <a class="nav-item" href="#m15"><span class="nav-num">15</span> Test Mode</a>
+    <a class="nav-item" href="#m16"><span class="nav-num">16</span> Release Gate</a>
+  </aside>
+  <div>
+  <header class="header">
+    <h1>Central de Comando BIH</h1>
+    <div class="bms-pill">BMS <span>63%</span> · R2.0 Fase 1</div>
+  </header>
+  <main class="main">
+  <section id="m1">
+    <div class="sec-head"><div class="n">01</div><h2>Mission Control Center</h2><span class="tag tag-green">6 cumpridas</span></div>
+    <div class="card">
+    <table>
+      <tr><th>Mission Order</th><th>Objetivo</th><th>Status</th><th>Observações</th></tr>
+      <tr><td class="mono">MO026</td><td>Command Center R2 Fase 1 Binding</td><td><span class="pill tag-green">CUMPRIDA</span></td><td>Binding MOD-01 · MOD-03 · MOD-06</td></tr>
+      <tr><td class="mono">MO027</td><td>Config segura Command Center</td><td><span class="pill tag-green">CUMPRIDA</span></td><td>—</td></tr>
+      <tr><td class="mono">MO028</td><td>Política leitura segura</td><td><span class="pill tag-green">CUMPRIDA</span></td><td>Opção F aprovada</td></tr>
+      <tr><td class="mono">MO029</td><td>Anon RLS Command Center Fase 1</td><td><span class="pill tag-green">CUMPRIDA</span></td><td>—</td></tr>
+      <tr><td class="mono">MO030</td><td>Ativar config real Command Center</td><td><span class="pill tag-green">CUMPRIDA</span></td><td>—</td></tr>
+      <tr><td class="mono">MO031</td><td>Atualizar dados Supabase Fase 1</td><td><span class="pill tag-green">CUMPRIDA</span></td><td>BMS 63,25% · 6 missões · 5 bloqueadores</td></tr>
+    </table>
+    </div>
+  </section>
+
+  <section id="m2">
+    <div class="sec-head"><div class="n">02</div><h2>Decision Queue</h2><span class="tag tag-gold">pendentes</span></div>
+    <div class="card"><p class="muted small">Dados ao vivo via Supabase quando LIVE.</p></div>
+  </section>
+
+  <section id="m3">
+    <div class="sec-head"><div class="n">03</div><h2>Validation Queue</h2><span class="tag tag-blue">a validar</span></div>
+    <div class="card"><p class="muted small">Dados ao vivo via Supabase quando LIVE.</p></div>
+  </section>
+
+  <section id="m4">
+    <div class="sec-head"><div class="n">04</div><h2>BMS Center</h2><span class="tag tag-gold">63,25%</span></div>
+    <div class="card">
+      <div class="bms-row"><div class="bms-label">F1 Governança</div><div class="bms-bar"><div class="bms-fill" style="width:100%"></div></div><div class="bms-val">100%</div></div>
+      <div class="bms-row"><div class="bms-label">F2 Command Center</div><div class="bms-bar"><div class="bms-fill" style="width:88%"></div></div><div class="bms-val">88%</div></div>
+      <div class="bms-row"><div class="bms-label">F3 Registry / Supabase</div><div class="bms-bar"><div class="bms-fill" style="width:80%"></div></div><div class="bms-val">80%</div></div>
+      <div class="bms-row"><div class="bms-label">F4 Write Layer</div><div class="bms-bar"><div class="bms-fill" style="width:45%"></div></div><div class="bms-val">45%</div></div>
+      <div class="bms-row"><div class="bms-label">F5 ClickUp</div><div class="bms-bar"><div class="bms-fill" style="width:5%"></div></div><div class="bms-val">5%</div></div>
+      <div class="bms-row"><div class="bms-label">F6 Org. Parceiras</div><div class="bms-bar"><div class="bms-fill" style="width:65%"></div></div><div class="bms-val">65%</div></div>
+      <div class="bms-row"><div class="bms-label">F7 Cases Estratégicos</div><div class="bms-bar"><div class="bms-fill" style="width:58%"></div></div><div class="bms-val">58%</div></div>
+      <div class="bms-row"><div class="bms-label">F8 Discovery / Radar</div><div class="bms-bar"><div class="bms-fill" style="width:65%"></div></div><div class="bms-val">65%</div></div>
+      <hr style="border-color:var(--border); margin:12px 0;">
+      <div class="bms-row"><div class="bms-label"><b>BMS GERAL</b></div><div class="bms-bar"><div class="bms-fill" style="width:63.25%; background:var(--gold)"></div></div><div class="bms-val"><b>63,25%</b></div></div>
+      <p class="small muted" style="margin-top:8px">Referência: 2026-06-20 · Dados ao vivo do Supabase quando LIVE.</p>
+    </div>
+  </section>
+
+  <section id="m5">
+    <div class="sec-head"><div class="n">05</div><h2>Governance Center</h2><span class="tag tag-green">100%</span></div>
+    <div class="card"><p>Governança BIH = <span class="check">100% documental e normativa.</span></p></div>
+  </section>
+
+  <section id="m6">
+    <div class="sec-head"><div class="n">06</div><h2>Digital Workforce Center</h2><span class="tag tag-blue">Bigdata 100% digital</span></div>
+    <div class="card">
+      <div class="hier"><div class="step">1º <b>DIGITAL</b> — funcionário digital · agente · skill · capability</div></div>
+      <div class="hier"><div class="step">2º <b>PARCEIRO EXTERNO</b> — credencial/exigência jurídica</div></div>
+      <div class="hier"><div class="step">3º <b>HUMANO INTERNO</b> — exceção absoluta</div></div>
+    </div>
+  </section>
+
+  <section id="m7">
+    <div class="sec-head"><div class="n">07</div><h2>Council Center</h2><span class="tag tag-green">CR-SUPABASE-F1</span></div>
+    <div class="card">
+    <table>
+      <tr><th>Council Record</th><th>Tema</th><th>BCS</th><th>Recomendação</th></tr>
+      <tr><td class="mono">CR-SUPABASE-F1</td><td>Supabase Fase 1</td><td><b>17/18</b></td><td><span class="pill tag-green">APROVAR C/ RESSALVAS</span></td></tr>
+    </table>
+    </div>
+  </section>
+
+  <section id="m8">
+    <div class="sec-head"><div class="n">08</div><h2>Supabase Decision Center</h2><span class="tag tag-green">LIVE</span></div>
+    <div class="card">
+      <p>Supabase Fase 1: <span class="pill tag-green">OPERACIONAL</span> · bih_bms · bih_missions · bih_blockers · RLS anon ativo.</p>
+    </div>
+  </section>
+
+  <section id="m9">
+    <div class="sec-head"><div class="n">09</div><h2>Compliance / PLD Center</h2><span class="tag tag-orange">ABORDAGEM_ATIVA</span></div>
+    <div class="card"><p class="muted small">H-04 abordagem ativa · C-01 P&amp;B Compliance · Contato via andre@noqera.com</p></div>
+  </section>
+
+  <section id="m10">
+    <div class="sec-head"><div class="n">10</div><h2>Artifact Center</h2></div>
+    <div class="card"><p class="muted small">Artefatos versionados na branch de desenvolvimento · commit 955b5dd.</p></div>
+  </section>
+
+  <section id="m11">
+    <div class="sec-head"><div class="n">11</div><h2>Commit / Push Tracker</h2><span class="tag tag-green">branch: claude/elegant-thompson-BlbpT</span></div>
+    <div class="card">
+    <table>
+      <tr><th>Hash</th><th>Missão</th><th>Push</th></tr>
+      <tr><td class="mono">955b5dd</td><td>MO035 sanitize b01 blocker</td><td class="check">✓</td></tr>
+      <tr><td class="mono">31098a9</td><td>MO032 checkpoint R2 Fase 1 LIVE</td><td class="check">✓</td></tr>
+      <tr><td class="mono">92647ce</td><td>MO029 live test page</td><td class="check">✓</td></tr>
+      <tr><td class="mono">2546927</td><td>MO030 config real ativada</td><td class="check">✓</td></tr>
+      <tr><td class="mono">8089cdb</td><td>MO029 placeholders + causa removal</td><td class="check">✓</td></tr>
+      <tr><td class="mono">536fb9f</td><td>MO026 binding fase 1</td><td class="check">✓</td></tr>
+    </table>
+    </div>
+  </section>
+  <section id="m12">
+    <div class="sec-head"><div class="n">12</div><h2>Blocker Center</h2><span class="tag tag-red">ativos</span></div>
+    <div class="card">
+    <table>
+      <tr><th>Código</th><th>Bloqueio</th><th>Status</th><th>Plano de Resolução</th></tr>
+      <tr><td class="mono">B-01</td><td>Cliente contábil estratégico — reunião pendente</td><td><span class="pill tag-red">ATIVO</span></td><td class="small muted">Retomar contato comercial · proposta expirada · reagendar validação</td></tr>
+      <tr><td class="mono">B-02</td><td>Supabase Fase 1 não executada</td><td><span class="pill tag-green">RESOLVIDO</span></td><td class="small muted">RESOLVIDO 2026-06-20 · 8 tabelas · RLS ativo</td></tr>
+      <tr><td class="mono">B-03</td><td>Command Center R2.0 binding em construção</td><td><span class="pill tag-green">RESOLVIDO</span></td><td class="small muted">MO-026 a MO-031 cumpridas · R2.0 LIVE</td></tr>
+      <tr><td class="mono">B-04</td><td>H-04 / C-01 P&amp;B Compliance pendente</td><td><span class="pill tag-red">ATIVO</span></td><td class="small muted">Andre contata C-01 via andre@noqera.com</td></tr>
+      <tr><td class="mono">B-05</td><td>PROGRAMA_001 agenda institucional municipal</td><td><span class="pill tag-red">ATIVO</span></td><td class="small muted">6 municípios target · deadline 04/07</td></tr>
+    </table>
+    </div>
+  </section>
+
+  <section id="m13">
+    <div class="sec-head"><div class="n">13</div><h2>Next Mission Center</h2></div>
+    <div class="card">
+      <p>Próximo foco: retomar B-01 comercial · evoluir Command Center Fase 2 · qualificar C-01 PLD.</p>
+    </div>
+  </section>
+
+  <section id="m14">
+    <div class="sec-head"><div class="n">14</div><h2>Regent Single Response Protocol</h2><span class="tag tag-green">ativo</span></div>
+    <div class="card"><p class="muted small">REGENT_SINGLE_RESPONSE_ENVELOPE — retorno único copiável por missão.</p></div>
+  </section>
+
+  <section id="m15">
+    <div class="sec-head"><div class="n">15</div><h2>Test Mode</h2><span class="tag tag-green">LIVE confirmado</span></div>
+    <div class="card">
+      <p>MOD-01 ● LIVE · MOD-03 ● LIVE · MOD-06 ● LIVE</p>
+      <p class="small muted" style="margin-top:8px">Confirmado Andre Dorsch · iPad · Safari · 2026-06-20</p>
+    </div>
+  </section>
+
+  <section id="m16">
+    <div class="sec-head"><div class="n">16</div><h2>Release Gate</h2><span class="tag tag-green">R2.0 OPERACIONAL_LIVE</span></div>
+    <div class="card">
+    <table>
+      <tr><th>Item</th><th>Status</th></tr>
+      <tr><td>Versão</td><td>R2.0 Fase 1</td></tr>
+      <tr><td>Modo</td><td><b>OPERACIONAL_LIVE</b></td></tr>
+      <tr><td>Módulos LIVE</td><td class="check">MOD-01 · MOD-03 · MOD-06</td></tr>
+      <tr><td>BMS</td><td><b>63,25%</b></td></tr>
+      <tr><td>Supabase</td><td class="check">bih_bms · bih_missions · bih_blockers</td></tr>
+      <tr><td>RLS anon</td><td class="check">ativo nas 3 tabelas operacionais</td></tr>
+      <tr><td>Tabelas protegidas</td><td class="check">5 tabelas authenticated only</td></tr>
+    </table>
+    </div>
+  </section>
+
+  <footer>
+    BIH Command Center R2.0 Fase 1 · Bigdata in Business · 2026-06-20 · OPERACIONAL_LIVE
+  </footer>
+  </main>
+  </div>
+</div>
+</body>
+</html>
