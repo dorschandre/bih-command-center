@@ -8,18 +8,22 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --bg-base:#06090f; --bg-surface:#0d1117; --bg-card:#111827; --bg-card2:#161d2b;
-    --border:#1e2a3a; --indigo:#1b0d79; --indigo-light:#4f46e5; --gold:#f6c300;
+    --border:#1e2a3a; --border-light:#243044;
+    --indigo:#1b0d79; --indigo-light:#4f46e5; --gold:#f6c300; --gold-dim:#c99b00;
     --text-primary:#f0f4ff; --text-secondary:#8899b0; --text-muted:#4d5f75;
-    --red:#ef4444; --orange:#f97316; --yellow:#eab308; --green:#22c55e; --blue:#3a9ef5;
+    --red:#ef4444; --orange:#f97316; --yellow:#eab308; --green:#22c55e; --blue:#3a9ef5; --purple:#a78bfa;
     --sidebar-w:230px; --header-h:60px;
   }
   html,body { background:var(--bg-base); color:var(--text-primary);
     font-family:'Segoe UI',system-ui,-apple-system,sans-serif; font-size:13px; line-height:1.5; min-height:100vh; }
   a { color:inherit; text-decoration:none; }
+
   .proto-banner { position:fixed; top:0; left:0; right:0; z-index:1000;
     background:linear-gradient(90deg,#1b5e20,#2e7d32); color:#e8f5e9; text-align:center;
     padding:6px 12px; font-size:11px; font-weight:600; letter-spacing:.04em; }
+
   .layout { display:grid; grid-template-columns:var(--sidebar-w) 1fr; min-height:100vh; padding-top:28px; }
+
   .sidebar { background:linear-gradient(180deg,#0d0a2e,#080618); border-right:1px solid var(--border);
     position:sticky; top:28px; height:calc(100vh - 28px); overflow-y:auto; }
   .sidebar-logo { padding:18px 16px 14px; border-bottom:1px solid var(--border); }
@@ -30,43 +34,46 @@
     color:var(--text-secondary); border-left:2px solid transparent; cursor:pointer; }
   .nav-item:hover { background:rgba(79,70,229,.12); color:var(--text-primary); border-left-color:var(--indigo-light); }
   .nav-num { font-size:9px; color:var(--text-muted); min-width:16px; }
+
   .header { height:var(--header-h); border-bottom:1px solid var(--border); background:var(--bg-surface);
-    display:flex; align-items:center; justify-content:space-between; padding:0 24px;
-    position:sticky; top:28px; z-index:500; }
+    display:flex; align-items:center; justify-content:space-between; padding:0 24px; position:sticky; top:28px; z-index:500; }
   .header h1 { font-size:15px; font-weight:700; }
   .header .bms-pill { background:var(--indigo); color:#fff; padding:5px 14px; border-radius:20px; font-weight:700; font-size:13px; }
   .header .bms-pill span { color:var(--gold); }
+
   .main { padding:24px; max-width:1400px; }
   section { margin-bottom:32px; scroll-margin-top:100px; }
-  .sec-head { display:flex; align-items:center; gap:10px; margin-bottom:14px;
-    padding-bottom:8px; border-bottom:1px solid var(--border); }
-  .sec-head .n { background:var(--indigo); color:var(--gold); font-size:11px; font-weight:700;
-    width:24px; height:24px; border-radius:6px; display:flex; align-items:center;
-    justify-content:center; flex-shrink:0; }
+  .sec-head { display:flex; align-items:center; gap:10px; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .sec-head .n { background:var(--indigo); color:var(--gold); font-size:11px; font-weight:700; width:24px; height:24px;
+    border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
   .sec-head h2 { font-size:15px; font-weight:700; }
-  .sec-head .tag { margin-left:auto; font-size:10px; padding:3px 10px;
-    border-radius:12px; font-weight:600; white-space:nowrap; }
-  .tag-green  { background:rgba(34,197,94,.15);  color:var(--green); }
-  .tag-gold   { background:rgba(246,195,0,.15);   color:var(--gold); }
-  .tag-blue   { background:rgba(58,158,245,.15);  color:var(--blue); }
-  .tag-red    { background:rgba(239,68,68,.15);   color:var(--red); }
-  .tag-orange { background:rgba(249,115,22,.15);  color:var(--orange); }
+  .sec-head .tag { margin-left:auto; font-size:10px; padding:3px 10px; border-radius:12px; font-weight:600; white-space:nowrap; }
+  .tag-green { background:rgba(34,197,94,.15); color:var(--green); }
+  .tag-gold  { background:rgba(246,195,0,.15);  color:var(--gold); }
+  .tag-blue  { background:rgba(58,158,245,.15);  color:var(--blue); }
+  .tag-red   { background:rgba(239,68,68,.15);   color:var(--red); }
+  .tag-orange{ background:rgba(249,115,22,.15);  color:var(--orange); }
+
   .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:12px; }
   .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
   .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+
   table { width:100%; border-collapse:collapse; font-size:12px; }
   th,td { text-align:left; padding:7px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
   th { color:var(--text-muted); font-size:10px; text-transform:uppercase; letter-spacing:.05em; }
   td.mono,.mono { font-family:'SF Mono',Consolas,monospace; font-size:11px; }
+
   .bms-row { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
   .bms-label { width:160px; font-size:12px; }
   .bms-bar { flex:1; height:14px; background:var(--bg-card2); border-radius:7px; overflow:hidden; }
   .bms-fill { height:100%; border-radius:7px; background:linear-gradient(90deg,var(--indigo-light),var(--gold)); }
   .bms-val { width:50px; text-align:right; font-weight:700; font-size:12px; }
   .bms-delta { width:60px; text-align:right; font-size:11px; color:var(--green); }
+
   .pill { display:inline-block; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; }
   .badge-active { background:rgba(246,195,0,.15); color:var(--gold); }
   .badge-done   { background:rgba(34,197,94,.15);  color:var(--green); }
+  .badge-block  { background:rgba(239,68,68,.15);  color:var(--red); }
   .li { padding:6px 0; border-bottom:1px solid var(--border); font-size:12px; }
   .li:last-child { border-bottom:none; }
   .muted { color:var(--text-secondary); }
@@ -76,6 +83,7 @@
   .hier { display:flex; gap:8px; align-items:center; margin:6px 0; }
   .hier .step { background:var(--bg-card2); border:1px solid var(--border); border-radius:6px; padding:6px 10px; font-size:11px; }
   footer { padding:20px 24px; border-top:1px solid var(--border); color:var(--text-muted); font-size:11px; }
+
   @media (max-width:900px) {
     .layout { grid-template-columns:1fr; }
     .sidebar { display:none; }
@@ -86,6 +94,7 @@
 </head>
 <body>
 <div class="proto-banner">BIH COMMAND CENTER · R2.0 FASE 1 · Supabase REST direto · 5 módulos dinâmicos · fallback estático automático</div>
+
 <div class="layout">
   <aside class="sidebar">
     <div class="sidebar-logo">
@@ -110,53 +119,76 @@
     <a class="nav-item" href="#m15"><span class="nav-num">15</span> Test Mode</a>
     <a class="nav-item" href="#m16"><span class="nav-num">16</span> Release Gate</a>
   </aside>
+
   <div>
   <header class="header">
     <h1>Central de Comando BIH</h1>
-    <div class="bms-pill">BMS <span id="header-bms-val">63,75%</span> · R2.0 Fase 1</div>
+    <div class="bms-pill" id="header-bms">BMS <span id="header-bms-val">63,75%</span> · R2.0 Fase 1</div>
   </header>
+
   <main class="main">
 
   <section id="m1">
-    <div class="sec-head"><div class="n">01</div><h2>Mission Control Center</h2><span class="tag tag-gold" id="tag-m1">⏳ carregando...</span></div>
+    <div class="sec-head">
+      <div class="n">01</div>
+      <h2>Mission Control Center</h2>
+      <span class="tag tag-gold" id="tag-m1">⏳ carregando...</span>
+    </div>
     <div class="card" id="card-m1">
-      <table><thead><tr><th>Mission Order</th><th>Objetivo</th><th>Status</th><th>Responsável</th></tr></thead><tbody>
-        <tr><td class="mono">MO-045</td><td>Ativar MOD-13 Next Mission LIVE</td><td><span class="pill badge-active">ATIVA</span></td><td>Regente</td></tr>
-        <tr><td class="mono">MO-044</td><td>Criar tabela bih_decisions Fase 2 P0</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
-        <tr><td class="mono">MO-041</td><td>Atualizar Supabase BMS 63,75%</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
-        <tr><td class="mono">MO-040</td><td>Definir Command Center R2 Fase 2 Roadmap</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
-        <tr><td class="mono">MO-039</td><td>Formalizar Command Center público operacional</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
-        <tr><td class="mono">MO-037</td><td>Migrar index.html para REST direto</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
-        <tr><td class="mono">MO-036</td><td>Publicação pública Command Center R2</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
-      </tbody></table>
+      <table>
+        <thead><tr><th>Mission Order</th><th>Objetivo</th><th>Status</th><th>Responsável</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">MO-045</td><td>Ativar MOD-13 Next Mission LIVE</td><td><span class="pill badge-active">ATIVA</span></td><td>Regente</td></tr>
+          <tr><td class="mono">MO-044</td><td>Criar tabela bih_decisions Fase 2 P0</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
+          <tr><td class="mono">MO-041</td><td>Atualizar Supabase BMS 63,75%</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
+          <tr><td class="mono">MO-040</td><td>Definir Command Center R2 Fase 2 Roadmap</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
+          <tr><td class="mono">MO-039</td><td>Formalizar Command Center público operacional</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
+          <tr><td class="mono">MO-037</td><td>Migrar index.html para REST direto</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
+          <tr><td class="mono">MO-036</td><td>Publicação pública Command Center R2</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
   <section id="m2">
-    <div class="sec-head"><div class="n">02</div><h2>Decision Queue</h2><span class="tag tag-gold" id="tag-m2">⏳ carregando...</span></div>
+    <div class="sec-head">
+      <div class="n">02</div>
+      <h2>Decision Queue</h2>
+      <span class="tag tag-gold" id="tag-m2">⏳ carregando...</span>
+    </div>
     <div class="card" id="card-m2">
-      <table><thead><tr><th>Código</th><th>Decisão</th><th>Urgência</th><th>Status</th></tr></thead><tbody>
-        <tr><td class="mono small">DEC-MO044-01</td><td>Aprovar e executar Fase 2 Command Center</td><td><span class="pill tag-red">ALTA</span></td><td><span class="pill badge-active">PENDENTE</span></td></tr>
-        <tr><td class="mono small">DEC-MO042-01</td><td>Qualificar parceiro PLD-FT C-01</td><td><span class="pill tag-red">ALTA</span></td><td><span class="pill badge-active">PENDENTE</span></td></tr>
-        <tr><td class="mono small">DEC-MO043-01</td><td>Identificar município piloto PROGRAMA_001</td><td><span class="pill tag-gold">MEDIA</span></td><td><span class="pill badge-active">PENDENTE</span></td></tr>
-      </tbody></table>
+      <table>
+        <thead><tr><th>Código</th><th>Decisão</th><th>Urgência</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="mono small">DEC-MO044-01</td><td>Aprovar e executar Fase 2 Command Center</td><td><span class="pill tag-red">ALTA</span></td><td><span class="pill badge-active">PENDENTE</span></td></tr>
+          <tr><td class="mono small">DEC-MO042-01</td><td>Qualificar parceiro PLD-FT C-01</td><td><span class="pill tag-red">ALTA</span></td><td><span class="pill badge-active">PENDENTE</span></td></tr>
+          <tr><td class="mono small">DEC-MO043-01</td><td>Identificar município piloto PROGRAMA_001</td><td><span class="pill tag-gold">MEDIA</span></td><td><span class="pill badge-active">PENDENTE</span></td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
   <section id="m3">
     <div class="sec-head"><div class="n">03</div><h2>Validation Queue</h2><span class="tag tag-blue">Fase 2</span></div>
     <div class="card">
-      <table><thead><tr><th>ID</th><th>Artefato</th><th>Tipo</th><th>Status</th></tr></thead><tbody>
-        <tr><td>VAL-010</td><td class="mono">BIH_COMMAND_CENTER_R2_FASE2_ROADMAP_V1.md</td><td>Roadmap</td><td><span class="pill badge-done">commit 71dfe1a</span></td></tr>
-        <tr><td>VAL-011</td><td class="mono">BIH_CHECKPOINT_COMMAND_CENTER_PUBLICO</td><td>Checkpoint</td><td><span class="pill badge-done">commit 71dfe1a</span></td></tr>
-        <tr><td>VAL-012</td><td class="mono">bih_decisions · tabela Supabase</td><td>Infraestrutura</td><td><span class="pill badge-done">CRIADA · 3 seeds</span></td></tr>
-        <tr><td>VAL-013</td><td class="mono">MOD-02 Decision Queue LIVE</td><td>Binding</td><td><span class="pill badge-active">MO-046 ATIVA</span></td></tr>
-      </tbody></table>
+      <table>
+        <thead><tr><th>ID</th><th>Artefato</th><th>Tipo</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>VAL-010</td><td class="mono">BIH_COMMAND_CENTER_R2_FASE2_ROADMAP_V1.md</td><td>Roadmap</td><td><span class="pill badge-done">commit 71dfe1a</span></td></tr>
+          <tr><td>VAL-011</td><td class="mono">BIH_CHECKPOINT_COMMAND_CENTER_PUBLICO</td><td>Checkpoint</td><td><span class="pill badge-done">commit 71dfe1a</span></td></tr>
+          <tr><td>VAL-012</td><td class="mono">bih_decisions · tabela Supabase</td><td>Infraestrutura</td><td><span class="pill badge-done">CRIADA · 3 seeds</span></td></tr>
+          <tr><td>VAL-013</td><td class="mono">MOD-02 Decision Queue LIVE</td><td>Binding</td><td><span class="pill badge-active">MO-046 ATIVA</span></td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
   <section id="m4">
-    <div class="sec-head"><div class="n">04</div><h2>BMS Center</h2><span class="tag tag-gold" id="tag-m4">⏳ carregando...</span></div>
+    <div class="sec-head">
+      <div class="n">04</div>
+      <h2>BMS Center</h2>
+      <span class="tag tag-gold" id="tag-m4">⏳ carregando...</span>
+    </div>
     <div class="card" id="card-m4">
       <div class="bms-row"><div class="bms-label">F1 Governança</div><div class="bms-bar"><div class="bms-fill" style="width:100%"></div></div><div class="bms-val">100%</div><div class="bms-delta">—</div></div>
       <div class="bms-row"><div class="bms-label">F2 Command Center</div><div class="bms-bar"><div class="bms-fill" style="width:72%"></div></div><div class="bms-val">72%</div><div class="bms-delta">—</div></div>
@@ -166,22 +198,22 @@
       <div class="bms-row"><div class="bms-label">F6 Org. Parceiras</div><div class="bms-bar"><div class="bms-fill" style="width:70%"></div></div><div class="bms-val">70%</div><div class="bms-delta">—</div></div>
       <div class="bms-row"><div class="bms-label">F7 Cases Estratégicos</div><div class="bms-bar"><div class="bms-fill" style="width:60%"></div></div><div class="bms-val">60%</div><div class="bms-delta">—</div></div>
       <div class="bms-row"><div class="bms-label">F8 Discovery / Radar</div><div class="bms-bar"><div class="bms-fill" style="width:68%"></div></div><div class="bms-val">68%</div><div class="bms-delta">—</div></div>
-      <hr style="border-color:var(--border);margin:12px 0;">
-      <div class="bms-row"><div class="bms-label"><b>BMS GERAL</b></div><div class="bms-bar"><div class="bms-fill" style="width:63.75%;background:var(--gold)"></div></div><div class="bms-val"><b>63,75%</b></div><div class="bms-delta" style="font-size:10px;color:var(--text-muted)">2026-06-21</div></div>
-      <p class="small muted" style="margin-top:8px">Dados ao vivo via Supabase REST · fallback estático ativo automaticamente.</p>
+      <hr style="border-color:var(--border); margin:12px 0;">
+      <div class="bms-row"><div class="bms-label"><b>BMS GERAL</b></div><div class="bms-bar"><div class="bms-fill" id="bms-geral-bar" style="width:63.75%; background:var(--gold)"></div></div><div class="bms-val"><b id="bms-geral-val">63,75%</b></div><div class="bms-delta" id="bms-geral-date">2026-06-21</div></div>
+      <p class="small muted" style="margin-top:8px">Dados ao vivo via Supabase REST · tabela bih_bms · fallback estático ativo automaticamente.</p>
     </div>
   </section>
 
   <section id="m5">
     <div class="sec-head"><div class="n">05</div><h2>Governance Center</h2><span class="tag tag-green">100% documental</span></div>
     <div class="card">
-      <p><b>MARCO:</b> Governança BIH = <span class="check">100% documental e normativa</span></p>
+      <p><b>MARCO:</b> Governança BIH = <span class="check">100% documental e normativa</span> (BIH_GOVERNANCE_COMPLETION_100_V1)</p>
       <div class="grid3" style="margin-top:12px">
         <div class="card" style="background:var(--bg-card2)"><b>14</b><br><span class="small muted">documentos normativos</span></div>
         <div class="card" style="background:var(--bg-card2)"><b>34</b><br><span class="small muted">regras consolidadas</span></div>
         <div class="card" style="background:var(--bg-card2)"><b>10/10</b><br><span class="small muted">critérios atingidos</span></div>
       </div>
-      <p class="small muted" style="margin-top:10px">BIGDATA_OPERATING_SYSTEM v3.0 · BOS-081 · BOS-085 · BOS-075 · BOS-080.</p>
+      <p class="small muted" style="margin-top:10px">BIGDATA_OPERATING_SYSTEM v3.0 · BOS-081 · BOS-085 · BOS-075 · BOS-080. Governança normativa 100% completa.</p>
     </div>
   </section>
 
@@ -192,17 +224,24 @@
       <div class="hier"><div class="step">1º <b>DIGITAL</b> — funcionário digital · agente · skill · capability</div></div>
       <div class="hier"><div class="step">2º <b>PARCEIRO EXTERNO</b> — só por credencial/exigência jurídica·regulatória·institucional</div></div>
       <div class="hier"><div class="step">3º <b>HUMANO INTERNO</b> — exceção absoluta · decisão expressa de Andre</div></div>
-      <p class="small muted" style="margin-top:10px">12 categorias DW-01→DW-12 · CAP-001 Supabase LIVE · Fase 2: agentes dinâmicos.</p>
+      <p class="small muted" style="margin-top:10px">12 categorias DW-01→DW-12 mapeadas · Backlog de capabilities: 10 itens (P0–P3) · CAP-001 Supabase LIVE · Fase 2: agentes dinâmicos.</p>
     </div>
   </section>
 
   <section id="m7">
-    <div class="sec-head"><div class="n">07</div><h2>Council Center</h2><span class="tag tag-green">2 records</span></div>
-    <div class="card">
-      <table><thead><tr><th>Council Record</th><th>Tema</th><th>BCS</th><th>Recomendação</th></tr></thead><tbody>
-        <tr><td class="mono">CR-002</td><td>BIH Next Level Operating Model</td><td>15.5/18</td><td>CONDITIONAL</td></tr>
-        <tr><td class="mono">CR-SUPABASE-F1</td><td>Supabase Fase 1</td><td><b>17/18</b></td><td><span class="pill badge-done">APROVADO · LIVE</span></td></tr>
-      </tbody></table>
+    <div class="sec-head">
+      <div class="n">07</div><h2>Council Center</h2>
+      <span class="tag tag-gold" id="tag-m7">⏳ carregando...</span>
+    </div>
+    <div class="card" id="card-m7">
+      <table>
+        <thead><tr><th>Council Record</th><th>Tema</th><th>BCS</th><th>Recomendação</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">CR-002</td><td>BIH Next Level Operating Model</td><td>15.5/18</td><td>CONDITIONAL</td></tr>
+          <tr><td class="mono">CR-SUPABASE-F1</td><td>Supabase Fase 1</td><td><b>17/18</b></td><td><span class="pill badge-done">APROVADO · LIVE</span></td></tr>
+        </tbody>
+      </table>
+      <p class="small muted" style="margin-top:8px">5 perspectivas: C1 Mercado · C2 Risco · C3 Econômico · C4 Execução · C5 Estratégia.</p>
     </div>
   </section>
 
@@ -210,61 +249,85 @@
     <div class="sec-head"><div class="n">08</div><h2>Supabase Decision Center</h2><span class="tag tag-green">LIVE · Fase 1 ativa</span></div>
     <div class="card">
       <p>Status: <span class="pill badge-done">SUPABASE_FASE1_OPERACIONAL</span></p>
-      <p style="margin-top:8px">BCS <b>17/18</b> · Aprovado por Andre Dorsch · Tabelas: <code>bih_missions</code> · <code>bih_bms</code> · <code>bih_blockers</code> · <code>bih_decisions</code></p>
-      <p class="small muted" style="margin-top:8px">RLS ativo · anon key pública por design · service_role nunca no frontend.</p>
+      <p style="margin-top:8px">BCS <b>17/18</b> · Decisão aprovada por Andre Dorsch · Tabelas ativas: <code>bih_missions</code> · <code>bih_bms</code> · <code>bih_blockers</code> · <code>bih_decisions</code></p>
+      <p class="small muted" style="margin-top:8px"><b>Segurança:</b> RLS ativo · anon key pública por design · service_role nunca no frontend · dados de clientes = zero expostos.</p>
+      <p class="small muted" style="margin-top:4px">Fase 2: bih_council_records · bih_artifacts · bih_commits · bih_compliance_status (authenticated only).</p>
     </div>
   </section>
 
   <section id="m9">
-    <div class="sec-head"><div class="n">09</div><h2>Compliance / PLD Center</h2><span class="tag tag-orange">ABORDAGEM_ATIVA</span></div>
+    <div class="sec-head"><div class="n">09</div><h2>Compliance / PLD Center (H-04)</h2><span class="tag tag-orange">ABORDAGEM_ATIVA</span></div>
     <div class="card">
-      <table><thead><tr><th>Item</th><th>Status</th></tr></thead><tbody>
-        <tr><td>B-04 · Vertical PLD-FT / Compliance</td><td><span class="pill badge-active">ABORDAGEM_ATIVA</span></td></tr>
-        <tr><td>C-01 · P&amp;B Compliance (83/100 · PRIORITÁRIO)</td><td><span class="pill badge-active">contato via andre@noqera.com</span></td></tr>
-        <tr><td>DEC-MO042-01 · Qualificar parceiro PLD-FT</td><td><span class="pill badge-active">PENDENTE · Decision Queue</span></td></tr>
-      </tbody></table>
+      <table>
+        <thead><tr><th>Item</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>B-04 · Vertical PLD-FT / Compliance</td><td><span class="pill badge-active">ABORDAGEM_ATIVA</span></td></tr>
+          <tr><td>C-01 · P&amp;B Compliance (83/100 · PRIORITÁRIO)</td><td><span class="pill badge-active">contato via andre@noqera.com</span></td></tr>
+          <tr><td>DEC-MO042-01 · Qualificar parceiro PLD-FT</td><td><span class="pill badge-active">PENDENTE · Decision Queue</span></td></tr>
+        </tbody>
+      </table>
+      <p class="small muted" style="margin-top:8px">MO-042 · Deadline: verificar com Andre · Contato: andre@noqera.com · Shortlist: C-01 P&amp;B (83/100) · C-03 Barbieri (81/100).</p>
     </div>
   </section>
 
   <section id="m10">
     <div class="sec-head"><div class="n">10</div><h2>Artifact Center</h2></div>
     <div class="card">
-      <table><thead><tr><th>Artefato</th><th>Commit</th><th>Missão</th></tr></thead><tbody>
-        <tr><td class="mono">BIH_CHECKPOINT_COMMAND_CENTER_PUBLICO_20260621.md</td><td class="mono">71dfe1a</td><td>MO-039</td></tr>
-        <tr><td class="mono">BIH_COMMAND_CENTER_R2_FASE2_ROADMAP_V1.md</td><td class="mono">71dfe1a</td><td>MO-040</td></tr>
-        <tr><td class="mono">bih_decisions · tabela Supabase · 3 seeds</td><td class="mono">Supabase</td><td>MO-044</td></tr>
-        <tr><td class="mono">index.html · REST direto · 5 módulos LIVE</td><td class="mono">bih-command-center</td><td>MO-046</td></tr>
-      </tbody></table>
+      <table>
+        <thead><tr><th>Artefato</th><th>Commit</th><th>Missão</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">BIH_CHECKPOINT_COMMAND_CENTER_PUBLICO_20260621.md</td><td class="mono">71dfe1a</td><td>MO-039</td></tr>
+          <tr><td class="mono">BIH_COMMAND_CENTER_R2_FASE2_ROADMAP_V1.md</td><td class="mono">71dfe1a</td><td>MO-040</td></tr>
+          <tr><td class="mono">bih_decisions · tabela Supabase · 3 seeds</td><td class="mono">Supabase</td><td>MO-044</td></tr>
+          <tr><td class="mono">index.html · REST direto · 5 módulos LIVE</td><td class="mono">bih-command-center</td><td>MO-037/046</td></tr>
+          <tr><td class="mono">BIH_GOVERNANCE_COMPLETION_100_V1.md</td><td class="mono">a5fbdc0</td><td>MO-010</td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
   <section id="m11">
     <div class="sec-head"><div class="n">11</div><h2>Commit / Push Tracker</h2><span class="tag tag-green">branch: elegant-thompson-BlbpT</span></div>
     <div class="card">
-      <table><thead><tr><th>Hash</th><th>Missão</th><th>Repositório</th><th>Push</th></tr></thead><tbody>
-        <tr><td class="mono">71dfe1a</td><td>MO-039 + MO-040 · checkpoint + roadmap</td><td>Andre_AI_Workspace</td><td class="check">✓</td></tr>
-        <tr><td class="mono">—</td><td>MO-046 · MOD-02 restore</td><td>bih-command-center</td><td><span class="pill badge-active">pendente validação</span></td></tr>
-      </tbody></table>
+      <table>
+        <thead><tr><th>Hash</th><th>Missão</th><th>Repositório</th><th>Push</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">71dfe1a</td><td>MO-039 + MO-040 · checkpoint + roadmap</td><td>Andre_AI_Workspace</td><td class="check">✓</td></tr>
+          <tr><td class="mono">—</td><td>MO-046 · MOD-02 restore</td><td>bih-command-center</td><td><span class="pill badge-active">pendente validação</span></td></tr>
+          <tr><td class="mono">a5fbdc0</td><td>MO-010 Governança 100</td><td>Andre_AI_Workspace</td><td class="check">✓</td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
   <section id="m12">
-    <div class="sec-head"><div class="n">12</div><h2>Blocker Center</h2><span class="tag tag-red" id="tag-m12">⏳ carregando...</span></div>
+    <div class="sec-head">
+      <div class="n">12</div>
+      <h2>Blocker Center</h2>
+      <span class="tag tag-red" id="tag-m12">⏳ carregando...</span>
+    </div>
     <div class="card" id="card-m12">
-      <table><thead><tr><th>Código</th><th>Bloqueio</th><th>Tipo</th><th>Status</th></tr></thead><tbody>
-        <tr><td class="mono">B-01</td><td>Cliente contábil estratégico — reunião pendente</td><td>COMERCIAL</td><td><span class="pill badge-active">ATIVO</span></td></tr>
-        <tr><td class="mono">B-04</td><td>Vertical PLD-FT · parceiro não qualificado</td><td>ESTRATÉGICO</td><td><span class="pill badge-active">ATIVO</span></td></tr>
-        <tr><td class="mono">B-05</td><td>Município piloto não identificado</td><td>INSTITUCIONAL</td><td><span class="pill badge-active">ATIVO</span></td></tr>
-      </tbody></table>
+      <table>
+        <thead><tr><th>Código</th><th>Bloqueio</th><th>Tipo</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">B-01</td><td>Cliente contábil estratégico — reunião pendente</td><td>COMERCIAL</td><td><span class="pill badge-active">ATIVO</span></td></tr>
+          <tr><td class="mono">B-04</td><td>Vertical PLD-FT · parceiro não qualificado</td><td>ESTRATÉGICO</td><td><span class="pill badge-active">ATIVO</span></td></tr>
+          <tr><td class="mono">B-05</td><td>Município piloto não identificado</td><td>INSTITUCIONAL</td><td><span class="pill badge-active">ATIVO</span></td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
   <section id="m13">
-    <div class="sec-head"><div class="n">13</div><h2>Next Mission Center</h2><span class="tag tag-gold" id="tag-m13">⏳ carregando...</span></div>
+    <div class="sec-head">
+      <div class="n">13</div>
+      <h2>Next Mission Center</h2>
+      <span class="tag tag-gold" id="tag-m13">⏳ carregando...</span>
+    </div>
     <div class="card" id="card-m13">
       <p><b>Missão Ativa:</b> <code>MO-045</code> — ATIVAR_MOD13_NEXT_MISSION_LIVE</p>
-      <p style="margin-top:8px"><b>Próximas missões:</b></p>
-      <ul style="margin:8px 0 0 16px;font-size:12px;color:var(--text-secondary);">
+      <p style="margin-top:8px"><b>Próximas missões recomendadas:</b></p>
+      <ul style="margin:8px 0 0 16px; font-size:12px; color:var(--text-secondary);">
         <li style="margin-bottom:4px">MO-046 · MOD-02 Decision Queue LIVE (ativa)</li>
         <li style="margin-bottom:4px">MO-047 · MOD-07 Council LIVE (Fase 2)</li>
         <li style="margin-bottom:4px">MO-048 · MOD-10 Artifact LIVE (Fase 2)</li>
@@ -278,7 +341,7 @@
     <div class="sec-head"><div class="n">14</div><h2>Regent Single Response Protocol Center</h2><span class="tag tag-green">ativo</span></div>
     <div class="card">
       <p>Todo retorno do Regente segue o <b>REGENT_SINGLE_RESPONSE_ENVELOPE</b> com BLOCO_COPIAVEL_FINAL.</p>
-      <p class="small muted" style="margin-top:8px">Proibido: placeholders · STATUS sem validação G1–G4 · blocos não integrados.</p>
+      <p class="small muted" style="margin-top:8px">Proibido: placeholders "A PREENCHER" em blocos operacionais · múltiplos blocos não integrados · STATUS declarado sem validação G1–G4. Referência: BIH_REGENT_SINGLE_RESPONSE_PROTOCOL_V1.</p>
     </div>
   </section>
 
@@ -295,13 +358,13 @@
           <div class="li check">✓ 06 MOD-13 Next Mission ● LIVE</div>
           <div class="li check">✓ 07 Fallback estático automático</div>
           <div class="li check">✓ 08 sem CDN externo · sem SDK</div>
-          <div class="li check">✓ 09 anon key · sem service_role</div>
+          <div class="li check">✓ 09 anon key sem service_role</div>
           <div class="li check">✓ 10 dados de clientes não expostos</div>
         </div>
         <div>
           <div class="li check">✓ 11 RLS ativo em todas as tabelas</div>
           <div class="li check">✓ 12 robots.txt Disallow: /</div>
-          <div class="li check">✓ 13 repo público independente</div>
+          <div class="li check">✓ 13 repo público independente do privado</div>
           <div class="li check">✓ 14 B-01 sanitizado</div>
           <div class="li check">✓ 15 GitHub Pages propagação &lt;90s</div>
           <div class="li">⏳ 16 MOD-02 Decision Queue ● LIVE</div>
@@ -317,157 +380,320 @@
   <section id="m16">
     <div class="sec-head"><div class="n">16</div><h2>Release Gate</h2><span class="tag tag-green">R2.0 Fase 1 · LIVE</span></div>
     <div class="card">
-      <table><thead><tr><th>Item</th><th>Status</th></tr></thead><tbody>
-        <tr><td>Versão</td><td>R2.0 Fase 1</td></tr>
-        <tr><td>Nível</td><td><span class="pill badge-done">OPERACIONAL_LIVE</span></td></tr>
-        <tr><td>Arquitetura</td><td>REST direto · fetch() nativo · AbortController 9s</td></tr>
-        <tr><td>Módulos dinâmicos</td><td>MOD-01 · MOD-02 · MOD-03 · MOD-06 · MOD-13</td></tr>
-        <tr><td>Validado por</td><td>Andre Dorsch · iPad · Safari · 2026-06-21</td></tr>
-        <tr><td>URL pública</td><td><code>https://dorschandre.github.io/bih-command-center/</code></td></tr>
-        <tr><td>Próxima evolução</td><td>R2.0 Fase 2 — MOD-07, MOD-10, MOD-11</td></tr>
-      </tbody></table>
+      <table>
+        <thead><tr><th>Item</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Versão</td><td>R2.0 Fase 1</td></tr>
+          <tr><td>Nível</td><td><span class="pill badge-done">OPERACIONAL_LIVE</span></td></tr>
+          <tr><td>Arquitetura</td><td>REST direto · fetch() nativo · AbortController 9s</td></tr>
+          <tr><td>Módulos dinâmicos Fase 1</td><td>MOD-01 · MOD-02 · MOD-03 · MOD-06 · MOD-13</td></tr>
+          <tr><td>Validado por</td><td>Andre Dorsch · iPad · Safari · 2026-06-21</td></tr>
+          <tr><td>URL pública</td><td><code>https://dorschandre.github.io/bih-command-center/</code></td></tr>
+          <tr><td>Próxima evolução</td><td>R2.0 Fase 2 — MOD-07, MOD-10, MOD-11 (authenticated)</td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
-  <footer>BIH Command Center R2.0 Fase 1 · Bigdata in Business · 2026-06-21 · MO-046 · repo: dorschandre/bih-command-center</footer>
+  <footer>
+    BIH Command Center R2.0 Fase 1 · Bigdata in Business · 2026-06-21 · MO-046 · OPERACIONAL_LIVE ·
+    repo: dorschandre/bih-command-center · fonte canônica: André_AI_Workspace (privado)
+  </footer>
   </main>
   </div>
 </div>
 <script>
 (function(){
 'use strict';
-var SB_URL='https://pqifjircfhdohdgrttqr.supabase.co';
-var SB_ANON='sb_publishable_9kSVpttbV9EXvv06rEAX4g_9JFdAnXM';
-var TIMEOUT=9000;
-var FB_MISSIONS=[
-  {mo_number:45,mo_code:'ATIVAR_MOD13_NEXT_MISSION_LIVE',status:'ATIVA',observacoes:'MOD-13 ativo',responsavel:'Regente'},
-  {mo_number:44,mo_code:'CRIAR_TABELA_BIH_DECISIONS_FASE2_P0',status:'CUMPRIDA',observacoes:'tabela criada',responsavel:'Regente'},
-  {mo_number:41,mo_code:'ATUALIZAR_SUPABASE_BMS_63',status:'CUMPRIDA',observacoes:'BMS 63,75%',responsavel:'Regente'},
-  {mo_number:40,mo_code:'DEFINIR_COMMAND_CENTER_R2_FASE2_ROADMAP',status:'CUMPRIDA',observacoes:'roadmap criado',responsavel:'Regente'},
-  {mo_number:39,mo_code:'FORMALIZAR_COMMAND_CENTER_PUBLICO',status:'CUMPRIDA',observacoes:'checkpoint criado',responsavel:'Regente'},
-  {mo_number:37,mo_code:'MIGRAR_INDEX_HTML_PARA_REST_DIRETO',status:'CUMPRIDA',observacoes:'REST direto ativo',responsavel:'Regente'},
-  {mo_number:36,mo_code:'PUBLICACAO_PUBLICA_COMMAND_CENTER_R2',status:'CUMPRIDA',observacoes:'GitHub Pages ativo',responsavel:'Regente'}
+
+var SB_URL  = 'https://pqifjircfhdohdgrttqr.supabase.co';
+var SB_ANON = 'sb_publishable_9kSVpttbV9EXvv06rEAX4g_9JFdAnXM';
+var TIMEOUT = 9000;
+
+var FB_MISSIONS = [
+  {mo_number:45,mo_code:'ATIVAR_MOD13_NEXT_MISSION_LIVE',status:'ATIVA',observacoes:'MOD-13 ativo'},
+  {mo_number:44,mo_code:'CRIAR_TABELA_BIH_DECISIONS_FASE2_P0',status:'CUMPRIDA',observacoes:'tabela criada'},
+  {mo_number:41,mo_code:'ATUALIZAR_SUPABASE_BMS_63',status:'CUMPRIDA',observacoes:'BMS 63,75%'},
+  {mo_number:40,mo_code:'DEFINIR_COMMAND_CENTER_R2_FASE2_ROADMAP',status:'CUMPRIDA',observacoes:'roadmap criado'},
+  {mo_number:39,mo_code:'FORMALIZAR_COMMAND_CENTER_PUBLICO',status:'CUMPRIDA',observacoes:'checkpoint criado'},
+  {mo_number:37,mo_code:'MIGRAR_INDEX_HTML_PARA_REST_DIRETO',status:'CUMPRIDA',observacoes:'REST direto ativo'},
+  {mo_number:36,mo_code:'PUBLICACAO_PUBLICA_COMMAND_CENTER_R2',status:'CUMPRIDA',observacoes:'GitHub Pages ativo'}
 ];
-var FB_DECISIONS=[
-  {codigo:'DEC-MO044-01',titulo:'Aprovar e executar Fase 2 Command Center',urgencia:'ALTA',status:'PENDENTE'},
-  {codigo:'DEC-MO042-01',titulo:'Qualificar parceiro PLD-FT C-01',urgencia:'ALTA',status:'PENDENTE'},
-  {codigo:'DEC-MO043-01',titulo:'Identificar município piloto PROGRAMA_001',urgencia:'MEDIA',status:'PENDENTE'}
+
+var FB_DECISIONS = [
+  {codigo:'DEC-MO044-01',titulo:'Aprovar e executar Fase 2 Command Center',urgencia:'ALTA',impacto:'ESTRATEGICO',responsavel:'Andre Dorsch',status:'PENDENTE'},
+  {codigo:'DEC-MO042-01',titulo:'Qualificar parceiro PLD-FT C-01',urgencia:'ALTA',impacto:'COMERCIAL',responsavel:'Andre Dorsch',status:'PENDENTE'},
+  {codigo:'DEC-MO043-01',titulo:'Identificar município piloto PROGRAMA_001',urgencia:'MEDIA',impacto:'INSTITUCIONAL',responsavel:'Andre Dorsch',status:'PENDENTE'}
 ];
-var FB_BMS={data_ref:'2026-06-21',bms_geral:63.75,f1_governanca:100,f2_command_center:72,
-  f3_registry:55,f4_write_layer:40,f5_clickup:20,f6_org_parceiras:70,f7_cases:60,f8_discovery:68};
-var FB_BLOCKERS=[
+
+var FB_BMS = {data_ref:'2026-06-21',bms_geral:63.75,
+  f1_governanca:100,f2_command_center:72,f3_registry:55,
+  f4_write_layer:40,f5_clickup:20,f6_org_parceiras:70,
+  f7_cases:60,f8_discovery:68};
+
+var FB_BLOCKERS = [
   {codigo:'B-01',descricao:'Cliente contábil estratégico — reunião pendente',tipo:'COMERCIAL',status:'ATIVO'},
   {codigo:'B-04',descricao:'Vertical PLD-FT · parceiro não qualificado',tipo:'ESTRATÉGICO',status:'ATIVO'},
   {codigo:'B-05',descricao:'Município piloto não identificado',tipo:'INSTITUCIONAL',status:'ATIVO'}
 ];
-function setTag(id,isLive,lt,ft){
-  var el=document.getElementById(id);if(!el)return;
-  el.textContent=isLive?lt:ft;el.className=isLive?'tag tag-green':'tag tag-gold';
+
+var FB_COUNCIL = [
+  {codigo:'CR-002',tema:'BIH Next Level Operating Model',bcs:'15.5/18',recomendacao:'CONDITIONAL',status:'ATIVO',
+   observacoes:'5 perspectivas: C1 Mercado · C2 Risco · C3 Econômico · C4 Execução · C5 Estratégia'},
+  {codigo:'CR-SUPABASE-F1',tema:'Supabase Fase 1',bcs:'17/18',recomendacao:'APROVADO · LIVE',status:'APROVADO',
+   observacoes:'Supabase Fase 1 LIVE · 4 tabelas operacionais · RLS ativo · 2026-06-21'}
+];
+
+function setTag(id, isLive, liveText, fbText) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (isLive) {
+    el.textContent = liveText;
+    el.className = 'tag tag-green';
+  } else {
+    el.textContent = fbText;
+    el.className = 'tag tag-gold';
+  }
 }
-function sbFetch(table,params){
-  var ctrl=new AbortController();
-  var t=setTimeout(function(){ctrl.abort();},TIMEOUT);
-  return fetch(SB_URL+'/rest/v1/'+table+(params?'?'+params:''),{
-    signal:ctrl.signal,
-    headers:{'apikey':SB_ANON,'Authorization':'Bearer '+SB_ANON,'Accept':'application/json'}
-  }).then(function(r){clearTimeout(t);if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-    .catch(function(e){clearTimeout(t);throw e;});
-}
-function pill(text,color){
-  var bg=color==='green'?'34,197,94':color==='red'?'239,68,68':color==='orange'?'249,115,22':'246,195,0';
-  var c=color==='orange'?'orange':color==='red'?'red':color==='green'?'green':'gold';
-  return '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:rgba('+bg+',.15);color:var(--'+c+')">'+text+'</span>';
-}
-function renderMissions(data,isLive){
-  var rows=(isLive&&data&&data.length)?data:FB_MISSIONS;
-  var act=rows.filter(function(m){return m.status==='ATIVA';}).length;
-  var don=rows.filter(function(m){return m.status==='CUMPRIDA';}).length;
-  setTag('tag-m1',isLive,'● LIVE · '+act+' ativa'+(act!==1?'s':'')+' · '+don+' cumprida'+(don!==1?'s':''),'◌ '+act+' ativa'+(act!==1?'s':'')+' · '+don+' cumprida'+(don!==1?'s':''));
-  var card=document.getElementById('card-m1');if(!card)return;
-  var h='<table><thead><tr><th>Mission Order</th><th>Objetivo</th><th>Status</th><th>Responsável</th></tr></thead><tbody>';
-  rows.forEach(function(m){
-    var st=m.status==='ATIVA'?pill('ATIVA','gold'):m.status==='CUMPRIDA'?pill('CUMPRIDA','green'):pill(m.status,'orange');
-    h+='<tr><td class="mono">MO-'+String(m.mo_number).padStart(3,'0')+'</td><td>'+(m.mo_code||'—')+'</td><td>'+st+'</td><td>'+(m.responsavel||'Regente')+'</td></tr>';
+
+function sbFetch(table, params) {
+  var ctrl = new AbortController();
+  var timer = setTimeout(function(){ ctrl.abort(); }, TIMEOUT);
+  var url = SB_URL + '/rest/v1/' + table + (params ? '?' + params : '');
+  return fetch(url, {
+    signal: ctrl.signal,
+    headers: {
+      'apikey': SB_ANON,
+      'Authorization': 'Bearer ' + SB_ANON,
+      'Accept': 'application/json'
+    }
+  }).then(function(r){
+    clearTimeout(timer);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).catch(function(e){
+    clearTimeout(timer);
+    throw e;
   });
-  card.innerHTML=h+'</tbody></table>';
 }
-function renderDecisions(data,isLive){
-  var rows=(isLive&&data&&data.length)?data:FB_DECISIONS;
-  var n=rows.length;
-  setTag('tag-m2',isLive&&data&&data.length,'● LIVE · '+n+' pendente'+(n!==1?'s':''),'◌ '+n+' pendente'+(n!==1?'s':''));
-  var card=document.getElementById('card-m2');if(!card)return;
-  var h='<table><thead><tr><th>Código</th><th>Decisão</th><th>Urgência</th><th>Status</th></tr></thead><tbody>';
-  rows.forEach(function(d){
-    var uc=d.urgencia==='ALTA'?'red':d.urgencia==='MEDIA'?'gold':'green';
-    h+='<tr><td class="mono small">'+(d.codigo||'—')+'</td><td>'+(d.titulo||'—')+'</td><td>'+pill(d.urgencia||'—',uc)+'</td><td>'+pill(d.status||'PENDENTE','gold')+'</td></tr>';
+
+function pill(text, color) {
+  return '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:rgba('
+    + (color==='green'?'34,197,94'
+      :color==='red'?'239,68,68'
+      :color==='orange'?'249,115,22'
+      :'246,195,0')
+    + ',.15);color:var(--'+(color==='orange'?'orange':color==='red'?'red':color==='green'?'green':'gold')+')">'+text+'</span>';
+}
+
+function renderMissions(data, isLive) {
+  var rows = (isLive && data && data.length) ? data : FB_MISSIONS;
+  var count = rows.filter(function(m){ return m.status === 'ATIVA'; }).length;
+  var done  = rows.filter(function(m){ return m.status === 'CUMPRIDA'; }).length;
+  setTag('tag-m1', isLive,
+    '● LIVE · ' + count + ' ativa' + (count!==1?'s':'') + ' · ' + done + ' cumprida' + (done!==1?'s':''),
+    '◌ ' + count + ' ativa' + (count!==1?'s':'') + ' · ' + done + ' cumprida' + (done!==1?'s':''));
+  var card = document.getElementById('card-m1');
+  if (!card) return;
+  var html = '<table><thead><tr><th>Mission Order</th><th>Objetivo</th><th>Status</th><th>Responsável</th></tr></thead><tbody>';
+  rows.forEach(function(m) {
+    var st = m.status === 'ATIVA' ? pill('ATIVA','gold') : m.status === 'CUMPRIDA' ? pill('CUMPRIDA','green') : pill(m.status,'orange');
+    html += '<tr><td class="mono">MO-' + String(m.mo_number).padStart(3,'0') + '</td>'
+      + '<td>' + (m.mo_code || '—') + '</td>'
+      + '<td>' + st + '</td>'
+      + '<td>' + (m.responsavel || 'Regente') + '</td></tr>';
   });
-  card.innerHTML=h+'</tbody></table>';
+  html += '</tbody></table>';
+  card.innerHTML = html;
 }
-function renderBMS(data,isLive){
-  var d=(isLive&&data)?data:FB_BMS;
-  var g=parseFloat(d.bms_geral)||63.75;
-  var gf=g.toFixed(2).replace('.',',');
-  setTag('tag-m4',isLive,'● LIVE · BMS '+gf+'%','◌ BMS '+gf+'%');
-  var hv=document.getElementById('header-bms-val');if(hv)hv.textContent=gf+'%';
-  var sb=document.getElementById('sidebar-bms');if(sb)sb.textContent=(isLive?'● ':'◌ ')+'R2.0 · BMS '+gf+'%';
-  var card=document.getElementById('card-m4');if(!card)return;
-  var frentes=[
-    {label:'F1 Governança',key:'f1_governanca'},
-    {label:'F2 Command Center',key:'f2_command_center'},
-    {label:'F3 Registry',key:'f3_registry'},
-    {label:'F4 Write Layer',key:'f4_write_layer'},
-    {label:'F5 ClickUp',key:'f5_clickup'},
-    {label:'F6 Org. Parceiras',key:'f6_org_parceiras'},
+
+function renderDecisions(data, isLive) {
+  var rows = (isLive && data && data.length) ? data : FB_DECISIONS;
+  var n = rows.length;
+  setTag('tag-m2', isLive && data && data.length,
+    '● LIVE · ' + n + ' pendente' + (n!==1?'s':''),
+    '◌ ' + n + ' pendente' + (n!==1?'s':''));
+  var card = document.getElementById('card-m2');
+  if (!card) return;
+  var html = '<table><thead><tr><th>Código</th><th>Decisão</th><th>Urgência</th><th>Status</th></tr></thead><tbody>';
+  rows.forEach(function(d) {
+    var urgCor = d.urgencia === 'ALTA' ? 'red' : d.urgencia === 'MEDIA' ? 'gold' : 'green';
+    html += '<tr>'
+      + '<td class="mono small">' + (d.codigo || '—') + '</td>'
+      + '<td>' + (d.titulo || '—') + '</td>'
+      + '<td>' + pill(d.urgencia || '—', urgCor) + '</td>'
+      + '<td>' + pill(d.status || 'PENDENTE', 'gold') + '</td>'
+      + '</tr>';
+  });
+  html += '</tbody></table>';
+  card.innerHTML = html;
+}
+
+function renderBMS(data, isLive) {
+  var d = (isLive && data) ? data : FB_BMS;
+  var g = parseFloat(d.bms_geral) || 63.75;
+  setTag('tag-m4', isLive,
+    '● LIVE · BMS ' + g.toFixed(2).replace('.',',') + '%',
+    '◌ BMS ' + g.toFixed(2).replace('.',',') + '%');
+  var hv = document.getElementById('header-bms-val');
+  if (hv) hv.textContent = g.toFixed(2).replace('.',',') + '%';
+  var sb = document.getElementById('sidebar-bms');
+  if (sb) sb.textContent = (isLive ? '● ' : '◌ ') + 'R2.0 · BMS ' + g.toFixed(2).replace('.',',') + '%';
+  var card = document.getElementById('card-m4');
+  if (!card) return;
+  var frentes = [
+    {label:'F1 Governança',        key:'f1_governanca'},
+    {label:'F2 Command Center',    key:'f2_command_center'},
+    {label:'F3 Registry',          key:'f3_registry'},
+    {label:'F4 Write Layer',       key:'f4_write_layer'},
+    {label:'F5 ClickUp',           key:'f5_clickup'},
+    {label:'F6 Org. Parceiras',    key:'f6_org_parceiras'},
     {label:'F7 Cases Estratégicos',key:'f7_cases'},
-    {label:'F8 Discovery / Radar',key:'f8_discovery'}
+    {label:'F8 Discovery / Radar', key:'f8_discovery'}
   ];
-  var h='';
-  frentes.forEach(function(f){
-    var v=parseFloat(d[f.key])||0;
-    h+='<div class="bms-row"><div class="bms-label">'+f.label+'</div><div class="bms-bar"><div class="bms-fill" style="width:'+Math.min(v,100)+'%"></div></div><div class="bms-val">'+v.toFixed(0)+'%</div><div class="bms-delta">—</div></div>';
+  var html = '';
+  frentes.forEach(function(f) {
+    var v = parseFloat(d[f.key]) || 0;
+    html += '<div class="bms-row">'
+      + '<div class="bms-label">' + f.label + '</div>'
+      + '<div class="bms-bar"><div class="bms-fill" style="width:' + Math.min(v,100) + '%"></div></div>'
+      + '<div class="bms-val">' + v.toFixed(0) + '%</div>'
+      + '<div class="bms-delta">—</div></div>';
   });
-  h+='<hr style="border-color:var(--border);margin:12px 0;">';
-  h+='<div class="bms-row"><div class="bms-label"><b>BMS GERAL</b></div><div class="bms-bar"><div class="bms-fill" style="width:'+Math.min(g,100)+'%;background:var(--gold)"></div></div><div class="bms-val"><b>'+gf+'%</b></div><div class="bms-delta" style="font-size:10px;color:var(--text-muted)">'+(d.data_ref||'')+'</div></div>';
-  h+='<p class="small muted" style="margin-top:8px">Dados ao vivo via Supabase REST · fallback estático ativo automaticamente.</p>';
-  card.innerHTML=h;
+  html += '<hr style="border-color:var(--border);margin:12px 0;">';
+  html += '<div class="bms-row">'
+    + '<div class="bms-label"><b>BMS GERAL</b></div>'
+    + '<div class="bms-bar"><div class="bms-fill" style="width:' + Math.min(g,100) + '%;background:var(--gold)"></div></div>'
+    + '<div class="bms-val"><b>' + g.toFixed(2).replace('.',',') + '%</b></div>'
+    + '<div class="bms-delta" style="font-size:10px;color:var(--text-muted)">' + (d.data_ref || '') + '</div></div>';
+  html += '<p class="small muted" style="margin-top:8px">Dados ao vivo via Supabase REST · tabela bih_bms · fallback estático ativo automaticamente.</p>';
+  card.innerHTML = html;
 }
-function renderBlockers(data,isLive){
-  var rows=(isLive&&data&&data.length)?data:FB_BLOCKERS;
-  setTag('tag-m12',isLive,'● LIVE · '+rows.length+' bloqueador'+(rows.length!==1?'es':''),'◌ '+rows.length+' bloqueador'+(rows.length!==1?'es':''));
-  var card=document.getElementById('card-m12');if(!card)return;
-  var h='<table><thead><tr><th>Código</th><th>Bloqueio</th><th>Tipo</th><th>Status</th></tr></thead><tbody>';
-  rows.forEach(function(b){
-    h+='<tr><td class="mono">'+(b.codigo||'—')+'</td><td>'+(b.descricao||'—')+'</td><td><span class="muted small">'+(b.tipo||'—')+'</span></td><td>'+pill(b.status||'ATIVO','orange')+'</td></tr>';
+
+function renderBlockers(data, isLive) {
+  var rows = (isLive && data && data.length) ? data : FB_BLOCKERS;
+  setTag('tag-m12', isLive,
+    '● LIVE · ' + rows.length + ' bloqueador' + (rows.length!==1?'es':''),
+    '◌ ' + rows.length + ' bloqueador' + (rows.length!==1?'es':''));
+  var card = document.getElementById('card-m12');
+  if (!card) return;
+  var html = '<table><thead><tr><th>Código</th><th>Bloqueio</th><th>Tipo</th><th>Status</th></tr></thead><tbody>';
+  rows.forEach(function(b) {
+    html += '<tr>'
+      + '<td class="mono">' + (b.codigo || '—') + '</td>'
+      + '<td>' + (b.descricao || '—') + '</td>'
+      + '<td><span class="muted small">' + (b.tipo || '—') + '</span></td>'
+      + '<td>' + pill(b.status || 'ATIVO', 'orange') + '</td>'
+      + '</tr>';
   });
-  card.innerHTML=h+'</tbody></table>';
+  html += '</tbody></table>';
+  card.innerHTML = html;
 }
-function renderNextMission(data,isLive){
-  var ativas=[];
-  if(isLive&&data&&data.length){ativas=data.filter(function(m){return m.status==='ATIVA';});}
-  if(!ativas.length){ativas=FB_MISSIONS.filter(function(m){return m.status==='ATIVA';});isLive=false;}
-  setTag('tag-m13',isLive,'● LIVE · '+ativas.length+' ativa'+(ativas.length!==1?'s':''),'◌ '+ativas.length+' ativa'+(ativas.length!==1?'s':''));
-  var card=document.getElementById('card-m13');if(!card)return;
-  var m=ativas[0];
-  var h='<p><b>Missão Ativa:</b> <code>MO-'+String(m.mo_number).padStart(3,'0')+'</code> — '+(m.mo_code||'—')+'</p>';
-  if(m.observacoes)h+='<p class="small muted" style="margin-top:6px">'+m.observacoes+'</p>';
-  h+='<p style="margin-top:10px"><b>Próximas missões:</b></p><ul style="margin:8px 0 0 16px;font-size:12px;color:var(--text-secondary);"><li style="margin-bottom:4px">MO-046 · MOD-02 Decision Queue LIVE (ativa)</li><li style="margin-bottom:4px">MO-047 · MOD-07 Council LIVE (Fase 2)</li><li style="margin-bottom:4px">MO-048 · MOD-10 Artifact LIVE (Fase 2)</li><li style="margin-bottom:4px">MO-042 · Followup B-04 C-01 PLD (Andre)</li><li>MO-043 · B-05 município piloto (deadline 04/07)</li></ul>';
-  card.innerHTML=h;
+
+function renderNextMission(data, isLive) {
+  var ativas = [];
+  if (isLive && data && data.length) {
+    ativas = data.filter(function(m){ return m.status === 'ATIVA'; });
+  }
+  if (!ativas.length) {
+    ativas = FB_MISSIONS.filter(function(m){ return m.status === 'ATIVA'; });
+    isLive = false;
+  }
+  setTag('tag-m13', isLive,
+    '● LIVE · ' + ativas.length + ' ativa' + (ativas.length!==1?'s':''),
+    '◌ ' + ativas.length + ' ativa' + (ativas.length!==1?'s':''));
+  var card = document.getElementById('card-m13');
+  if (!card) return;
+  var m = ativas[0];
+  var html = '<p><b>Missão Ativa:</b> <code>MO-' + String(m.mo_number).padStart(3,'0') + '</code> — ' + (m.mo_code || '—') + '</p>';
+  if (m.observacoes) html += '<p class="small muted" style="margin-top:6px">' + m.observacoes + '</p>';
+  html += '<p style="margin-top:10px"><b>Próximas missões recomendadas:</b></p>'
+    + '<ul style="margin:8px 0 0 16px;font-size:12px;color:var(--text-secondary);">'
+    + '<li style="margin-bottom:4px">MO-046 · MOD-02 Decision Queue LIVE (ativa)</li>'
+    + '<li style="margin-bottom:4px">MO-047 · MOD-07 Council LIVE (Fase 2)</li>'
+    + '<li style="margin-bottom:4px">MO-048 · MOD-10 Artifact LIVE (Fase 2)</li>'
+    + '<li style="margin-bottom:4px">MO-042 · Followup B-04 C-01 PLD (Andre)</li>'
+    + '<li>MO-043 · B-05 município piloto (deadline 04/07)</li>'
+    + '</ul>';
+  card.innerHTML = html;
 }
-function bootstrap(){
-  var p1=sbFetch('bih_missions','select=mo_number,mo_code,status,observacoes,responsavel&order=mo_number.desc&limit=10');
-  var p2=sbFetch('bih_decisions','select=codigo,titulo,urgencia,impacto,responsavel,status&visibilidade=eq.publica&order=created_at.desc&limit=20');
-  var p3=sbFetch('bih_bms','select=data_ref,bms_geral,f1_governanca,f2_command_center,f3_registry,f4_write_layer,f5_clickup,f6_org_parceiras,f7_cases,f8_discovery&order=data_ref.desc&limit=1');
-  var p4=sbFetch('bih_blockers','select=codigo,tipo,descricao,plano_resolucao,status&order=created_at.asc&limit=20');
-  var p5=sbFetch('bih_missions','select=mo_number,mo_code,status,observacoes&order=mo_number.desc&limit=20');
-  Promise.allSettled([p1,p2,p3,p4,p5]).then(function(R){
-    renderMissions(R[0].status==='fulfilled'?R[0].value:null,R[0].status==='fulfilled'&&R[0].value&&R[0].value.length>0);
-    renderDecisions(R[1].status==='fulfilled'?R[1].value:null,R[1].status==='fulfilled'&&R[1].value&&R[1].value.length>0);
-    renderBMS(R[2].status==='fulfilled'&&R[2].value&&R[2].value.length>0?R[2].value[0]:null,R[2].status==='fulfilled'&&R[2].value&&R[2].value.length>0);
-    renderBlockers(R[3].status==='fulfilled'?R[3].value:null,R[3].status==='fulfilled'&&R[3].value&&R[3].value.length>0);
-    renderNextMission(R[4].status==='fulfilled'?R[4].value:null,R[4].status==='fulfilled'&&R[4].value&&R[4].value.length>0);
+
+function renderCouncil(data, isLive) {
+  var rows = (isLive && data && data.length) ? data : FB_COUNCIL;
+  setTag('tag-m7', isLive,
+    '● LIVE · ' + rows.length + ' record' + (rows.length !== 1 ? 's' : ''),
+    '◌ ' + rows.length + ' record' + (rows.length !== 1 ? 's' : ''));
+  var card = document.getElementById('card-m7'); if (!card) return;
+  var h = '<table><thead><tr><th>Council Record</th><th>Tema</th><th>BCS</th><th>Recomendação</th></tr></thead><tbody>';
+  rows.forEach(function(r) {
+    var isAprov = r.recomendacao && r.recomendacao.indexOf('APROV') > -1;
+    var isCond  = r.recomendacao && r.recomendacao.indexOf('COND') > -1;
+    var cls = isAprov ? 'badge-done' : isCond ? 'badge-active' : '';
+    var rec = cls
+      ? '<span class="pill ' + cls + '">' + (r.recomendacao || '—') + '</span>'
+      : (r.recomendacao || '—');
+    h += '<tr>'
+      + '<td class="mono">' + (r.codigo || '—') + '</td>'
+      + '<td>' + (r.tema || '—') + '</td>'
+      + '<td><b>' + (r.bcs || '—') + '</b></td>'
+      + '<td>' + rec + '</td>'
+      + '</tr>';
+  });
+  h += '</tbody></table>';
+  var obs = rows.filter(function(r){ return r.observacoes; }).map(function(r){ return r.observacoes; }).join(' · ');
+  if (obs) h += '<p class="small muted" style="margin-top:8px">' + obs + '</p>';
+  card.innerHTML = h;
+}
+
+function bootstrap() {
+  var p1 = sbFetch('bih_missions',
+    'select=mo_number,mo_code,status,observacoes,responsavel&order=mo_number.desc&limit=10');
+  var p2 = sbFetch('bih_decisions',
+    'select=codigo,titulo,urgencia,impacto,responsavel,status&visibilidade=eq.publica&order=created_at.desc&limit=20');
+  var p3 = sbFetch('bih_bms',
+    'select=data_ref,bms_geral,f1_governanca,f2_command_center,f3_registry,f4_write_layer,f5_clickup,f6_org_parceiras,f7_cases,f8_discovery&order=data_ref.desc&limit=1');
+  var p4 = sbFetch('bih_blockers',
+    'select=codigo,tipo,descricao,plano_resolucao,status&order=created_at.asc&limit=20');
+  var p5 = sbFetch('bih_missions',
+    'select=mo_number,mo_code,status,observacoes&order=mo_number.desc&limit=20');
+  var p6 = sbFetch('bih_council_records',
+    'select=codigo,tema,bcs,recomendacao,status,observacoes&visibilidade=eq.publica&is_active=eq.true&order=created_at.asc&limit=10');
+
+  Promise.allSettled([p1, p2, p3, p4, p5, p6]).then(function(results) {
+    var r1 = results[0], r2 = results[1], r3 = results[2], r4 = results[3], r5 = results[4], r6 = results[5];
+    renderMissions(
+      r1.status === 'fulfilled' ? r1.value : null,
+      r1.status === 'fulfilled' && r1.value && r1.value.length > 0
+    );
+    renderDecisions(
+      r2.status === 'fulfilled' ? r2.value : null,
+      r2.status === 'fulfilled' && r2.value && r2.value.length > 0
+    );
+    renderBMS(
+      r3.status === 'fulfilled' && r3.value && r3.value.length > 0 ? r3.value[0] : null,
+      r3.status === 'fulfilled' && r3.value && r3.value.length > 0
+    );
+    renderBlockers(
+      r4.status === 'fulfilled' ? r4.value : null,
+      r4.status === 'fulfilled' && r4.value && r4.value.length > 0
+    );
+    renderNextMission(
+      r5.status === 'fulfilled' ? r5.value : null,
+      r5.status === 'fulfilled' && r5.value && r5.value.length > 0
+    );
+    renderCouncil(
+      r6.status === 'fulfilled' ? r6.value : null,
+      r6.status === 'fulfilled' && r6.value && r6.value.length > 0
+    );
   });
 }
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',bootstrap);}else{bootstrap();}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootstrap);
+} else {
+  bootstrap();
+}
+
 })();
 </script>
 </body>
