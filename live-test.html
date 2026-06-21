@@ -22,8 +22,9 @@
   .live    { background:rgba(34,197,94,.2);  color:#22c55e; }
   .static  { background:rgba(234,179,8,.15); color:#eab308; }
   .waiting { background:rgba(58,158,245,.15);color:#3a9ef5; }
+  .err     { background:rgba(239,68,68,.15); color:#ef4444; }
   .data { font-size:11px; color:#8899b0; font-family:monospace;
-    white-space:pre-wrap; max-height:140px; overflow:auto;
+    white-space:pre-wrap; max-height:200px; overflow:auto;
     background:#06090f; border-radius:6px; padding:10px; margin-top:6px; }
   .instructions { background:#0d1117; border:1px solid #243044;
     border-radius:10px; padding:16px; margin-top:20px; font-size:13px; }
@@ -31,14 +32,14 @@
   .instructions li { color:#8899b0; margin-left:16px; margin-bottom:4px; }
   .instructions code { background:#1e2a3a; padding:2px 6px;
     border-radius:4px; font-family:monospace; color:#f0f4ff; }
-  #global-status { color:#eab308; font-weight:600; }
+  #global-status { font-weight:600; }
 </style>
 </head>
 <body>
-<h1>BIH · Diagnóstico LIVE</h1>
-<div class="sub">Command Center R2.0 · Fase 1 · 2026-06-20 · Teste de conectividade Supabase</div>
+<h1>BIH · Diagnóstico LIVE v2</h1>
+<div class="sub">Command Center R2.0 · Fase 1 · 2026-06-21 · REST direto · sem SDK</div>
 <div class="status-bar">
-  Supabase: <span id="global-status">aguardando SDK do CDN...</span>
+  Supabase: <span id="global-status" style="color:#eab308">iniciando...</span>
 </div>
 <div class="card">
   <div class="mod-title">
@@ -62,124 +63,133 @@
   <div class="data" id="data-m06">—</div>
 </div>
 <div class="instructions">
-  <h3>Como usar este diagnóstico</h3>
+  <h3>Como reportar o resultado</h3>
   <ul>
-    <li>Observe os badges: <code>● LIVE</code> = conectado · <code>◌ STATIC</code> = falhou</li>
-    <li>Se aparecer ERRO nos dados: copie apenas a mensagem (sem keys)</li>
+    <li>Observe os badges: <code>● LIVE</code> = conectado · <code>◌ STATIC</code> = sem dados · <code>✗ ERRO</code> = falha</li>
+    <li>Copie o texto de erro se aparecer (sem keys)</li>
     <li>Retorne com <code>CMD_REGISTRAR_TESTE_LIVE_COMMAND_CENTER</code></li>
-    <li>Informe: MOD-01 / MOD-03 / MOD-06 → LIVE ou STATIC + erro se houver</li>
+    <li>Informe: MOD-01 / MOD-03 / MOD-06 → resultado + mensagem de erro se houver</li>
   </ul>
 </div>
 <script>
-const BIH_URL  = "https://pqifjircfhdohdgrttqr.supabase.co";
-const BIH_ANON = "sb_publishable_9kSVpttbV9EXvv06rEAX4g_9JFdAnXM";
-const TIMEOUT  = 8000;
+// anon/public key — pública por design Supabase — não é service_role
+const SB_URL  = "https://pqifjircfhdohdgrttqr.supabase.co";
+const SB_ANON = "sb_publishable_9kSVpttbV9EXvv06rEAX4g_9JFdAnXM";
+const TIMEOUT_MS = 10000;
+
+function gs(id) { return document.getElementById(id); }
+
 function setStatus(msg, color) {
-  const el = document.getElementById('global-status');
+  var el = gs('global-status');
   el.textContent = msg;
   el.style.color = color || '#eab308';
 }
-function setBadge(id, isLive, extra) {
-  const el = document.getElementById(id);
-  if (isLive) {
+
+function setBadge(id, mode, extra) {
+  var el = gs(id);
+  if (mode === 'live') {
     el.className = 'badge live';
     el.textContent = '● LIVE' + (extra ? ' · ' + extra : '');
+  } else if (mode === 'err') {
+    el.className = 'badge err';
+    el.textContent = '✗ ERRO';
   } else {
     el.className = 'badge static';
-    el.textContent = '◌ STATIC';
+    el.textContent = '◌ SEM DADOS';
   }
 }
+
 function setData(id, val) {
-  document.getElementById(id).textContent =
-    typeof val === 'object' ? JSON.stringify(val, null, 2) : val;
+  gs(id).textContent = typeof val === 'object' ? JSON.stringify(val, null, 2) : String(val);
 }
-function withTimeout(fn) {
-  return Promise.race([
-    fn(),
-    new Promise((_, rej) =>
-      setTimeout(() => rej(new Error('Timeout ' + (TIMEOUT/1000) + 's')), TIMEOUT))
-  ]);
+
+function sbFetch(path) {
+  var ctrl = new AbortController();
+  var tid = setTimeout(function() { ctrl.abort(); }, TIMEOUT_MS);
+  return fetch(SB_URL + '/rest/v1/' + path, {
+    signal: ctrl.signal,
+    headers: {
+      'apikey': SB_ANON,
+      'Authorization': 'Bearer ' + SB_ANON,
+      'Accept': 'application/json'
+    }
+  }).then(function(res) {
+    clearTimeout(tid);
+    return res.json().then(function(json) {
+      return { status: res.status, ok: res.ok, data: json };
+    });
+  }).catch(function(err) {
+    clearTimeout(tid);
+    throw err;
+  });
 }
-async function runTests(client) {
+
+async function runTests() {
+  setStatus('Executando 3 queries via REST...', '#22c55e');
+
+  // MOD-01 — bih_missions
   try {
-    const r = await withTimeout(() =>
-      client.from('bih_missions')
-        .select('mo_number, mo_code, status, observacoes')
-        .eq('is_active', true)
-        .order('created_at', { ascending: false })
-        .limit(5)
-    );
-    if (r.error) throw new Error(r.error.message);
-    if (r.data && r.data.length > 0) {
-      setBadge('badge-m01', true, r.data.length + ' missão(ões)');
-      setData('data-m01', r.data);
+    setData('data-m01', 'enviando query...');
+    var r1 = await sbFetch('bih_missions?select=mo_number,mo_code,status,observacoes&order=created_at.desc&limit=5');
+    if (!r1.ok) {
+      setBadge('badge-m01', 'err');
+      setData('data-m01', 'HTTP ' + r1.status + ' · ' + JSON.stringify(r1.data));
+    } else if (Array.isArray(r1.data) && r1.data.length > 0) {
+      setBadge('badge-m01', 'live', r1.data.length + ' registro(s)');
+      setData('data-m01', r1.data);
     } else {
-      setBadge('badge-m01', false);
-      setData('data-m01', 'Query retornou 0 registros — tabela vazia ou RLS bloqueando anon');
+      setBadge('badge-m01', 'static');
+      setData('data-m01', 'Retornou 0 registros · HTTP ' + r1.status + '\n' + JSON.stringify(r1.data));
     }
   } catch(e) {
-    setBadge('badge-m01', false);
-    setData('data-m01', 'ERRO: ' + e.message);
+    setBadge('badge-m01', 'err');
+    setData('data-m01', e.name === 'AbortError' ? 'Timeout ' + (TIMEOUT_MS/1000) + 's — sem resposta do Supabase' : 'ERRO: ' + e.message);
   }
+
+  // MOD-03 — bih_bms
   try {
-    const r = await withTimeout(() =>
-      client.from('bih_bms')
-        .select('data_ref, bms_geral, f1_governanca, f2_command_center, f3_registry')
-        .eq('is_active', true)
-        .order('data_ref', { ascending: false })
-        .limit(1)
-    );
-    if (r.error) throw new Error(r.error.message);
-    if (r.data && r.data.length > 0) {
-      setBadge('badge-m03', true, 'BMS ' + r.data[0].bms_geral + '%');
-      setData('data-m03', r.data[0]);
+    setData('data-m03', 'enviando query...');
+    var r2 = await sbFetch('bih_bms?select=data_ref,bms_geral,f1_governanca,f2_command_center,f3_registry&order=data_ref.desc&limit=1');
+    if (!r2.ok) {
+      setBadge('badge-m03', 'err');
+      setData('data-m03', 'HTTP ' + r2.status + ' · ' + JSON.stringify(r2.data));
+    } else if (Array.isArray(r2.data) && r2.data.length > 0) {
+      setBadge('badge-m03', 'live', 'BMS ' + r2.data[0].bms_geral + '%');
+      setData('data-m03', r2.data[0]);
     } else {
-      setBadge('badge-m03', false);
-      setData('data-m03', 'Query retornou 0 registros — tabela vazia ou RLS bloqueando anon');
+      setBadge('badge-m03', 'static');
+      setData('data-m03', 'Retornou 0 registros · HTTP ' + r2.status + '\n' + JSON.stringify(r2.data));
     }
   } catch(e) {
-    setBadge('badge-m03', false);
-    setData('data-m03', 'ERRO: ' + e.message);
+    setBadge('badge-m03', 'err');
+    setData('data-m03', e.name === 'AbortError' ? 'Timeout ' + (TIMEOUT_MS/1000) + 's — sem resposta do Supabase' : 'ERRO: ' + e.message);
   }
+
+  // MOD-06 — bih_blockers
   try {
-    const r = await withTimeout(() =>
-      client.from('bih_blockers')
-        .select('codigo, tipo, descricao, status')
-        .eq('is_active', true)
-        .limit(10)
-    );
-    if (r.error) throw new Error(r.error.message);
-    if (r.data && r.data.length > 0) {
-      setBadge('badge-m06', true, r.data.length + ' bloqueador(es)');
-      setData('data-m06', r.data);
+    setData('data-m06', 'enviando query...');
+    var r3 = await sbFetch('bih_blockers?select=codigo,tipo,descricao,status&limit=10');
+    if (!r3.ok) {
+      setBadge('badge-m06', 'err');
+      setData('data-m06', 'HTTP ' + r3.status + ' · ' + JSON.stringify(r3.data));
+    } else if (Array.isArray(r3.data) && r3.data.length > 0) {
+      setBadge('badge-m06', 'live', r3.data.length + ' bloqueador(es)');
+      setData('data-m06', r3.data);
     } else {
-      setBadge('badge-m06', false);
-      setData('data-m06', 'Query retornou 0 registros — tabela vazia ou RLS bloqueando anon');
+      setBadge('badge-m06', 'static');
+      setData('data-m06', 'Retornou 0 registros · HTTP ' + r3.status + '\n' + JSON.stringify(r3.data));
     }
   } catch(e) {
-    setBadge('badge-m06', false);
-    setData('data-m06', 'ERRO: ' + e.message);
+    setBadge('badge-m06', 'err');
+    setData('data-m06', e.name === 'AbortError' ? 'Timeout ' + (TIMEOUT_MS/1000) + 's — sem resposta do Supabase' : 'ERRO: ' + e.message);
   }
+
   setStatus('Testes concluídos — observe os badges acima', '#22c55e');
 }
-(function loadSDK() {
-  const s = document.createElement('script');
-  s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
-  s.onload = function() {
-    try {
-      setStatus('SDK carregado · inicializando client...', '#eab308');
-      const client = window.supabase.createClient(BIH_URL, BIH_ANON);
-      setStatus('CLIENT_READY · executando 3 queries...', '#22c55e');
-      runTests(client);
-    } catch(e) {
-      setStatus('ERRO ao criar client: ' + e.message, '#ef4444');
-    }
-  };
-  s.onerror = function() {
-    setStatus('ERRO: não foi possível carregar o SDK do CDN. Verificar conexão.', '#ef4444');
-  };
-  document.head.appendChild(s);
-})();
+
+runTests().catch(function(e) {
+  setStatus('ERRO GERAL: ' + e.message, '#ef4444');
+});
 </script>
 </body>
 </html>
