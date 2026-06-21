@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIH · Diagnóstico LIVE · Command Center R2.0</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#06090f; color:#f0f4ff;
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    padding:24px; font-size:14px; line-height:1.5; }
+  h1 { color:#f6c300; font-size:20px; margin-bottom:4px; }
+  .sub { color:#8899b0; font-size:12px; margin-bottom:20px; }
+  .status-bar { background:#0d1117; border:1px solid #1e2a3a; border-radius:8px;
+    padding:12px 16px; margin-bottom:20px; font-size:13px; }
+  .card { background:#111827; border:1px solid #1e2a3a; border-radius:10px;
+    padding:16px; margin-bottom:14px; }
+  .mod-title { font-weight:700; font-size:15px; display:flex;
+    align-items:center; gap:10px; margin-bottom:10px; }
+  .badge { display:inline-block; padding:3px 12px; border-radius:12px;
+    font-size:11px; font-weight:700; }
+  .live    { background:rgba(34,197,94,.2);  color:#22c55e; }
+  .static  { background:rgba(234,179,8,.15); color:#eab308; }
+  .waiting { background:rgba(58,158,245,.15);color:#3a9ef5; }
+  .data { font-size:11px; color:#8899b0; font-family:monospace;
+    white-space:pre-wrap; max-height:140px; overflow:auto;
+    background:#06090f; border-radius:6px; padding:10px; margin-top:6px; }
+  .instructions { background:#0d1117; border:1px solid #243044;
+    border-radius:10px; padding:16px; margin-top:20px; font-size:13px; }
+  .instructions h3 { color:#f6c300; font-size:13px; margin-bottom:10px; }
+  .instructions li { color:#8899b0; margin-left:16px; margin-bottom:4px; }
+  .instructions code { background:#1e2a3a; padding:2px 6px;
+    border-radius:4px; font-family:monospace; color:#f0f4ff; }
+  #global-status { color:#eab308; font-weight:600; }
+</style>
+</head>
+<body>
+<h1>BIH · Diagnóstico LIVE</h1>
+<div class="sub">Command Center R2.0 · Fase 1 · 2026-06-20 · Teste de conectividade Supabase</div>
+<div class="status-bar">
+  Supabase: <span id="global-status">aguardando SDK do CDN...</span>
+</div>
+<div class="card">
+  <div class="mod-title">
+    MOD-01 · Mission Tracker
+    <span class="badge waiting" id="badge-m01">⏳ aguardando</span>
+  </div>
+  <div class="data" id="data-m01">—</div>
+</div>
+<div class="card">
+  <div class="mod-title">
+    MOD-03 · BMS Dashboard
+    <span class="badge waiting" id="badge-m03">⏳ aguardando</span>
+  </div>
+  <div class="data" id="data-m03">—</div>
+</div>
+<div class="card">
+  <div class="mod-title">
+    MOD-06 · Blockers Board
+    <span class="badge waiting" id="badge-m06">⏳ aguardando</span>
+  </div>
+  <div class="data" id="data-m06">—</div>
+</div>
+<div class="instructions">
+  <h3>Como usar este diagnóstico</h3>
+  <ul>
+    <li>Observe os badges: <code>● LIVE</code> = conectado · <code>◌ STATIC</code> = falhou</li>
+    <li>Se aparecer ERRO nos dados: copie apenas a mensagem (sem keys)</li>
+    <li>Retorne com <code>CMD_REGISTRAR_TESTE_LIVE_COMMAND_CENTER</code></li>
+    <li>Informe: MOD-01 / MOD-03 / MOD-06 → LIVE ou STATIC + erro se houver</li>
+  </ul>
+</div>
+<script>
+const BIH_URL  = "https://pqifjircfhdohdgrttqr.supabase.co";
+const BIH_ANON = "sb_publishable_9kSVpttbV9EXvv06rEAX4g_9JFdAnXM";
+const TIMEOUT  = 8000;
+function setStatus(msg, color) {
+  const el = document.getElementById('global-status');
+  el.textContent = msg;
+  el.style.color = color || '#eab308';
+}
+function setBadge(id, isLive, extra) {
+  const el = document.getElementById(id);
+  if (isLive) {
+    el.className = 'badge live';
+    el.textContent = '● LIVE' + (extra ? ' · ' + extra : '');
+  } else {
+    el.className = 'badge static';
+    el.textContent = '◌ STATIC';
+  }
+}
+function setData(id, val) {
+  document.getElementById(id).textContent =
+    typeof val === 'object' ? JSON.stringify(val, null, 2) : val;
+}
+function withTimeout(fn) {
+  return Promise.race([
+    fn(),
+    new Promise((_, rej) =>
+      setTimeout(() => rej(new Error('Timeout ' + (TIMEOUT/1000) + 's')), TIMEOUT))
+  ]);
+}
+async function runTests(client) {
+  try {
+    const r = await withTimeout(() =>
+      client.from('bih_missions')
+        .select('mo_number, mo_code, status, observacoes')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false })
+        .limit(5)
+    );
+    if (r.error) throw new Error(r.error.message);
+    if (r.data && r.data.length > 0) {
+      setBadge('badge-m01', true, r.data.length + ' missão(ões)');
+      setData('data-m01', r.data);
+    } else {
+      setBadge('badge-m01', false);
+      setData('data-m01', 'Query retornou 0 registros — tabela vazia ou RLS bloqueando anon');
+    }
+  } catch(e) {
+    setBadge('badge-m01', false);
+    setData('data-m01', 'ERRO: ' + e.message);
+  }
+  try {
+    const r = await withTimeout(() =>
+      client.from('bih_bms')
+        .select('data_ref, bms_geral, f1_governanca, f2_command_center, f3_registry')
+        .eq('is_active', true)
+        .order('data_ref', { ascending: false })
+        .limit(1)
+    );
+    if (r.error) throw new Error(r.error.message);
+    if (r.data && r.data.length > 0) {
+      setBadge('badge-m03', true, 'BMS ' + r.data[0].bms_geral + '%');
+      setData('data-m03', r.data[0]);
+    } else {
+      setBadge('badge-m03', false);
+      setData('data-m03', 'Query retornou 0 registros — tabela vazia ou RLS bloqueando anon');
+    }
+  } catch(e) {
+    setBadge('badge-m03', false);
+    setData('data-m03', 'ERRO: ' + e.message);
+  }
+  try {
+    const r = await withTimeout(() =>
+      client.from('bih_blockers')
+        .select('codigo, tipo, descricao, status')
+        .eq('is_active', true)
+        .limit(10)
+    );
+    if (r.error) throw new Error(r.error.message);
+    if (r.data && r.data.length > 0) {
+      setBadge('badge-m06', true, r.data.length + ' bloqueador(es)');
+      setData('data-m06', r.data);
+    } else {
+      setBadge('badge-m06', false);
+      setData('data-m06', 'Query retornou 0 registros — tabela vazia ou RLS bloqueando anon');
+    }
+  } catch(e) {
+    setBadge('badge-m06', false);
+    setData('data-m06', 'ERRO: ' + e.message);
+  }
+  setStatus('Testes concluídos — observe os badges acima', '#22c55e');
+}
+(function loadSDK() {
+  const s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+  s.onload = function() {
+    try {
+      setStatus('SDK carregado · inicializando client...', '#eab308');
+      const client = window.supabase.createClient(BIH_URL, BIH_ANON);
+      setStatus('CLIENT_READY · executando 3 queries...', '#22c55e');
+      runTests(client);
+    } catch(e) {
+      setStatus('ERRO ao criar client: ' + e.message, '#ef4444');
+    }
+  };
+  s.onerror = function() {
+    setStatus('ERRO: não foi possível carregar o SDK do CDN. Verificar conexão.', '#ef4444');
+  };
+  document.head.appendChild(s);
+})();
+</script>
+</body>
+</html>
