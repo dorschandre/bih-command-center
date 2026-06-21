@@ -93,7 +93,7 @@
 </style>
 </head>
 <body>
-<div class="proto-banner">BIH COMMAND CENTER · R2.0 FASE 1 · Supabase REST direto · 5 módulos dinâmicos · fallback estático automático</div>
+<div class="proto-banner">BIH COMMAND CENTER · R2.0 FASE 1 · Supabase REST direto · 7 módulos dinâmicos · fallback estático automático</div>
 
 <div class="layout">
   <aside class="sidebar">
@@ -130,21 +130,20 @@
 
   <section id="m1">
     <div class="sec-head">
-      <div class="n">01</div>
-      <h2>Mission Control Center</h2>
+      <div class="n">01</div><h2>Mission Control Center</h2>
       <span class="tag tag-gold" id="tag-m1">⏳ carregando...</span>
     </div>
     <div class="card" id="card-m1">
       <table>
         <thead><tr><th>Mission Order</th><th>Objetivo</th><th>Status</th><th>Responsável</th></tr></thead>
         <tbody>
-          <tr><td class="mono">MO-045</td><td>Ativar MOD-13 Next Mission LIVE</td><td><span class="pill badge-active">ATIVA</span></td><td>Regente</td></tr>
+          <tr><td class="mono">MO-048</td><td>Ativar MOD-10 Artifact LIVE</td><td><span class="pill badge-active">ATIVA</span></td><td>Regente</td></tr>
+          <tr><td class="mono">MO-047</td><td>Ativar MOD-07 Council Center LIVE</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
+          <tr><td class="mono">MO-046</td><td>Restaurar index.html + MOD-02 LIVE</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
           <tr><td class="mono">MO-044</td><td>Criar tabela bih_decisions Fase 2 P0</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
           <tr><td class="mono">MO-041</td><td>Atualizar Supabase BMS 63,75%</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
           <tr><td class="mono">MO-040</td><td>Definir Command Center R2 Fase 2 Roadmap</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
-          <tr><td class="mono">MO-039</td><td>Formalizar Command Center público operacional</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
           <tr><td class="mono">MO-037</td><td>Migrar index.html para REST direto</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
-          <tr><td class="mono">MO-036</td><td>Publicação pública Command Center R2</td><td><span class="pill badge-done">CUMPRIDA</span></td><td>Regente</td></tr>
         </tbody>
       </table>
     </div>
@@ -152,8 +151,7 @@
 
   <section id="m2">
     <div class="sec-head">
-      <div class="n">02</div>
-      <h2>Decision Queue</h2>
+      <div class="n">02</div><h2>Decision Queue</h2>
       <span class="tag tag-gold" id="tag-m2">⏳ carregando...</span>
     </div>
     <div class="card" id="card-m2">
@@ -179,7 +177,8 @@
           <tr><td>VAL-012</td><td class="mono">bih_decisions · tabela Supabase</td><td>Infraestrutura</td><td><span class="pill badge-done">CRIADA · 3 seeds</span></td></tr>
           <tr><td>VAL-013</td><td class="mono">MOD-02 Decision Queue LIVE</td><td>Binding</td><td><span class="pill badge-done">MO-046 CUMPRIDA</span></td></tr>
           <tr><td>VAL-014</td><td class="mono">MOD-07 Council Center LIVE</td><td>Binding</td><td><span class="pill badge-done">MO-047 CUMPRIDA</span></td></tr>
-          <tr><td>VAL-015</td><td class="mono">bih_artifacts · tabela Supabase</td><td>Infraestrutura</td><td><span class="pill badge-active">MO-048 ATIVA</span></td></tr>
+          <tr><td>VAL-015</td><td class="mono">bih_artifacts · tabela Supabase · 5 seeds</td><td>Infraestrutura</td><td><span class="pill badge-done">CRIADA · MO-048</span></td></tr>
+          <tr><td>VAL-016</td><td class="mono">MOD-10 Artifact Center LIVE</td><td>Binding</td><td><span class="pill badge-active">MO-048 ATIVA</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -187,8 +186,7 @@
 
   <section id="m4">
     <div class="sec-head">
-      <div class="n">04</div>
-      <h2>BMS Center</h2>
+      <div class="n">04</div><h2>BMS Center</h2>
       <span class="tag tag-gold" id="tag-m4">⏳ carregando...</span>
     </div>
     <div class="card" id="card-m4">
@@ -248,10 +246,10 @@
   </section>
 
   <section id="m8">
-    <div class="sec-head"><div class="n">08</div><h2>Supabase Decision Center</h2><span class="tag tag-green">LIVE · Fase 1 ativa</span></div>
+    <div class="sec-head"><div class="n">08</div><h2>Supabase Decision Center</h2><span class="tag tag-green">LIVE · 6 tabelas ativas</span></div>
     <div class="card">
       <p>Status: <span class="pill badge-done">SUPABASE_FASE1_OPERACIONAL</span></p>
-      <p style="margin-top:8px">BCS <b>17/18</b> · Decisão aprovada por Andre Dorsch · Tabelas ativas: <code>bih_missions</code> · <code>bih_bms</code> · <code>bih_blockers</code> · <code>bih_decisions</code> · <code>bih_council_records</code> · <code>bih_artifacts</code></p>
+      <p style="margin-top:8px">BCS <b>17/18</b> · Tabelas ativas: <code>bih_missions</code> · <code>bih_bms</code> · <code>bih_blockers</code> · <code>bih_decisions</code> · <code>bih_council_records</code> · <code>bih_artifacts</code></p>
       <p class="small muted" style="margin-top:8px"><b>Segurança:</b> RLS ativo · anon key pública por design · service_role nunca no frontend · dados de clientes = zero expostos.</p>
     </div>
   </section>
@@ -267,7 +265,7 @@
           <tr><td>DEC-MO042-01 · Qualificar parceiro PLD-FT</td><td><span class="pill badge-active">PENDENTE · Decision Queue</span></td></tr>
         </tbody>
       </table>
-      <p class="small muted" style="margin-top:8px">MO-042 · Deadline: verificar com Andre · Contato: andre@noqera.com · Shortlist: C-01 P&amp;B (83/100) · C-03 Barbieri (81/100).</p>
+      <p class="small muted" style="margin-top:8px">MO-042 · Contato: andre@noqera.com · Shortlist: C-01 P&amp;B (83/100) · C-03 Barbieri (81/100).</p>
     </div>
   </section>
 
@@ -280,11 +278,11 @@
       <table>
         <thead><tr><th>Código</th><th>Artefato</th><th>Tipo</th><th>Missão</th><th>Commit</th></tr></thead>
         <tbody>
-          <tr><td class="mono">ART-001</td><td class="mono">BIH_CHECKPOINT_COMMAND_CENTER_PUBLICO_20260621.md</td><td>Checkpoint</td><td>MO-039</td><td class="mono">71dfe1a</td></tr>
-          <tr><td class="mono">ART-002</td><td class="mono">BIH_COMMAND_CENTER_R2_FASE2_ROADMAP_V1.md</td><td>Roadmap</td><td>MO-040</td><td class="mono">71dfe1a</td></tr>
-          <tr><td class="mono">ART-003</td><td class="mono">bih_decisions · tabela Supabase · 3 seeds</td><td>Infraestrutura</td><td>MO-044</td><td class="mono">Supabase</td></tr>
-          <tr><td class="mono">ART-004</td><td class="mono">index.html · REST direto · MOD-02/MOD-07 LIVE</td><td>HTML</td><td>MO-037/046/047</td><td class="mono">bih-command-center</td></tr>
-          <tr><td class="mono">ART-005</td><td class="mono">BIH_GOVERNANCE_COMPLETION_100_V1.md</td><td>Governança</td><td>MO-010</td><td class="mono">a5fbdc0</td></tr>
+          <tr><td class="mono">ART-001</td><td class="mono small">BIH_CHECKPOINT_COMMAND_CENTER_PUBLICO_20260621.md</td><td>Checkpoint</td><td class="mono small">MO-039</td><td class="mono">71dfe1a</td></tr>
+          <tr><td class="mono">ART-002</td><td class="mono small">BIH_COMMAND_CENTER_R2_FASE2_ROADMAP_V1.md</td><td>Roadmap</td><td class="mono small">MO-040</td><td class="mono">71dfe1a</td></tr>
+          <tr><td class="mono">ART-003</td><td class="mono small">bih_decisions · tabela Supabase · 3 seeds</td><td>Infraestrutura</td><td class="mono small">MO-044</td><td class="mono">Supabase</td></tr>
+          <tr><td class="mono">ART-004</td><td class="mono small">index.html · REST direto · MOD-02/MOD-07/MOD-10 LIVE</td><td>HTML</td><td class="mono small">MO-037/046/047/048</td><td class="mono">bih-command-center</td></tr>
+          <tr><td class="mono">ART-005</td><td class="mono small">BIH_GOVERNANCE_COMPLETION_100_V1.md</td><td>Governança</td><td class="mono small">MO-010</td><td class="mono">a5fbdc0</td></tr>
         </tbody>
       </table>
     </div>
@@ -296,8 +294,8 @@
       <table>
         <thead><tr><th>Hash</th><th>Missão</th><th>Repositório</th><th>Push</th></tr></thead>
         <tbody>
-          <tr><td class="mono">71dfe1a</td><td>MO-039 + MO-040 · checkpoint + roadmap</td><td>Andre_AI_Workspace</td><td class="check">✓</td></tr>
           <tr><td class="mono">8a9314b</td><td>MO-047 · checkpoint council LIVE</td><td>Andre_AI_Workspace</td><td class="check">✓</td></tr>
+          <tr><td class="mono">71dfe1a</td><td>MO-039 + MO-040 · checkpoint + roadmap</td><td>Andre_AI_Workspace</td><td class="check">✓</td></tr>
           <tr><td class="mono">a5fbdc0</td><td>MO-010 Governança 100</td><td>Andre_AI_Workspace</td><td class="check">✓</td></tr>
         </tbody>
       </table>
@@ -306,8 +304,7 @@
 
   <section id="m12">
     <div class="sec-head">
-      <div class="n">12</div>
-      <h2>Blocker Center</h2>
+      <div class="n">12</div><h2>Blocker Center</h2>
       <span class="tag tag-red" id="tag-m12">⏳ carregando...</span>
     </div>
     <div class="card" id="card-m12">
@@ -324,13 +321,12 @@
 
   <section id="m13">
     <div class="sec-head">
-      <div class="n">13</div>
-      <h2>Next Mission Center</h2>
+      <div class="n">13</div><h2>Next Mission Center</h2>
       <span class="tag tag-gold" id="tag-m13">⏳ carregando...</span>
     </div>
     <div class="card" id="card-m13">
       <p><b>Missão Ativa:</b> <code>MO-048</code> — ATIVAR_MOD10_ARTIFACT_LIVE</p>
-      <p style="margin-top:8px"><b>Próximas missões recomendadas:</b></p>
+      <p style="margin-top:8px"><b>Próximas missões:</b></p>
       <ul style="margin:8px 0 0 16px; font-size:12px; color:var(--text-secondary);">
         <li style="margin-bottom:4px">MO-048 · MOD-10 Artifact LIVE (ativa)</li>
         <li style="margin-bottom:4px">MO-049 · MOD-11 Commits LIVE (Fase 2)</li>
@@ -345,7 +341,7 @@
     <div class="sec-head"><div class="n">14</div><h2>Regent Single Response Protocol Center</h2><span class="tag tag-green">ativo</span></div>
     <div class="card">
       <p>Todo retorno do Regente segue o <b>REGENT_SINGLE_RESPONSE_ENVELOPE</b> com BLOCO_COPIAVEL_FINAL.</p>
-      <p class="small muted" style="margin-top:8px">Proibido: placeholders "A PREENCHER" em blocos operacionais · múltiplos blocos não integrados · STATUS declarado sem validação G1–G4. Referência: BIH_REGENT_SINGLE_RESPONSE_PROTOCOL_V1.</p>
+      <p class="small muted" style="margin-top:8px">Proibido: placeholders "A PREENCHER" · STATUS declarado sem validação G1–G4. Referência: BIH_REGENT_SINGLE_RESPONSE_PROTOCOL_V1.</p>
     </div>
   </section>
 
@@ -373,7 +369,7 @@
           <div class="li check">✓ 15 GitHub Pages propagação &lt;90s</div>
           <div class="li check">✓ 16 MOD-02 Decision Queue ● LIVE</div>
           <div class="li check">✓ 17 MOD-07 Council LIVE · 2 records</div>
-          <div class="li">⏳ 18 MOD-10 Artifact LIVE (MO-048)</div>
+          <div class="li">⏳ 18 MOD-10 Artifact LIVE · badge + códigos (fix)</div>
           <div class="li muted">— 19 MOD-11 Commits LIVE (Fase 2)</div>
           <div class="li muted">— 20 Release Gate Fase 2</div>
         </div>
@@ -390,7 +386,7 @@
           <tr><td>Versão</td><td>R2.0 Fase 1</td></tr>
           <tr><td>Nível</td><td><span class="pill badge-done">OPERACIONAL_LIVE</span></td></tr>
           <tr><td>Arquitetura</td><td>REST direto · fetch() nativo · AbortController 9s</td></tr>
-          <tr><td>Módulos dinâmicos Fase 1</td><td>MOD-01 · MOD-02 · MOD-04 · MOD-07 · MOD-10 · MOD-12 · MOD-13</td></tr>
+          <tr><td>Módulos dinâmicos ativos</td><td>MOD-01 · MOD-02 · MOD-04 · MOD-07 · MOD-10 · MOD-12 · MOD-13</td></tr>
           <tr><td>Validado por</td><td>Andre Dorsch · iPad · Safari · 2026-06-21</td></tr>
           <tr><td>URL pública</td><td><code>https://dorschandre.github.io/bih-command-center/</code></td></tr>
           <tr><td>Próxima evolução</td><td>R2.0 Fase 2 — MOD-11 Commits LIVE · Release Gate</td></tr>
@@ -400,7 +396,7 @@
   </section>
 
   <footer>
-    BIH Command Center R2.0 Fase 1 · Bigdata in Business · 2026-06-21 · MO-048 · OPERACIONAL_LIVE ·
+    BIH Command Center R2.0 Fase 1 · Bigdata in Business · 2026-06-21 · MO-048 fix · OPERACIONAL_LIVE ·
     repo: dorschandre/bih-command-center · fonte canônica: André_AI_Workspace (privado)
   </footer>
   </main>
@@ -445,7 +441,7 @@ var FB_ARTIFACTS = [
   {codigo:'ART-001',nome:'BIH_CHECKPOINT_COMMAND_CENTER_PUBLICO_20260621.md',tipo:'Checkpoint',missao:'MO-039',commit_hash:'71dfe1a',repositorio:'Andre_AI_Workspace'},
   {codigo:'ART-002',nome:'BIH_COMMAND_CENTER_R2_FASE2_ROADMAP_V1.md',tipo:'Roadmap',missao:'MO-040',commit_hash:'71dfe1a',repositorio:'Andre_AI_Workspace'},
   {codigo:'ART-003',nome:'bih_decisions · tabela Supabase · 3 seeds',tipo:'Infraestrutura',missao:'MO-044',commit_hash:'Supabase',repositorio:'Supabase'},
-  {codigo:'ART-004',nome:'index.html · REST direto · MOD-02/MOD-07 LIVE',tipo:'HTML',missao:'MO-037/046/047',commit_hash:'bih-command-center',repositorio:'bih-command-center'},
+  {codigo:'ART-004',nome:'index.html · REST direto · MOD-02/MOD-07/MOD-10 LIVE',tipo:'HTML',missao:'MO-037/046/047/048',commit_hash:'bih-command-center',repositorio:'bih-command-center'},
   {codigo:'ART-005',nome:'BIH_GOVERNANCE_COMPLETION_100_V1.md',tipo:'Governança',missao:'MO-010',commit_hash:'a5fbdc0',repositorio:'Andre_AI_Workspace'}
 ];
 
@@ -453,19 +449,14 @@ var FB_COUNCIL = [
   {codigo:'CR-002',tema:'BIH Next Level Operating Model',bcs:'15.5/18',recomendacao:'CONDITIONAL',status:'ATIVO',
    observacoes:'5 perspectivas: C1 Mercado · C2 Risco · C3 Econômico · C4 Execução · C5 Estratégia'},
   {codigo:'CR-SUPABASE-F1',tema:'Supabase Fase 1',bcs:'17/18',recomendacao:'APROVADO · LIVE',status:'APROVADO',
-   observacoes:'Supabase Fase 1 LIVE · 4 tabelas operacionais · RLS ativo · 2026-06-21'}
+   observacoes:'Supabase Fase 1 LIVE · 6 tabelas operacionais · RLS ativo · 2026-06-21'}
 ];
 
 function setTag(id, isLive, liveText, fbText) {
   var el = document.getElementById(id);
   if (!el) return;
-  if (isLive) {
-    el.textContent = liveText;
-    el.className = 'tag tag-green';
-  } else {
-    el.textContent = fbText;
-    el.className = 'tag tag-gold';
-  }
+  if (isLive) { el.textContent = liveText; el.className = 'tag tag-green'; }
+  else        { el.textContent = fbText;   el.className = 'tag tag-gold'; }
 }
 
 function sbFetch(table, params) {
@@ -474,263 +465,184 @@ function sbFetch(table, params) {
   var url = SB_URL + '/rest/v1/' + table + (params ? '?' + params : '');
   return fetch(url, {
     signal: ctrl.signal,
-    headers: {
-      'apikey': SB_ANON,
-      'Authorization': 'Bearer ' + SB_ANON,
-      'Accept': 'application/json'
-    }
+    headers: { 'apikey': SB_ANON, 'Authorization': 'Bearer ' + SB_ANON, 'Accept': 'application/json' }
   }).then(function(r){
     clearTimeout(timer);
     if (!r.ok) throw new Error('HTTP ' + r.status);
     return r.json();
-  }).catch(function(e){
-    clearTimeout(timer);
-    throw e;
-  });
+  }).catch(function(e){ clearTimeout(timer); throw e; });
 }
 
 function pill(text, color) {
   return '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:rgba('
-    + (color==='green'?'34,197,94'
-      :color==='red'?'239,68,68'
-      :color==='orange'?'249,115,22'
-      :'246,195,0')
+    + (color==='green'?'34,197,94':color==='red'?'239,68,68':color==='orange'?'249,115,22':'246,195,0')
     + ',.15);color:var(--'+(color==='orange'?'orange':color==='red'?'red':color==='green'?'green':'gold')+')">'+text+'</span>';
 }
 
 function renderMissions(data, isLive) {
   var rows = (isLive && data && data.length) ? data : FB_MISSIONS;
-  var count = rows.filter(function(m){ return m.status === 'ATIVA'; }).length;
-  var done  = rows.filter(function(m){ return m.status === 'CUMPRIDA'; }).length;
+  var count = rows.filter(function(m){ return m.status==='ATIVA'; }).length;
+  var done  = rows.filter(function(m){ return m.status==='CUMPRIDA'; }).length;
   setTag('tag-m1', isLive,
-    '● LIVE · ' + count + ' ativa' + (count!==1?'s':'') + ' · ' + done + ' cumprida' + (done!==1?'s':''),
-    '◌ ' + count + ' ativa' + (count!==1?'s':'') + ' · ' + done + ' cumprida' + (done!==1?'s':''));
-  var card = document.getElementById('card-m1');
-  if (!card) return;
+    '● LIVE · '+count+' ativa'+(count!==1?'s':'')+' · '+done+' cumprida'+(done!==1?'s':''),
+    '◌ '+count+' ativa'+(count!==1?'s':'')+' · '+done+' cumprida'+(done!==1?'s':''));
+  var card = document.getElementById('card-m1'); if (!card) return;
   var html = '<table><thead><tr><th>Mission Order</th><th>Objetivo</th><th>Status</th><th>Responsável</th></tr></thead><tbody>';
   rows.forEach(function(m) {
-    var st = m.status === 'ATIVA' ? pill('ATIVA','gold') : m.status === 'CUMPRIDA' ? pill('CUMPRIDA','green') : pill(m.status,'orange');
-    html += '<tr><td class="mono">MO-' + String(m.mo_number).padStart(3,'0') + '</td>'
-      + '<td>' + (m.mo_code || '—') + '</td>'
-      + '<td>' + st + '</td>'
-      + '<td>' + (m.responsavel || 'Regente') + '</td></tr>';
+    var st = m.status==='ATIVA' ? pill('ATIVA','gold') : m.status==='CUMPRIDA' ? pill('CUMPRIDA','green') : pill(m.status,'orange');
+    html += '<tr><td class="mono">MO-'+String(m.mo_number).padStart(3,'0')+'</td>'
+      +'<td>'+(m.mo_code||'—')+'</td><td>'+st+'</td><td>'+(m.responsavel||'Regente')+'</td></tr>';
   });
-  html += '</tbody></table>';
-  card.innerHTML = html;
+  card.innerHTML = html + '</tbody></table>';
 }
 
 function renderDecisions(data, isLive) {
   var rows = (isLive && data && data.length) ? data : FB_DECISIONS;
   var n = rows.length;
   setTag('tag-m2', isLive && data && data.length,
-    '● LIVE · ' + n + ' pendente' + (n!==1?'s':''),
-    '◌ ' + n + ' pendente' + (n!==1?'s':''));
-  var card = document.getElementById('card-m2');
-  if (!card) return;
+    '● LIVE · '+n+' pendente'+(n!==1?'s':''), '◌ '+n+' pendente'+(n!==1?'s':''));
+  var card = document.getElementById('card-m2'); if (!card) return;
   var html = '<table><thead><tr><th>Código</th><th>Decisão</th><th>Urgência</th><th>Status</th></tr></thead><tbody>';
   rows.forEach(function(d) {
-    var urgCor = d.urgencia === 'ALTA' ? 'red' : d.urgencia === 'MEDIA' ? 'gold' : 'green';
-    html += '<tr>'
-      + '<td class="mono small">' + (d.codigo || '—') + '</td>'
-      + '<td>' + (d.titulo || '—') + '</td>'
-      + '<td>' + pill(d.urgencia || '—', urgCor) + '</td>'
-      + '<td>' + pill(d.status || 'PENDENTE', 'gold') + '</td>'
-      + '</tr>';
+    var urgCor = d.urgencia==='ALTA'?'red':d.urgencia==='MEDIA'?'gold':'green';
+    html += '<tr><td class="mono small">'+(d.codigo||'—')+'</td><td>'+(d.titulo||'—')+'</td>'
+      +'<td>'+pill(d.urgencia||'—',urgCor)+'</td><td>'+pill(d.status||'PENDENTE','gold')+'</td></tr>';
   });
-  html += '</tbody></table>';
-  card.innerHTML = html;
+  card.innerHTML = html + '</tbody></table>';
 }
 
 function renderBMS(data, isLive) {
   var d = (isLive && data) ? data : FB_BMS;
   var g = parseFloat(d.bms_geral) || 63.75;
   setTag('tag-m4', isLive,
-    '● LIVE · BMS ' + g.toFixed(2).replace('.',',') + '%',
-    '◌ BMS ' + g.toFixed(2).replace('.',',') + '%');
+    '● LIVE · BMS '+g.toFixed(2).replace('.',',')+'%',
+    '◌ BMS '+g.toFixed(2).replace('.',',')+'%');
   var hv = document.getElementById('header-bms-val');
-  if (hv) hv.textContent = g.toFixed(2).replace('.',',') + '%';
+  if (hv) hv.textContent = g.toFixed(2).replace('.',',')+'%';
   var sb = document.getElementById('sidebar-bms');
-  if (sb) sb.textContent = (isLive ? '● ' : '◌ ') + 'R2.0 · BMS ' + g.toFixed(2).replace('.',',') + '%';
-  var card = document.getElementById('card-m4');
-  if (!card) return;
+  if (sb) sb.textContent = (isLive?'● ':'◌ ')+'R2.0 · BMS '+g.toFixed(2).replace('.',',')+'%';
+  var card = document.getElementById('card-m4'); if (!card) return;
   var frentes = [
-    {label:'F1 Governança',        key:'f1_governanca'},
-    {label:'F2 Command Center',    key:'f2_command_center'},
-    {label:'F3 Registry',          key:'f3_registry'},
-    {label:'F4 Write Layer',       key:'f4_write_layer'},
-    {label:'F5 ClickUp',           key:'f5_clickup'},
-    {label:'F6 Org. Parceiras',    key:'f6_org_parceiras'},
-    {label:'F7 Cases Estratégicos',key:'f7_cases'},
-    {label:'F8 Discovery / Radar', key:'f8_discovery'}
+    {label:'F1 Governança',key:'f1_governanca'},{label:'F2 Command Center',key:'f2_command_center'},
+    {label:'F3 Registry',key:'f3_registry'},{label:'F4 Write Layer',key:'f4_write_layer'},
+    {label:'F5 ClickUp',key:'f5_clickup'},{label:'F6 Org. Parceiras',key:'f6_org_parceiras'},
+    {label:'F7 Cases Estratégicos',key:'f7_cases'},{label:'F8 Discovery / Radar',key:'f8_discovery'}
   ];
   var html = '';
   frentes.forEach(function(f) {
     var v = parseFloat(d[f.key]) || 0;
-    html += '<div class="bms-row">'
-      + '<div class="bms-label">' + f.label + '</div>'
-      + '<div class="bms-bar"><div class="bms-fill" style="width:' + Math.min(v,100) + '%"></div></div>'
-      + '<div class="bms-val">' + v.toFixed(0) + '%</div>'
-      + '<div class="bms-delta">—</div></div>';
+    html += '<div class="bms-row"><div class="bms-label">'+f.label+'</div>'
+      +'<div class="bms-bar"><div class="bms-fill" style="width:'+Math.min(v,100)+'%"></div></div>'
+      +'<div class="bms-val">'+v.toFixed(0)+'%</div><div class="bms-delta">—</div></div>';
   });
-  html += '<hr style="border-color:var(--border);margin:12px 0;">';
-  html += '<div class="bms-row">'
-    + '<div class="bms-label"><b>BMS GERAL</b></div>'
-    + '<div class="bms-bar"><div class="bms-fill" style="width:' + Math.min(g,100) + '%;background:var(--gold)"></div></div>'
-    + '<div class="bms-val"><b>' + g.toFixed(2).replace('.',',') + '%</b></div>'
-    + '<div class="bms-delta" style="font-size:10px;color:var(--text-muted)">' + (d.data_ref || '') + '</div></div>';
-  html += '<p class="small muted" style="margin-top:8px">Dados ao vivo via Supabase REST · tabela bih_bms · fallback estático ativo automaticamente.</p>';
+  html += '<hr style="border-color:var(--border);margin:12px 0;">'
+    +'<div class="bms-row"><div class="bms-label"><b>BMS GERAL</b></div>'
+    +'<div class="bms-bar"><div class="bms-fill" style="width:'+Math.min(g,100)+'%;background:var(--gold)"></div></div>'
+    +'<div class="bms-val"><b>'+g.toFixed(2).replace('.',',')+'%</b></div>'
+    +'<div class="bms-delta" style="font-size:10px;color:var(--text-muted)">'+(d.data_ref||'')+'</div></div>'
+    +'<p class="small muted" style="margin-top:8px">Dados ao vivo via Supabase REST · tabela bih_bms · fallback estático ativo automaticamente.</p>';
   card.innerHTML = html;
 }
 
 function renderBlockers(data, isLive) {
   var rows = (isLive && data && data.length) ? data : FB_BLOCKERS;
   setTag('tag-m12', isLive,
-    '● LIVE · ' + rows.length + ' bloqueador' + (rows.length!==1?'es':''),
-    '◌ ' + rows.length + ' bloqueador' + (rows.length!==1?'es':''));
-  var card = document.getElementById('card-m12');
-  if (!card) return;
+    '● LIVE · '+rows.length+' bloqueador'+(rows.length!==1?'es':''),
+    '◌ '+rows.length+' bloqueador'+(rows.length!==1?'es':''));
+  var card = document.getElementById('card-m12'); if (!card) return;
   var html = '<table><thead><tr><th>Código</th><th>Bloqueio</th><th>Tipo</th><th>Status</th></tr></thead><tbody>';
   rows.forEach(function(b) {
-    html += '<tr>'
-      + '<td class="mono">' + (b.codigo || '—') + '</td>'
-      + '<td>' + (b.descricao || '—') + '</td>'
-      + '<td><span class="muted small">' + (b.tipo || '—') + '</span></td>'
-      + '<td>' + pill(b.status || 'ATIVO', 'orange') + '</td>'
-      + '</tr>';
+    html += '<tr><td class="mono">'+(b.codigo||'—')+'</td><td>'+(b.descricao||'—')+'</td>'
+      +'<td><span class="muted small">'+(b.tipo||'—')+'</span></td>'
+      +'<td>'+pill(b.status||'ATIVO','orange')+'</td></tr>';
   });
-  html += '</tbody></table>';
-  card.innerHTML = html;
+  card.innerHTML = html + '</tbody></table>';
 }
 
 function renderNextMission(data, isLive) {
   var ativas = [];
-  if (isLive && data && data.length) {
-    ativas = data.filter(function(m){ return m.status === 'ATIVA'; });
-  }
-  if (!ativas.length) {
-    ativas = FB_MISSIONS.filter(function(m){ return m.status === 'ATIVA'; });
-    isLive = false;
-  }
+  if (isLive && data && data.length) ativas = data.filter(function(m){ return m.status==='ATIVA'; });
+  if (!ativas.length) { ativas = FB_MISSIONS.filter(function(m){ return m.status==='ATIVA'; }); isLive = false; }
   setTag('tag-m13', isLive,
-    '● LIVE · ' + ativas.length + ' ativa' + (ativas.length!==1?'s':''),
-    '◌ ' + ativas.length + ' ativa' + (ativas.length!==1?'s':''));
-  var card = document.getElementById('card-m13');
-  if (!card) return;
+    '● LIVE · '+ativas.length+' ativa'+(ativas.length!==1?'s':''),
+    '◌ '+ativas.length+' ativa'+(ativas.length!==1?'s':''));
+  var card = document.getElementById('card-m13'); if (!card) return;
   var m = ativas[0];
-  var html = '<p><b>Missão Ativa:</b> <code>MO-' + String(m.mo_number).padStart(3,'0') + '</code> — ' + (m.mo_code || '—') + '</p>';
-  if (m.observacoes) html += '<p class="small muted" style="margin-top:6px">' + m.observacoes + '</p>';
-  html += '<p style="margin-top:10px"><b>Próximas missões recomendadas:</b></p>'
-    + '<ul style="margin:8px 0 0 16px;font-size:12px;color:var(--text-secondary);">'
-    + '<li style="margin-bottom:4px">MO-048 · MOD-10 Artifact LIVE (ativa)</li>'
-    + '<li style="margin-bottom:4px">MO-049 · MOD-11 Commits LIVE (Fase 2)</li>'
-    + '<li style="margin-bottom:4px">MO-050 · Release Gate CC R2 Fase 2</li>'
-    + '<li style="margin-bottom:4px">MO-042 · Followup B-04 C-01 PLD (Andre)</li>'
-    + '<li>MO-043 · B-05 município piloto (deadline 04/07)</li>'
-    + '</ul>';
+  var html = '<p><b>Missão Ativa:</b> <code>MO-'+String(m.mo_number).padStart(3,'0')+'</code> — '+(m.mo_code||'—')+'</p>';
+  if (m.observacoes) html += '<p class="small muted" style="margin-top:6px">'+m.observacoes+'</p>';
+  html += '<p style="margin-top:10px"><b>Próximas missões:</b></p>'
+    +'<ul style="margin:8px 0 0 16px;font-size:12px;color:var(--text-secondary);">'
+    +'<li style="margin-bottom:4px">MO-048 · MOD-10 Artifact LIVE (ativa)</li>'
+    +'<li style="margin-bottom:4px">MO-049 · MOD-11 Commits LIVE (Fase 2)</li>'
+    +'<li style="margin-bottom:4px">MO-050 · Release Gate CC R2 Fase 2</li>'
+    +'<li style="margin-bottom:4px">MO-042 · Followup B-04 C-01 PLD (Andre)</li>'
+    +'<li>MO-043 · B-05 município piloto (deadline 04/07)</li></ul>';
   card.innerHTML = html;
 }
 
 function renderArtifacts(data, isLive) {
   var rows = (isLive && data && data.length) ? data : FB_ARTIFACTS;
   setTag('tag-m10', isLive,
-    '● LIVE · ' + rows.length + ' artifact' + (rows.length !== 1 ? 's' : ''),
-    '◌ ' + rows.length + ' artifact' + (rows.length !== 1 ? 's' : ''));
+    '● LIVE · '+rows.length+' artifact'+(rows.length!==1?'s':''),
+    '◌ '+rows.length+' artifact'+(rows.length!==1?'s':''));
   var card = document.getElementById('card-m10'); if (!card) return;
   var h = '<table><thead><tr><th>Código</th><th>Artefato</th><th>Tipo</th><th>Missão</th><th>Commit</th></tr></thead><tbody>';
   rows.forEach(function(a) {
     h += '<tr>'
-      + '<td class="mono">' + (a.codigo || '—') + '</td>'
-      + '<td class="mono small">' + (a.nome || '—') + '</td>'
-      + '<td><span class="muted small">' + (a.tipo || '—') + '</span></td>'
-      + '<td class="mono small">' + (a.missao || '—') + '</td>'
-      + '<td class="mono">' + (a.commit_hash || '—') + '</td>'
-      + '</tr>';
+      +'<td class="mono">'+(a.codigo||'—')+'</td>'
+      +'<td class="mono small">'+(a.nome||'—')+'</td>'
+      +'<td><span class="muted small">'+(a.tipo||'—')+'</span></td>'
+      +'<td class="mono small">'+(a.missao||'—')+'</td>'
+      +'<td class="mono">'+(a.commit_hash||'—')+'</td>'
+      +'</tr>';
   });
-  h += '</tbody></table>';
-  card.innerHTML = h;
+  card.innerHTML = h + '</tbody></table>';
 }
 
 function renderCouncil(data, isLive) {
   var rows = (isLive && data && data.length) ? data : FB_COUNCIL;
   setTag('tag-m7', isLive,
-    '● LIVE · ' + rows.length + ' record' + (rows.length !== 1 ? 's' : ''),
-    '◌ ' + rows.length + ' record' + (rows.length !== 1 ? 's' : ''));
+    '● LIVE · '+rows.length+' record'+(rows.length!==1?'s':''),
+    '◌ '+rows.length+' record'+(rows.length!==1?'s':''));
   var card = document.getElementById('card-m7'); if (!card) return;
   var h = '<table><thead><tr><th>Council Record</th><th>Tema</th><th>BCS</th><th>Recomendação</th></tr></thead><tbody>';
   rows.forEach(function(r) {
-    var isAprov = r.recomendacao && r.recomendacao.indexOf('APROV') > -1;
-    var isCond  = r.recomendacao && r.recomendacao.indexOf('COND') > -1;
-    var cls = isAprov ? 'badge-done' : isCond ? 'badge-active' : '';
-    var rec = cls
-      ? '<span class="pill ' + cls + '">' + (r.recomendacao || '—') + '</span>'
-      : (r.recomendacao || '—');
-    h += '<tr>'
-      + '<td class="mono">' + (r.codigo || '—') + '</td>'
-      + '<td>' + (r.tema || '—') + '</td>'
-      + '<td><b>' + (r.bcs || '—') + '</b></td>'
-      + '<td>' + rec + '</td>'
-      + '</tr>';
+    var isAprov = r.recomendacao && r.recomendacao.indexOf('APROV')>-1;
+    var isCond  = r.recomendacao && r.recomendacao.indexOf('COND')>-1;
+    var cls = isAprov?'badge-done':isCond?'badge-active':'';
+    var rec = cls ? '<span class="pill '+cls+'">'+(r.recomendacao||'—')+'</span>' : (r.recomendacao||'—');
+    h += '<tr><td class="mono">'+(r.codigo||'—')+'</td><td>'+(r.tema||'—')+'</td>'
+      +'<td><b>'+(r.bcs||'—')+'</b></td><td>'+rec+'</td></tr>';
   });
   h += '</tbody></table>';
   var obs = rows.filter(function(r){ return r.observacoes; }).map(function(r){ return r.observacoes; }).join(' · ');
-  if (obs) h += '<p class="small muted" style="margin-top:8px">' + obs + '</p>';
+  if (obs) h += '<p class="small muted" style="margin-top:8px">'+obs+'</p>';
   card.innerHTML = h;
 }
 
 function bootstrap() {
-  var p1 = sbFetch('bih_missions',
-    'select=mo_number,mo_code,status,observacoes,responsavel&order=mo_number.desc&limit=10');
-  var p2 = sbFetch('bih_decisions',
-    'select=codigo,titulo,urgencia,impacto,responsavel,status&visibilidade=eq.publica&order=created_at.desc&limit=20');
-  var p3 = sbFetch('bih_bms',
-    'select=data_ref,bms_geral,f1_governanca,f2_command_center,f3_registry,f4_write_layer,f5_clickup,f6_org_parceiras,f7_cases,f8_discovery&order=data_ref.desc&limit=1');
-  var p4 = sbFetch('bih_blockers',
-    'select=codigo,tipo,descricao,plano_resolucao,status&order=created_at.asc&limit=20');
-  var p5 = sbFetch('bih_missions',
-    'select=mo_number,mo_code,status,observacoes&order=mo_number.desc&limit=20');
-  var p6 = sbFetch('bih_council_records',
-    'select=codigo,tema,bcs,recomendacao,status,observacoes&visibilidade=eq.publica&is_active=eq.true&order=created_at.asc&limit=10');
-  var p7 = sbFetch('bih_artifacts',
-    'select=codigo,nome,tipo,missao,commit_hash,repositorio&visibilidade=eq.publica&is_active=eq.true&order=created_at.asc&limit=20');
+  var p1 = sbFetch('bih_missions','select=mo_number,mo_code,status,observacoes,responsavel&order=mo_number.desc&limit=10');
+  var p2 = sbFetch('bih_decisions','select=codigo,titulo,urgencia,impacto,responsavel,status&visibilidade=eq.publica&order=created_at.desc&limit=20');
+  var p3 = sbFetch('bih_bms','select=data_ref,bms_geral,f1_governanca,f2_command_center,f3_registry,f4_write_layer,f5_clickup,f6_org_parceiras,f7_cases,f8_discovery&order=data_ref.desc&limit=1');
+  var p4 = sbFetch('bih_blockers','select=codigo,tipo,descricao,plano_resolucao,status&order=created_at.asc&limit=20');
+  var p5 = sbFetch('bih_missions','select=mo_number,mo_code,status,observacoes&order=mo_number.desc&limit=20');
+  var p6 = sbFetch('bih_council_records','select=codigo,tema,bcs,recomendacao,status,observacoes&visibilidade=eq.publica&is_active=eq.true&order=created_at.asc&limit=10');
+  var p7 = sbFetch('bih_artifacts','select=codigo,nome,tipo,missao,commit_hash,repositorio&visibilidade=eq.publica&is_active=eq.true&order=created_at.asc&limit=20');
 
-  Promise.allSettled([p1, p2, p3, p4, p5, p6, p7]).then(function(results) {
+  Promise.allSettled([p1,p2,p3,p4,p5,p6,p7]).then(function(results) {
     var r1=results[0],r2=results[1],r3=results[2],r4=results[3],r5=results[4],r6=results[5],r7=results[6];
-    renderMissions(
-      r1.status==='fulfilled'?r1.value:null,
-      r1.status==='fulfilled'&&r1.value&&r1.value.length>0
-    );
-    renderDecisions(
-      r2.status==='fulfilled'?r2.value:null,
-      r2.status==='fulfilled'&&r2.value&&r2.value.length>0
-    );
-    renderBMS(
-      r3.status==='fulfilled'&&r3.value&&r3.value.length>0?r3.value[0]:null,
-      r3.status==='fulfilled'&&r3.value&&r3.value.length>0
-    );
-    renderBlockers(
-      r4.status==='fulfilled'?r4.value:null,
-      r4.status==='fulfilled'&&r4.value&&r4.value.length>0
-    );
-    renderNextMission(
-      r5.status==='fulfilled'?r5.value:null,
-      r5.status==='fulfilled'&&r5.value&&r5.value.length>0
-    );
-    renderCouncil(
-      r6.status==='fulfilled'?r6.value:null,
-      r6.status==='fulfilled'&&r6.value&&r6.value.length>0
-    );
-    renderArtifacts(
-      r7.status==='fulfilled'?r7.value:null,
-      r7.status==='fulfilled'&&r7.value&&r7.value.length>0
-    );
+    renderMissions(r1.status==='fulfilled'?r1.value:null, r1.status==='fulfilled'&&r1.value&&r1.value.length>0);
+    renderDecisions(r2.status==='fulfilled'?r2.value:null, r2.status==='fulfilled'&&r2.value&&r2.value.length>0);
+    renderBMS(r3.status==='fulfilled'&&r3.value&&r3.value.length>0?r3.value[0]:null, r3.status==='fulfilled'&&r3.value&&r3.value.length>0);
+    renderBlockers(r4.status==='fulfilled'?r4.value:null, r4.status==='fulfilled'&&r4.value&&r4.value.length>0);
+    renderNextMission(r5.status==='fulfilled'?r5.value:null, r5.status==='fulfilled'&&r5.value&&r5.value.length>0);
+    renderCouncil(r6.status==='fulfilled'?r6.value:null, r6.status==='fulfilled'&&r6.value&&r6.value.length>0);
+    renderArtifacts(r7.status==='fulfilled'?r7.value:null, r7.status==='fulfilled'&&r7.value&&r7.value.length>0);
   });
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', bootstrap);
-} else {
-  bootstrap();
-}
+if (document.readyState==='loading') { document.addEventListener('DOMContentLoaded',bootstrap); }
+else { bootstrap(); }
 
 })();
 </script>
