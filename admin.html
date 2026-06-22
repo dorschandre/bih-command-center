@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BIH Admin · Validation Queue · MOD-03</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0a0a0f;
+      --surface: #111118;
+      --surf2:   #1a1a24;
+      --border:  #2a2a3a;
+      --accent:  #6366f1;
+      --accent2: #818cf8;
+      --green:   #22c55e;
+      --yellow:  #eab308;
+      --red:     #ef4444;
+      --blue:    #3b82f6;
+      --text:    #e2e8f0;
+      --muted:   #64748b;
+      --small:   #94a3b8;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+
+    #screen-login {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .login-logo  { font-size:11px; font-weight:700; letter-spacing:.2em; color:var(--muted); text-transform:uppercase; margin-bottom:8px; }
+    .login-title { font-size:24px; font-weight:700; color:var(--text); margin-bottom:4px; }
+    .login-sub   { font-size:13px; color:var(--muted); margin-bottom:36px; }
+
+    .field { margin-bottom:16px; }
+    .field label { display:block; font-size:12px; font-weight:600; color:var(--small); text-transform:uppercase; letter-spacing:.08em; margin-bottom:8px; }
+    .field input {
+      width:100%; background:var(--surf2); border:1px solid var(--border);
+      border-radius:8px; padding:12px 16px; font-size:15px; color:var(--text);
+      outline:none; transition:border-color .2s;
+    }
+    .field input:focus { border-color:var(--accent); }
+
+    .btn-primary {
+      width:100%; background:var(--accent); color:#fff; border:none;
+      border-radius:8px; padding:14px; font-size:15px; font-weight:600;
+      cursor:pointer; margin-top:8px; transition:opacity .2s;
+    }
+    .btn-primary:hover    { opacity:.88; }
+    .btn-primary:disabled { opacity:.5; cursor:not-allowed; }
+
+    .login-error {
+      background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.3);
+      border-radius:8px; padding:12px 16px; font-size:13px; color:#fca5a5;
+      margin-top:16px; display:none;
+    }
+
+    .login-security {
+      margin-top:24px; padding-top:24px; border-top:1px solid var(--border);
+      font-size:11px; color:var(--muted); line-height:1.7;
+    }
+
+    #screen-dashboard { display:none; min-height:100vh; }
+
+    .topbar {
+      background:var(--surface); border-bottom:1px solid var(--border);
+      padding:0 24px; height:56px; display:flex; align-items:center;
+      justify-content:space-between; position:sticky; top:0; z-index:100;
+    }
+    .topbar-left  { display:flex; align-items:center; gap:16px; }
+    .topbar-logo  { font-size:11px; font-weight:700; letter-spacing:.15em; color:var(--muted); text-transform:uppercase; }
+    .topbar-title { font-size:14px; font-weight:600; color:var(--text); }
+    .topbar-pill  {
+      font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+      padding:3px 8px; border-radius:20px;
+      background:rgba(99,102,241,.15); color:var(--accent2); border:1px solid rgba(99,102,241,.3);
+    }
+    .topbar-right { display:flex; align-items:center; gap:16px; }
+    .user-badge   { font-size:12px; color:var(--muted); }
+
+    .btn-logout {
+      background:transparent; border:1px solid var(--border); border-radius:6px;
+      padding:6px 14px; font-size:12px; font-weight:600; color:var(--muted);
+      cursor:pointer; transition:all .2s;
+    }
+    .btn-logout:hover { border-color:var(--red); color:var(--red); }
+
+    .main { padding:32px 24px; max-width:1100px; margin:0 auto; }
+
+    .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
+    .section-title  { font-size:18px; font-weight:700; color:var(--text); }
+    .section-sub    { font-size:13px; color:var(--muted); margin-top:4px; }
+
+    .audit-badge {
+      font-size:11px; color:var(--green);
+      background:rgba(34,197,94,.1); border:1px solid rgba(34,197,94,.25);
+      border-radius:6px; padding:4px 10px; font-weight:600;
+    }
+
+    .btn-refresh {
+      background:var(--surf2); border:1px solid var(--border); border-radius:6px;
+      padding:6px 14px; font-size:12px; color:var(--small); cursor:pointer; transition:all .2s;
+    }
+    .btn-refresh:hover { border-color:var(--accent); color:var(--accent2); }
+
+    .audit-notice {
+      background:rgba(34,197,94,.05); border:1px solid rgba(34,197,94,.2);
+      border-radius:8px; padding:12px 16px; font-size:12px;
+      color:rgba(134,239,172,.8); margin-bottom:24px; line-height:1.5;
+    }
+
+    .queue-list { display:flex; flex-direction:column; gap:12px; }
+
+    .queue-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:12px; padding:20px 24px; transition:border-color .2s;
+    }
+    .queue-card:hover { border-color:#3a3a4a; }
+
+    .card-top {
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:16px; margin-bottom:12px;
+    }
+    .card-code { font-size:11px; font-weight:700; letter-spacing:.1em; color:var(--muted); text-transform:uppercase; }
+    .card-name { font-size:15px; font-weight:600; color:var(--text); margin-top:2px; }
+    .card-type { font-size:11px; color:var(--small); margin-top:4px; }
+
+    .status-badge {
+      font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+      padding:4px 10px; border-radius:20px; white-space:nowrap; flex-shrink:0;
+    }
+    .status-PENDENTE     { background:rgba(234,179,8,.15);   color:#fde047; border:1px solid rgba(234,179,8,.3); }
+    .status-EM_VALIDACAO { background:rgba(59,130,246,.15);  color:#93c5fd; border:1px solid rgba(59,130,246,.3); }
+    .status-APROVADO     { background:rgba(34,197,94,.15);   color:#86efac; border:1px solid rgba(34,197,94,.3); }
+    .status-REJEITADO    { background:rgba(239,68,68,.15);   color:#fca5a5; border:1px solid rgba(239,68,68,.3); }
+    .status-PAUSADO      { background:rgba(100,116,139,.15); color:#94a3b8; border:1px solid rgba(100,116,139,.3); }
+
+    .priority-ALTA  { color:#f87171; }
+    .priority-MEDIA { color:#fbbf24; }
+    .priority-BAIXA { color:#94a3b8; }
+
+    .card-meta { display:flex; gap:20px; font-size:12px; color:var(--muted); margin-bottom:16px; flex-wrap:wrap; }
+    .card-meta span strong { color:var(--small); }
+
+    .card-notes {
+      font-size:12px; color:var(--muted); background:var(--surf2);
+      border-radius:6px; padding:10px 14px; margin-bottom:16px; line-height:1.5;
+    }
+
+    .card-actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+
+    .btn-action {
+      font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+      padding:7px 14px; border-radius:6px; border:1px solid; cursor:pointer; transition:all .2s;
+    }
+    .btn-action:disabled { opacity:.4; cursor:not-allowed; }
+
+    .btn-approve  { background:rgba(34,197,94,.1);   color:#86efac; border-color:rgba(34,197,94,.3); }
+    .btn-approve:hover:not(:disabled)  { background:rgba(34,197,94,.22); }
+    .btn-reject   { background:rgba(239,68,68,.1);   color:#fca5a5; border-color:rgba(239,68,68,.3); }
+    .btn-reject:hover:not(:disabled)   { background:rgba(239,68,68,.22); }
+    .btn-pause    { background:rgba(100,116,139,.1); color:#94a3b8; border-color:rgba(100,116,139,.3); }
+    .btn-pause:hover:not(:disabled)    { background:rgba(100,116,139,.22); }
+    .btn-validate { background:rgba(59,130,246,.1);  color:#93c5fd; border-color:rgba(59,130,246,.3); }
+    .btn-validate:hover:not(:disabled) { background:rgba(59,130,246,.22); }
+
+    .card-terminal { font-size:11px; color:var(--muted); font-style:italic; }
+
+    #toast {
+      position:fixed; bottom:24px; right:24px;
+      background:var(--surface); border:1px solid var(--border); border-radius:10px;
+      padding:14px 20px; font-size:13px; font-weight:500; color:var(--text);
+      box-shadow:0 8px 32px rgba(0,0,0,.4);
+      transform:translateY(80px); opacity:0; transition:all .3s;
+      z-index:1000; max-width:340px;
+    }
+    #toast.show    { transform:translateY(0); opacity:1; }
+    #toast.success { border-color:rgba(34,197,94,.4); }
+    #toast.error   { border-color:rgba(239,68,68,.4); }
+
+    .state-msg { text-align:center; padding:60px 24px; color:var(--muted); font-size:14px; }
+
+    @media (max-width:600px) {
+      .main { padding:20px 16px; }
+      .login-card { padding:32px 24px; }
+      .topbar { padding:0 16px; }
+      .card-top { flex-direction:column; }
+      .topbar-pill { display:none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="screen-login">
+  <div class="login-card">
+    <div class="login-logo">Bigdata in Business · BIH</div>
+    <div class="login-title">Validation Queue</div>
+    <div class="login-sub">MOD-03 · Acesso privado · Interface administrativa</div>
+
+    <div class="field">
+      <label>E-mail</label>
+      <input type="email" id="inp-email" placeholder="seu@email.com" autocomplete="email">
+    </div>
+    <div class="field">
+      <label>Senha</label>
+      <input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+
+    <button class="btn-primary" id="btn-login" onclick="doLogin()">Entrar</button>
+    <div class="login-error" id="login-err"></div>
+
+    <div class="login-security">
+      🔒 Acesso restrito · Supabase Auth<br>
+      Apenas usuários autenticados visualizam e operam a Validation Queue.<br>
+      Todo update é auditado automaticamente em <strong>bih_audit_log</strong>.
+    </div>
+  </div>
+</div>
+
+<div id="screen-dashboard">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-logo">BIH Admin</span>
+      <span class="topbar-title">Validation Queue</span>
+      <span class="topbar-pill">MOD-03 · PRIVADO</span>
+    </div>
+    <div class="topbar-right">
+      <span class="user-badge" id="user-email-display"></span>
+      <button class="btn-logout" onclick="doLogout()">Sair</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <div class="audit-notice">
+      ● Audit trail ATIVO — todo update nesta interface gera entrada automática e imutável em
+      <strong>bih_audit_log</strong> via trigger MO-053. Nenhuma ação passa sem rastreabilidade.
+    </div>
+
+    <div class="section-header">
+      <div>
+        <div class="section-title">Fila de Validação</div>
+        <div class="section-sub" id="queue-summary">Carregando...</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span class="audit-badge">● Auditado</span>
+        <button class="btn-refresh" onclick="loadQueue()">↻ Atualizar</button>
+      </div>
+    </div>
+
+    <div class="queue-list" id="queue-list">
+      <div class="state-msg">Carregando Validation Queue...</div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+var SUPABASE_URL      = 'https://pqifjircfhdohdgrttqr.supabase.co';
+var SUPABASE_ANON_KEY = 'sb_publishable_9kSVpttbV9EXvv06rEAX4g_9JFdAnXM';
+
+var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+var ALLOWED = {
+  'PENDENTE':     ['EM_VALIDACAO', 'APROVADO', 'REJEITADO', 'PAUSADO'],
+  'EM_VALIDACAO': ['APROVADO', 'REJEITADO', 'PAUSADO']
+};
+
+var BTN_CLASS = {
+  'EM_VALIDACAO': 'btn-validate',
+  'APROVADO':     'btn-approve',
+  'REJEITADO':    'btn-reject',
+  'PAUSADO':      'btn-pause'
+};
+
+var BTN_LABEL = {
+  'EM_VALIDACAO': 'Iniciar Validação',
+  'APROVADO':     'Aprovar',
+  'REJEITADO':    'Rejeitar',
+  'PAUSADO':      'Pausar'
+};
+
+sb.auth.onAuthStateChange(function(event, session) {
+  if (session && session.user) {
+    showDashboard(session.user.email);
+    loadQueue();
+  } else {
+    showLogin();
+  }
+});
+
+function showLogin() {
+  document.getElementById('screen-login').style.display     = 'flex';
+  document.getElementById('screen-dashboard').style.display = 'none';
+  var btn = document.getElementById('btn-login');
+  btn.disabled    = false;
+  btn.textContent = 'Entrar';
+}
+
+function showDashboard(email) {
+  document.getElementById('screen-login').style.display     = 'none';
+  document.getElementById('screen-dashboard').style.display = 'block';
+  document.getElementById('user-email-display').textContent = email;
+}
+
+async function doLogin() {
+  var email  = document.getElementById('inp-email').value.trim();
+  var pass   = document.getElementById('inp-pass').value;
+  var errEl  = document.getElementById('login-err');
+  var btn    = document.getElementById('btn-login');
+
+  errEl.style.display = 'none';
+
+  if (!email || !pass) {
+    errEl.textContent   = 'Preencha e-mail e senha.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  btn.disabled    = true;
+  btn.textContent = 'Autenticando...';
+
+  var res = await sb.auth.signInWithPassword({ email: email, password: pass });
+
+  if (res.error) {
+    errEl.textContent   = 'Falha: ' + (res.error.message || 'Credenciais inválidas.');
+    errEl.style.display = 'block';
+    btn.disabled        = false;
+    btn.textContent     = 'Entrar';
+  }
+}
+
+async function doLogout() {
+  await sb.auth.signOut();
+  document.getElementById('inp-pass').value = '';
+}
+
+async function loadQueue() {
+  var listEl = document.getElementById('queue-list');
+  var sumEl  = document.getElementById('queue-summary');
+  listEl.innerHTML = '<div class="state-msg">Carregando...</div>';
+
+  var res = await sb
+    .from('bih_validation_queue')
+    .select('*')
+    .eq('is_active', true)
+    .order('created_at', { ascending: true });
+
+  if (res.error) {
+    if (res.error.code === 'PGRST301' || res.error.message.indexOf('JWT') !== -1) {
+      listEl.innerHTML = '<div class="state-msg" style="color:#fca5a5;">Sessão expirada. Faça login novamente.</div>';
+      setTimeout(doLogout, 2000);
+      return;
+    }
+    listEl.innerHTML = '<div class="state-msg" style="color:#fca5a5;">Erro: ' + escHtml(res.error.message) + '</div>';
+    sumEl.textContent = 'Erro de carregamento';
+    return;
+  }
+
+  var rows = res.data || [];
+
+  var counts = { PENDENTE:0, EM_VALIDACAO:0, APROVADO:0, REJEITADO:0, PAUSADO:0 };
+  rows.forEach(function(r) { if (counts[r.status] !== undefined) counts[r.status]++; });
+
+  sumEl.textContent =
+    rows.length + ' registro' + (rows.length !== 1 ? 's' : '') + ' ativo' + (rows.length !== 1 ? 's' : '') +
+    ' · ' + counts.PENDENTE + ' pendente' + (counts.PENDENTE !== 1 ? 's' : '') +
+    ' · ' + counts.EM_VALIDACAO + ' em validação' +
+    ' · ' + counts.APROVADO + ' aprovado' + (counts.APROVADO !== 1 ? 's' : '');
+
+  if (rows.length === 0) {
+    listEl.innerHTML = '<div class="state-msg">Nenhum registro ativo na Validation Queue.</div>';
+    return;
+  }
+
+  var order = { PENDENTE:0, EM_VALIDACAO:1, PAUSADO:2, APROVADO:3, REJEITADO:4 };
+  var prio  = { ALTA:0, MEDIA:1, BAIXA:2 };
+  rows.sort(function(a, b) {
+    var so = (order[a.status] || 9) - (order[b.status] || 9);
+    if (so !== 0) return so;
+    return (prio[a.priority] || 9) - (prio[b.priority] || 9);
+  });
+
+  listEl.innerHTML = rows.map(renderCard).join('');
+}
+
+function renderCard(r) {
+  var transitions = ALLOWED[r.status] || [];
+  var createdFmt  = r.created_at ? r.created_at.slice(0,10) : '—';
+  var updatedFmt  = r.updated_at ? r.updated_at.slice(0,10) : '—';
+
+  var actions = '';
+  if (transitions.length === 0) {
+    actions = '<span class="card-terminal">Status final · nenhuma ação disponível nesta interface.</span>';
+  } else {
+    transitions.forEach(function(t) {
+      actions +=
+        '<button class="btn-action ' + BTN_CLASS[t] + '"' +
+        ' onclick="updateStatus(\'' + r.id + '\',\'' + esc(r.validation_code) + '\',\'' + r.status + '\',\'' + t + '\')">' +
+        BTN_LABEL[t] + '</button>';
+    });
+  }
+
+  var notesHtml    = r.notes              ? '<div class="card-notes">' + escHtml(r.notes) + '</div>' : '';
+  var artifactHtml = r.artifact_code      ? '<span><strong>Artefato:</strong> ' + escHtml(r.artifact_code) + '</span>' : '';
+  var moduleHtml   = r.source_module      ? '<span><strong>Módulo:</strong> '   + escHtml(r.source_module)  + '</span>' : '';
+  var decHtml      = r.decision_reference ? '<span><strong>DEC:</strong> '      + escHtml(r.decision_reference) + '</span>' : '';
+
+  return '<div class="queue-card" id="card-' + r.id + '">' +
+    '<div class="card-top">' +
+      '<div>' +
+        '<div class="card-code">' + escHtml(r.validation_code) +
+          ' · <span class="priority-' + r.priority + '">' + r.priority + '</span></div>' +
+        '<div class="card-name">' + escHtml(r.artifact_name) + '</div>' +
+        '<div class="card-type">' + escHtml(r.validation_type) + '</div>' +
+      '</div>' +
+      '<span class="status-badge status-' + r.status + '">' + r.status.replace('_',' ') + '</span>' +
+    '</div>' +
+    '<div class="card-meta">' +
+      '<span><strong>Por:</strong> ' + escHtml(r.requested_by || '—') + '</span>' +
+      '<span><strong>Criado:</strong> ' + createdFmt + '</span>' +
+      '<span><strong>Atualizado:</strong> ' + updatedFmt + '</span>' +
+      artifactHtml + moduleHtml + decHtml +
+    '</div>' +
+    notesHtml +
+    '<div class="card-actions">' + actions + '</div>' +
+  '</div>';
+}
+
+async function updateStatus(id, code, currentStatus, newStatus) {
+  var allowed = ALLOWED[currentStatus] || [];
+  if (allowed.indexOf(newStatus) === -1) {
+    showToast('Transição ' + currentStatus + ' → ' + newStatus + ' não permitida.', 'error');
+    return;
+  }
+
+  var cardEl = document.getElementById('card-' + id);
+  var btns   = cardEl ? cardEl.querySelectorAll('.btn-action') : [];
+  btns.forEach(function(b) { b.disabled = true; });
+
+  var res = await sb
+    .from('bih_validation_queue')
+    .update({ status: newStatus, updated_at: new Date().toISOString() })
+    .eq('id', id)
+    .eq('is_active', true);
+
+  if (res.error) {
+    showToast('Erro em ' + code + ': ' + res.error.message, 'error');
+    btns.forEach(function(b) { b.disabled = false; });
+    return;
+  }
+
+  showToast(code + ' → ' + newStatus + '  ·  Auditado em bih_audit_log ✓', 'success');
+  loadQueue();
+}
+
+var _toastTimer = null;
+function showToast(msg, type) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className   = 'show ' + (type || '');
+  if (_toastTimer) clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(function() { el.className = ''; }, 3800);
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function esc(s) { return String(s || '').replace(/'/g,"\\'"); }
+
+document.getElementById('inp-pass').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+document.getElementById('inp-email').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('inp-pass').focus();
+});
+</script>
+
+</body>
+</html>
