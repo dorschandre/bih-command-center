@@ -3,178 +3,113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BIH Admin · Validation Queue · MOD-03</title>
+  <title>BIH Admin · MOD-03 · Registry</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg:      #0a0a0f;
       --surface: #111118;
       --surf2:   #1a1a24;
+      --surf3:   #22222f;
       --border:  #2a2a3a;
       --accent:  #6366f1;
       --accent2: #818cf8;
       --green:   #22c55e;
-      --yellow:  #eab308;
       --red:     #ef4444;
       --blue:    #3b82f6;
+      --purple:  #a855f7;
       --text:    #e2e8f0;
       --muted:   #64748b;
       --small:   #94a3b8;
     }
+    body { background:var(--bg); color:var(--text); font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; min-height:100vh; }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      min-height: 100vh;
-    }
-
-    #screen-login {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 24px;
-    }
-
-    .login-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 48px 40px;
-      width: 100%;
-      max-width: 420px;
-    }
-
+    /* LOGIN */
+    #screen-login { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:24px; }
+    .login-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:48px 40px; width:100%; max-width:420px; }
     .login-logo  { font-size:11px; font-weight:700; letter-spacing:.2em; color:var(--muted); text-transform:uppercase; margin-bottom:8px; }
-    .login-title { font-size:24px; font-weight:700; color:var(--text); margin-bottom:4px; }
+    .login-title { font-size:24px; font-weight:700; margin-bottom:4px; }
     .login-sub   { font-size:13px; color:var(--muted); margin-bottom:36px; }
-
     .field { margin-bottom:16px; }
     .field label { display:block; font-size:12px; font-weight:600; color:var(--small); text-transform:uppercase; letter-spacing:.08em; margin-bottom:8px; }
-    .field input {
+    .field input, .field select, .field textarea {
       width:100%; background:var(--surf2); border:1px solid var(--border);
-      border-radius:8px; padding:12px 16px; font-size:15px; color:var(--text);
-      outline:none; transition:border-color .2s;
+      border-radius:8px; padding:10px 14px; font-size:14px; color:var(--text);
+      outline:none; transition:border-color .2s; font-family:inherit;
     }
-    .field input:focus { border-color:var(--accent); }
-
-    .btn-primary {
-      width:100%; background:var(--accent); color:#fff; border:none;
-      border-radius:8px; padding:14px; font-size:15px; font-weight:600;
-      cursor:pointer; margin-top:8px; transition:opacity .2s;
-    }
-    .btn-primary:hover    { opacity:.88; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color:var(--accent); }
+    .field select option { background:var(--surf2); }
+    .field textarea { resize:vertical; min-height:72px; }
+    .btn-primary { width:100%; background:var(--accent); color:#fff; border:none; border-radius:8px; padding:14px; font-size:15px; font-weight:600; cursor:pointer; margin-top:8px; transition:opacity .2s; }
+    .btn-primary:hover { opacity:.88; }
     .btn-primary:disabled { opacity:.5; cursor:not-allowed; }
+    .login-error { background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.3); border-radius:8px; padding:12px 16px; font-size:13px; color:#fca5a5; margin-top:16px; display:none; }
+    .login-security { margin-top:24px; padding-top:24px; border-top:1px solid var(--border); font-size:11px; color:var(--muted); line-height:1.7; }
 
-    .login-error {
-      background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.3);
-      border-radius:8px; padding:12px 16px; font-size:13px; color:#fca5a5;
-      margin-top:16px; display:none;
-    }
-
-    .login-security {
-      margin-top:24px; padding-top:24px; border-top:1px solid var(--border);
-      font-size:11px; color:var(--muted); line-height:1.7;
-    }
-
+    /* DASHBOARD */
     #screen-dashboard { display:none; min-height:100vh; }
-
-    .topbar {
-      background:var(--surface); border-bottom:1px solid var(--border);
-      padding:0 24px; height:56px; display:flex; align-items:center;
-      justify-content:space-between; position:sticky; top:0; z-index:100;
-    }
+    .topbar { background:var(--surface); border-bottom:1px solid var(--border); padding:0 24px; height:56px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
     .topbar-left  { display:flex; align-items:center; gap:16px; }
     .topbar-logo  { font-size:11px; font-weight:700; letter-spacing:.15em; color:var(--muted); text-transform:uppercase; }
-    .topbar-title { font-size:14px; font-weight:600; color:var(--text); }
-    .topbar-pill  {
-      font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
-      padding:3px 8px; border-radius:20px;
-      background:rgba(99,102,241,.15); color:var(--accent2); border:1px solid rgba(99,102,241,.3);
-    }
+    .topbar-title { font-size:14px; font-weight:600; }
+    .topbar-pill  { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:3px 8px; border-radius:20px; background:rgba(99,102,241,.15); color:var(--accent2); border:1px solid rgba(99,102,241,.3); }
     .topbar-right { display:flex; align-items:center; gap:16px; }
     .user-badge   { font-size:12px; color:var(--muted); }
-
-    .btn-logout {
-      background:transparent; border:1px solid var(--border); border-radius:6px;
-      padding:6px 14px; font-size:12px; font-weight:600; color:var(--muted);
-      cursor:pointer; transition:all .2s;
-    }
+    .btn-logout { background:transparent; border:1px solid var(--border); border-radius:6px; padding:6px 14px; font-size:12px; font-weight:600; color:var(--muted); cursor:pointer; transition:all .2s; }
     .btn-logout:hover { border-color:var(--red); color:var(--red); }
 
-    .main { padding:32px 24px; max-width:1100px; margin:0 auto; }
+    /* TABS */
+    .tab-nav { display:flex; border-bottom:1px solid var(--border); background:var(--surface); padding:0 24px; }
+    .tab-btn { padding:14px 20px; font-size:13px; font-weight:600; color:var(--muted); cursor:pointer; border:none; background:transparent; border-bottom:2px solid transparent; transition:all .2s; }
+    .tab-btn:hover  { color:var(--text); }
+    .tab-btn.active { color:var(--accent2); border-bottom-color:var(--accent); }
+    .tab-pane { display:none; }
+    .tab-pane.active { display:block; }
 
-    .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
-    .section-title  { font-size:18px; font-weight:700; color:var(--text); }
+    .main { padding:28px 24px; max-width:1100px; margin:0 auto; }
+    .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+    .section-title  { font-size:18px; font-weight:700; }
     .section-sub    { font-size:13px; color:var(--muted); margin-top:4px; }
-
-    .audit-badge {
-      font-size:11px; color:var(--green);
-      background:rgba(34,197,94,.1); border:1px solid rgba(34,197,94,.25);
-      border-radius:6px; padding:4px 10px; font-weight:600;
-    }
-
-    .btn-refresh {
-      background:var(--surf2); border:1px solid var(--border); border-radius:6px;
-      padding:6px 14px; font-size:12px; color:var(--small); cursor:pointer; transition:all .2s;
-    }
+    .audit-badge { font-size:11px; color:var(--green); background:rgba(34,197,94,.1); border:1px solid rgba(34,197,94,.25); border-radius:6px; padding:4px 10px; font-weight:600; }
+    .btn-refresh { background:var(--surf2); border:1px solid var(--border); border-radius:6px; padding:6px 14px; font-size:12px; color:var(--small); cursor:pointer; transition:all .2s; }
     .btn-refresh:hover { border-color:var(--accent); color:var(--accent2); }
+    .btn-new { background:rgba(99,102,241,.15); border:1px solid rgba(99,102,241,.3); border-radius:6px; padding:6px 14px; font-size:12px; font-weight:600; color:var(--accent2); cursor:pointer; transition:all .2s; }
+    .btn-new:hover { background:rgba(99,102,241,.25); }
+    .audit-notice { background:rgba(34,197,94,.05); border:1px solid rgba(34,197,94,.2); border-radius:8px; padding:12px 16px; font-size:12px; color:rgba(134,239,172,.8); margin-bottom:20px; line-height:1.5; }
 
-    .audit-notice {
-      background:rgba(34,197,94,.05); border:1px solid rgba(34,197,94,.2);
-      border-radius:8px; padding:12px 16px; font-size:12px;
-      color:rgba(134,239,172,.8); margin-bottom:24px; line-height:1.5;
-    }
-
+    /* CARDS */
     .queue-list { display:flex; flex-direction:column; gap:12px; }
-
-    .queue-card {
-      background:var(--surface); border:1px solid var(--border);
-      border-radius:12px; padding:20px 24px; transition:border-color .2s;
-    }
-    .queue-card:hover { border-color:#3a3a4a; }
-
-    .card-top {
-      display:flex; align-items:flex-start; justify-content:space-between;
-      gap:16px; margin-bottom:12px;
-    }
+    .queue-card, .reg-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 24px; transition:border-color .2s; }
+    .queue-card:hover, .reg-card:hover { border-color:#3a3a4a; }
+    .card-top  { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:12px; }
     .card-code { font-size:11px; font-weight:700; letter-spacing:.1em; color:var(--muted); text-transform:uppercase; }
-    .card-name { font-size:15px; font-weight:600; color:var(--text); margin-top:2px; }
-    .card-type { font-size:11px; color:var(--small); margin-top:4px; }
+    .card-name { font-size:15px; font-weight:600; margin-top:2px; }
+    .card-type-label { font-size:13px; color:var(--small); margin-top:4px; }
+    .card-meta { display:flex; gap:16px; font-size:12px; color:var(--muted); margin-bottom:14px; flex-wrap:wrap; }
+    .card-meta span strong { color:var(--small); }
+    .card-notes { font-size:12px; color:var(--muted); background:var(--surf2); border-radius:6px; padding:10px 14px; margin-bottom:14px; line-height:1.5; }
+    .card-actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .card-terminal { font-size:11px; color:var(--muted); font-style:italic; }
 
-    .status-badge {
-      font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
-      padding:4px 10px; border-radius:20px; white-space:nowrap; flex-shrink:0;
-    }
+    /* STATUS BADGES */
+    .status-badge { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:4px 10px; border-radius:20px; white-space:nowrap; flex-shrink:0; }
     .status-PENDENTE     { background:rgba(234,179,8,.15);   color:#fde047; border:1px solid rgba(234,179,8,.3); }
     .status-EM_VALIDACAO { background:rgba(59,130,246,.15);  color:#93c5fd; border:1px solid rgba(59,130,246,.3); }
     .status-APROVADO     { background:rgba(34,197,94,.15);   color:#86efac; border:1px solid rgba(34,197,94,.3); }
     .status-REJEITADO    { background:rgba(239,68,68,.15);   color:#fca5a5; border:1px solid rgba(239,68,68,.3); }
     .status-PAUSADO      { background:rgba(100,116,139,.15); color:#94a3b8; border:1px solid rgba(100,116,139,.3); }
-
+    .status-ATIVO        { background:rgba(34,197,94,.15);   color:#86efac; border:1px solid rgba(34,197,94,.3); }
+    .status-EM_REVISAO   { background:rgba(59,130,246,.15);  color:#93c5fd; border:1px solid rgba(59,130,246,.3); }
+    .status-HOMOLOGADO   { background:rgba(168,85,247,.15);  color:#d8b4fe; border:1px solid rgba(168,85,247,.3); }
+    .status-ARQUIVADO    { background:rgba(100,116,139,.15); color:#94a3b8; border:1px solid rgba(100,116,139,.3); }
     .priority-ALTA  { color:#f87171; }
     .priority-MEDIA { color:#fbbf24; }
     .priority-BAIXA { color:#94a3b8; }
 
-    .card-meta { display:flex; gap:20px; font-size:12px; color:var(--muted); margin-bottom:16px; flex-wrap:wrap; }
-    .card-meta span strong { color:var(--small); }
-
-    .card-notes {
-      font-size:12px; color:var(--muted); background:var(--surf2);
-      border-radius:6px; padding:10px 14px; margin-bottom:16px; line-height:1.5;
-    }
-
-    .card-actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-
-    .btn-action {
-      font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
-      padding:7px 14px; border-radius:6px; border:1px solid; cursor:pointer; transition:all .2s;
-    }
+    /* BUTTONS */
+    .btn-action { font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:7px 14px; border-radius:6px; border:1px solid; cursor:pointer; transition:all .2s; }
     .btn-action:disabled { opacity:.4; cursor:not-allowed; }
-
     .btn-approve  { background:rgba(34,197,94,.1);   color:#86efac; border-color:rgba(34,197,94,.3); }
     .btn-approve:hover:not(:disabled)  { background:rgba(34,197,94,.22); }
     .btn-reject   { background:rgba(239,68,68,.1);   color:#fca5a5; border-color:rgba(239,68,68,.3); }
@@ -183,39 +118,59 @@
     .btn-pause:hover:not(:disabled)    { background:rgba(100,116,139,.22); }
     .btn-validate { background:rgba(59,130,246,.1);  color:#93c5fd; border-color:rgba(59,130,246,.3); }
     .btn-validate:hover:not(:disabled) { background:rgba(59,130,246,.22); }
+    .btn-homolog  { background:rgba(168,85,247,.1);  color:#d8b4fe; border-color:rgba(168,85,247,.3); }
+    .btn-homolog:hover:not(:disabled)  { background:rgba(168,85,247,.22); }
+    .btn-archive  { background:rgba(239,68,68,.08);  color:#fca5a5; border-color:rgba(239,68,68,.25); }
+    .btn-archive:hover:not(:disabled)  { background:rgba(239,68,68,.18); }
+    .btn-edit-sm  { background:rgba(99,102,241,.1);  color:var(--accent2); border-color:rgba(99,102,241,.3); }
+    .btn-edit-sm:hover:not(:disabled)  { background:rgba(99,102,241,.22); }
+    .btn-cancel { background:transparent; border:1px solid var(--border); border-radius:6px; padding:7px 14px; font-size:11px; font-weight:600; color:var(--muted); cursor:pointer; text-transform:uppercase; letter-spacing:.05em; }
+    .btn-cancel:hover { border-color:var(--muted); color:var(--text); }
+    .btn-save { background:var(--accent); color:#fff; border:none; border-radius:6px; padding:7px 14px; font-size:11px; font-weight:700; cursor:pointer; text-transform:uppercase; letter-spacing:.05em; transition:opacity .2s; }
+    .btn-save:hover { opacity:.88; }
+    .btn-save:disabled { opacity:.5; cursor:not-allowed; }
 
-    .card-terminal { font-size:11px; color:var(--muted); font-style:italic; }
+    /* FORM PANEL */
+    .form-panel { background:var(--surf2); border:1px solid var(--border); border-radius:12px; padding:24px; margin-bottom:20px; display:none; }
+    .form-panel.open { display:block; }
+    .form-panel-title { font-size:14px; font-weight:700; margin-bottom:20px; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .form-grid .span2 { grid-column:span 2; }
+    .form-actions { display:flex; gap:8px; margin-top:20px; }
 
-    #toast {
-      position:fixed; bottom:24px; right:24px;
-      background:var(--surface); border:1px solid var(--border); border-radius:10px;
-      padding:14px 20px; font-size:13px; font-weight:500; color:var(--text);
-      box-shadow:0 8px 32px rgba(0,0,0,.4);
-      transform:translateY(80px); opacity:0; transition:all .3s;
-      z-index:1000; max-width:340px;
-    }
+    /* EDIT PANEL */
+    .edit-panel { background:var(--surf3); border:1px solid var(--border); border-radius:8px; padding:16px; margin-top:14px; display:none; }
+    .edit-panel.open { display:block; }
+    .edit-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .edit-grid .span2 { grid-column:span 2; }
+    .edit-actions { display:flex; gap:8px; margin-top:14px; }
+
+    /* TOAST */
+    #toast { position:fixed; bottom:24px; right:24px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 20px; font-size:13px; font-weight:500; color:var(--text); box-shadow:0 8px 32px rgba(0,0,0,.4); transform:translateY(80px); opacity:0; transition:all .3s; z-index:1000; max-width:340px; }
     #toast.show    { transform:translateY(0); opacity:1; }
     #toast.success { border-color:rgba(34,197,94,.4); }
     #toast.error   { border-color:rgba(239,68,68,.4); }
-
     .state-msg { text-align:center; padding:60px 24px; color:var(--muted); font-size:14px; }
 
-    @media (max-width:600px) {
-      .main { padding:20px 16px; }
-      .login-card { padding:32px 24px; }
-      .topbar { padding:0 16px; }
-      .card-top { flex-direction:column; }
+    @media (max-width:640px) {
+      .main { padding:16px; }
+      .login-card { padding:28px 20px; }
+      .topbar, .tab-nav { padding:0 16px; }
       .topbar-pill { display:none; }
+      .card-top { flex-direction:column; }
+      .form-grid, .edit-grid { grid-template-columns:1fr; }
+      .form-grid .span2, .edit-grid .span2 { grid-column:span 1; }
     }
   </style>
 </head>
 <body>
-  <div id="screen-login">
+
+<!-- LOGIN -->
+<div id="screen-login">
   <div class="login-card">
     <div class="login-logo">Bigdata in Business · BIH</div>
-    <div class="login-title">Validation Queue</div>
-    <div class="login-sub">MOD-03 · Acesso privado · Interface administrativa</div>
-
+    <div class="login-title">Admin</div>
+    <div class="login-sub">Validation Queue · Registry · Acesso privado autenticado</div>
     <div class="field">
       <label>E-mail</label>
       <input type="email" id="inp-email" placeholder="seu@email.com" autocomplete="email">
@@ -224,25 +179,23 @@
       <label>Senha</label>
       <input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password">
     </div>
-
     <button class="btn-primary" id="btn-login" onclick="doLogin()">Entrar</button>
     <div class="login-error" id="login-err"></div>
-
     <div class="login-security">
       🔒 Acesso restrito · Supabase Auth<br>
-      Apenas usuários autenticados visualizam e operam a Validation Queue.<br>
-      Todo update é auditado automaticamente em <strong>bih_audit_log</strong>.
+      Todas as alterações são auditadas automaticamente em <strong>bih_audit_log</strong>.
     </div>
   </div>
 </div>
 
+<!-- DASHBOARD -->
 <div id="screen-dashboard">
 
   <div class="topbar">
     <div class="topbar-left">
       <span class="topbar-logo">BIH Admin</span>
-      <span class="topbar-title">Validation Queue</span>
-      <span class="topbar-pill">MOD-03 · PRIVADO</span>
+      <span class="topbar-title" id="topbar-title-text">Validation Queue</span>
+      <span class="topbar-pill">PRIVADO · AUTENTICADO</span>
     </div>
     <div class="topbar-right">
       <span class="user-badge" id="user-email-display"></span>
@@ -250,105 +203,177 @@
     </div>
   </div>
 
-  <div class="main">
-
-    <div class="audit-notice">
-      ● Audit trail ATIVO — todo update nesta interface gera entrada automática e imutável em
-      <strong>bih_audit_log</strong> via trigger MO-053. Nenhuma ação passa sem rastreabilidade.
-    </div>
-
-    <div class="section-header">
-      <div>
-        <div class="section-title">Fila de Validação</div>
-        <div class="section-sub" id="queue-summary">Carregando...</div>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <span class="audit-badge">● Auditado</span>
-        <button class="btn-refresh" onclick="loadQueue()">↻ Atualizar</button>
-      </div>
-    </div>
-
-    <div class="queue-list" id="queue-list">
-      <div class="state-msg">Carregando Validation Queue...</div>
-    </div>
-
+  <!-- ABAS -->
+  <div class="tab-nav">
+    <button class="tab-btn active" id="tab-btn-vq"  onclick="switchTab('vq')">Validation Queue</button>
+    <button class="tab-btn"        id="tab-btn-reg" onclick="switchTab('reg')">Registry</button>
   </div>
-</div>
+
+  <!-- TAB: VALIDATION QUEUE -->
+  <div class="tab-pane active" id="tab-vq">
+    <div class="main">
+      <div class="audit-notice">
+        ● Audit trail ATIVO — todo update gera entrada automática em <strong>bih_audit_log</strong> via trigger MO-053.
+      </div>
+      <div class="section-header">
+        <div>
+          <div class="section-title">Fila de Validação</div>
+          <div class="section-sub" id="vq-summary">Carregando...</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="audit-badge">● Auditado</span>
+          <button class="btn-refresh" onclick="loadQueue()">↻ Atualizar</button>
+        </div>
+      </div>
+      <div class="queue-list" id="vq-list">
+        <div class="state-msg">Carregando...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: REGISTRY -->
+  <div class="tab-pane" id="tab-reg">
+    <div class="main">
+      <div class="audit-notice">
+        ● Registry privado · alterações auditadas em <strong>bih_audit_log</strong> · soft delete obrigatório · DELETE físico bloqueado por RLS.
+      </div>
+
+      <!-- Formulário novo registro -->
+      <div class="form-panel" id="reg-form-panel">
+        <div class="form-panel-title">Novo Registro</div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Código *</label>
+            <input type="text" id="f-code" placeholder="REG-005">
+          </div>
+          <div class="field">
+            <label>Tipo *</label>
+            <select id="f-type">
+              <option value="">Selecionar...</option>
+              <option>ARTEFATO</option><option>DECISAO</option><option>MISSAO</option>
+              <option>CHECKPOINT</option><option>PROMPT</option><option>HTML</option>
+              <option>SQL</option><option>GOVERNANCA</option><option>COMERCIAL</option><option>OUTRO</option>
+            </select>
+          </div>
+          <div class="field span2">
+            <label>Nome do Artefato *</label>
+            <input type="text" id="f-name" placeholder="Nome descritivo do artefato">
+          </div>
+          <div class="field span2">
+            <label>Descrição</label>
+            <textarea id="f-desc" placeholder="Descrição detalhada"></textarea>
+          </div>
+          <div class="field">
+            <label>Módulo de Origem</label>
+            <input type="text" id="f-module" placeholder="MOD-03">
+          </div>
+          <div class="field">
+            <label>Missão de Origem</label>
+            <input type="text" id="f-mission" placeholder="MO-055">
+          </div>
+          <div class="field">
+            <label>Referência de Decisão</label>
+            <input type="text" id="f-decref" placeholder="DEC-FASE3-01">
+          </div>
+          <div class="field">
+            <label>Prioridade</label>
+            <select id="f-priority">
+              <option value="ALTA">ALTA</option>
+              <option value="MEDIA" selected>MEDIA</option>
+              <option value="BAIXA">BAIXA</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Caminho (path)</label>
+            <input type="text" id="f-path" placeholder="05_PROJETOS/...">
+          </div>
+          <div class="field">
+            <label>URL</label>
+            <input type="text" id="f-url" placeholder="https://...">
+          </div>
+          <div class="field span2">
+            <label>Notas</label>
+            <textarea id="f-notes" placeholder="Observações internas"></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-save" id="btn-create" onclick="createRecord()">Salvar Registro</button>
+          <button class="btn-cancel" onclick="showNewForm(false)">Cancelar</button>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <div>
+          <div class="section-title">Registry de Artefatos</div>
+          <div class="section-sub" id="reg-summary">Carregando...</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn-new"     onclick="showNewForm(true)">+ Novo Registro</button>
+          <button class="btn-refresh" onclick="loadRegistry()">↻ Atualizar</button>
+        </div>
+      </div>
+
+      <div class="queue-list" id="reg-list">
+        <div class="state-msg">Carregando Registry...</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /screen-dashboard -->
 
 <div id="toast"></div>
 
 <script>
+// CONFIG — anon key pública · service_role NUNCA no frontend
 var SUPABASE_URL      = 'https://pqifjircfhdohdgrttqr.supabase.co';
 var SUPABASE_ANON_KEY = 'sb_publishable_9kSVpttbV9EXvv06rEAX4g_9JFdAnXM';
-
 var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-var ALLOWED = {
-  'PENDENTE':     ['EM_VALIDACAO', 'APROVADO', 'REJEITADO', 'PAUSADO'],
-  'EM_VALIDACAO': ['APROVADO', 'REJEITADO', 'PAUSADO']
+// TRANSIÇÕES VQ
+var VQ_ALLOWED = {
+  'PENDENTE':     ['EM_VALIDACAO','APROVADO','REJEITADO','PAUSADO'],
+  'EM_VALIDACAO': ['APROVADO','REJEITADO','PAUSADO']
+};
+var VQ_CLASS = { 'EM_VALIDACAO':'btn-validate','APROVADO':'btn-approve','REJEITADO':'btn-reject','PAUSADO':'btn-pause' };
+var VQ_LABEL = { 'EM_VALIDACAO':'Iniciar Validação','APROVADO':'Aprovar','REJEITADO':'Rejeitar','PAUSADO':'Pausar' };
+
+// TRANSIÇÕES REGISTRY
+var REG_TR = {
+  'ATIVO':      [['EM_REVISAO','btn-validate','Revisar'],['HOMOLOGADO','btn-homolog','Homologar'],['PAUSADO','btn-pause','Pausar']],
+  'EM_REVISAO': [['ATIVO','btn-validate','Reativar'],['HOMOLOGADO','btn-homolog','Homologar'],['ARQUIVADO','btn-reject','Arquivar']],
+  'HOMOLOGADO': [['EM_REVISAO','btn-validate','Revisar'],['ARQUIVADO','btn-reject','Arquivar']],
+  'PAUSADO':    [['ATIVO','btn-validate','Reativar'],['EM_REVISAO','btn-validate','Revisar']],
+  'ARQUIVADO':  []
 };
 
-var BTN_CLASS = {
-  'EM_VALIDACAO': 'btn-validate',
-  'APROVADO':     'btn-approve',
-  'REJEITADO':    'btn-reject',
-  'PAUSADO':      'btn-pause'
-};
-
-var BTN_LABEL = {
-  'EM_VALIDACAO': 'Iniciar Validação',
-  'APROVADO':     'Aprovar',
-  'REJEITADO':    'Rejeitar',
-  'PAUSADO':      'Pausar'
-};
-
+// AUTH
 sb.auth.onAuthStateChange(function(event, session) {
   if (session && session.user) {
-    showDashboard(session.user.email);
+    document.getElementById('screen-login').style.display     = 'none';
+    document.getElementById('screen-dashboard').style.display = 'block';
+    document.getElementById('user-email-display').textContent = session.user.email;
     loadQueue();
+    loadRegistry();
   } else {
-    showLogin();
+    document.getElementById('screen-login').style.display     = 'flex';
+    document.getElementById('screen-dashboard').style.display = 'none';
+    var btn = document.getElementById('btn-login');
+    btn.disabled = false; btn.textContent = 'Entrar';
   }
 });
 
-function showLogin() {
-  document.getElementById('screen-login').style.display     = 'flex';
-  document.getElementById('screen-dashboard').style.display = 'none';
-  var btn = document.getElementById('btn-login');
-  btn.disabled    = false;
-  btn.textContent = 'Entrar';
-}
-
-function showDashboard(email) {
-  document.getElementById('screen-login').style.display     = 'none';
-  document.getElementById('screen-dashboard').style.display = 'block';
-  document.getElementById('user-email-display').textContent = email;
-}
-
 async function doLogin() {
-  var email  = document.getElementById('inp-email').value.trim();
-  var pass   = document.getElementById('inp-pass').value;
-  var errEl  = document.getElementById('login-err');
-  var btn    = document.getElementById('btn-login');
-
+  var email = document.getElementById('inp-email').value.trim();
+  var pass  = document.getElementById('inp-pass').value;
+  var errEl = document.getElementById('login-err');
+  var btn   = document.getElementById('btn-login');
   errEl.style.display = 'none';
-
-  if (!email || !pass) {
-    errEl.textContent   = 'Preencha e-mail e senha.';
-    errEl.style.display = 'block';
-    return;
-  }
-
-  btn.disabled    = true;
-  btn.textContent = 'Autenticando...';
-
-  var res = await sb.auth.signInWithPassword({ email: email, password: pass });
-
+  if (!email || !pass) { errEl.textContent='Preencha e-mail e senha.'; errEl.style.display='block'; return; }
+  btn.disabled=true; btn.textContent='Autenticando...';
+  var res = await sb.auth.signInWithPassword({ email:email, password:pass });
   if (res.error) {
-    errEl.textContent   = 'Falha: ' + (res.error.message || 'Credenciais inválidas.');
-    errEl.style.display = 'block';
-    btn.disabled        = false;
-    btn.textContent     = 'Entrar';
+    errEl.textContent='Falha: '+(res.error.message||'Credenciais inválidas.');
+    errEl.style.display='block'; btn.disabled=false; btn.textContent='Entrar';
   }
 }
 
@@ -357,146 +382,222 @@ async function doLogout() {
   document.getElementById('inp-pass').value = '';
 }
 
-async function loadQueue() {
-  var listEl = document.getElementById('queue-list');
-  var sumEl  = document.getElementById('queue-summary');
-  listEl.innerHTML = '<div class="state-msg">Carregando...</div>';
-
-  var res = await sb
-    .from('bih_validation_queue')
-    .select('*')
-    .eq('is_active', true)
-    .order('created_at', { ascending: true });
-
-  if (res.error) {
-    if (res.error.code === 'PGRST301' || res.error.message.indexOf('JWT') !== -1) {
-      listEl.innerHTML = '<div class="state-msg" style="color:#fca5a5;">Sessão expirada. Faça login novamente.</div>';
-      setTimeout(doLogout, 2000);
-      return;
-    }
-    listEl.innerHTML = '<div class="state-msg" style="color:#fca5a5;">Erro: ' + escHtml(res.error.message) + '</div>';
-    sumEl.textContent = 'Erro de carregamento';
-    return;
-  }
-
-  var rows = res.data || [];
-
-  var counts = { PENDENTE:0, EM_VALIDACAO:0, APROVADO:0, REJEITADO:0, PAUSADO:0 };
-  rows.forEach(function(r) { if (counts[r.status] !== undefined) counts[r.status]++; });
-
-  sumEl.textContent =
-    rows.length + ' registro' + (rows.length !== 1 ? 's' : '') + ' ativo' + (rows.length !== 1 ? 's' : '') +
-    ' · ' + counts.PENDENTE + ' pendente' + (counts.PENDENTE !== 1 ? 's' : '') +
-    ' · ' + counts.EM_VALIDACAO + ' em validação' +
-    ' · ' + counts.APROVADO + ' aprovado' + (counts.APROVADO !== 1 ? 's' : '');
-
-  if (rows.length === 0) {
-    listEl.innerHTML = '<div class="state-msg">Nenhum registro ativo na Validation Queue.</div>';
-    return;
-  }
-
-  var order = { PENDENTE:0, EM_VALIDACAO:1, PAUSADO:2, APROVADO:3, REJEITADO:4 };
-  var prio  = { ALTA:0, MEDIA:1, BAIXA:2 };
-  rows.sort(function(a, b) {
-    var so = (order[a.status] || 9) - (order[b.status] || 9);
-    if (so !== 0) return so;
-    return (prio[a.priority] || 9) - (prio[b.priority] || 9);
+// TAB SWITCH
+function switchTab(tab) {
+  ['vq','reg'].forEach(function(t) {
+    document.getElementById('tab-btn-'+t).classList.toggle('active', t===tab);
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
   });
-
-  listEl.innerHTML = rows.map(renderCard).join('');
+  document.getElementById('topbar-title-text').textContent = tab==='vq' ? 'Validation Queue' : 'Registry';
 }
 
-function renderCard(r) {
-  var transitions = ALLOWED[r.status] || [];
-  var createdFmt  = r.created_at ? r.created_at.slice(0,10) : '—';
-  var updatedFmt  = r.updated_at ? r.updated_at.slice(0,10) : '—';
-
-  var actions = '';
-  if (transitions.length === 0) {
-    actions = '<span class="card-terminal">Status final · nenhuma ação disponível nesta interface.</span>';
-  } else {
-    transitions.forEach(function(t) {
-      actions +=
-        '<button class="btn-action ' + BTN_CLASS[t] + '"' +
-        ' onclick="updateStatus(\'' + r.id + '\',\'' + esc(r.validation_code) + '\',\'' + r.status + '\',\'' + t + '\')">' +
-        BTN_LABEL[t] + '</button>';
-    });
-  }
-
-  var notesHtml    = r.notes              ? '<div class="card-notes">' + escHtml(r.notes) + '</div>' : '';
-  var artifactHtml = r.artifact_code      ? '<span><strong>Artefato:</strong> ' + escHtml(r.artifact_code) + '</span>' : '';
-  var moduleHtml   = r.source_module      ? '<span><strong>Módulo:</strong> '   + escHtml(r.source_module)  + '</span>' : '';
-  var decHtml      = r.decision_reference ? '<span><strong>DEC:</strong> '      + escHtml(r.decision_reference) + '</span>' : '';
-
-  return '<div class="queue-card" id="card-' + r.id + '">' +
-    '<div class="card-top">' +
-      '<div>' +
-        '<div class="card-code">' + escHtml(r.validation_code) +
-          ' · <span class="priority-' + r.priority + '">' + r.priority + '</span></div>' +
-        '<div class="card-name">' + escHtml(r.artifact_name) + '</div>' +
-        '<div class="card-type">' + escHtml(r.validation_type) + '</div>' +
-      '</div>' +
-      '<span class="status-badge status-' + r.status + '">' + r.status.replace('_',' ') + '</span>' +
-    '</div>' +
-    '<div class="card-meta">' +
-      '<span><strong>Por:</strong> ' + escHtml(r.requested_by || '—') + '</span>' +
-      '<span><strong>Criado:</strong> ' + createdFmt + '</span>' +
-      '<span><strong>Atualizado:</strong> ' + updatedFmt + '</span>' +
-      artifactHtml + moduleHtml + decHtml +
-    '</div>' +
-    notesHtml +
-    '<div class="card-actions">' + actions + '</div>' +
-  '</div>';
-}
-
-async function updateStatus(id, code, currentStatus, newStatus) {
-  var allowed = ALLOWED[currentStatus] || [];
-  if (allowed.indexOf(newStatus) === -1) {
-    showToast('Transição ' + currentStatus + ' → ' + newStatus + ' não permitida.', 'error');
-    return;
-  }
-
-  var cardEl = document.getElementById('card-' + id);
-  var btns   = cardEl ? cardEl.querySelectorAll('.btn-action') : [];
-  btns.forEach(function(b) { b.disabled = true; });
-
-  var res = await sb
-    .from('bih_validation_queue')
-    .update({ status: newStatus, updated_at: new Date().toISOString() })
-    .eq('id', id)
-    .eq('is_active', true);
-
+// ── VALIDATION QUEUE ─────────────────────────────────────────
+async function loadQueue() {
+  var listEl = document.getElementById('vq-list');
+  var sumEl  = document.getElementById('vq-summary');
+  listEl.innerHTML = '<div class="state-msg">Carregando...</div>';
+  var res = await sb.from('bih_validation_queue').select('*').eq('is_active',true).order('created_at',{ascending:true});
   if (res.error) {
-    showToast('Erro em ' + code + ': ' + res.error.message, 'error');
-    btns.forEach(function(b) { b.disabled = false; });
-    return;
+    listEl.innerHTML = '<div class="state-msg" style="color:#fca5a5;">Erro: '+escH(res.error.message)+'</div>';
+    sumEl.textContent = 'Erro'; return;
   }
+  var rows = res.data||[];
+  var c = {PENDENTE:0,EM_VALIDACAO:0,APROVADO:0,REJEITADO:0,PAUSADO:0};
+  rows.forEach(function(r){ if(c[r.status]!==undefined) c[r.status]++; });
+  sumEl.textContent = rows.length+' ativos · '+c.PENDENTE+' pendentes · '+c.EM_VALIDACAO+' em validação · '+c.APROVADO+' aprovados';
+  if (!rows.length) { listEl.innerHTML='<div class="state-msg">Nenhum registro ativo.</div>'; return; }
+  var ord={PENDENTE:0,EM_VALIDACAO:1,PAUSADO:2,APROVADO:3,REJEITADO:4}, pri={ALTA:0,MEDIA:1,BAIXA:2};
+  rows.sort(function(a,b){ var s=(ord[a.status]||9)-(ord[b.status]||9); return s||((pri[a.priority]||9)-(pri[b.priority]||9)); });
+  listEl.innerHTML = rows.map(function(r) {
+    var tr = VQ_ALLOWED[r.status]||[];
+    var actions = tr.length===0
+      ? '<span class="card-terminal">Status final · sem ações.</span>'
+      : tr.map(function(t){ return '<button class="btn-action '+VQ_CLASS[t]+'" onclick="updateVQ(\''+r.id+'\',\''+esc(r.validation_code)+'\',\''+r.status+'\',\''+t+'\')">'+VQ_LABEL[t]+'</button>'; }).join('');
+    return '<div class="queue-card" id="vq-'+r.id+'">'+
+      '<div class="card-top"><div>'+
+        '<div class="card-code">'+escH(r.validation_code)+' · <span class="priority-'+r.priority+'">'+r.priority+'</span></div>'+
+        '<div class="card-name">'+escH(r.artifact_name)+'</div>'+
+        '<div class="card-type-label">'+escH(r.validation_type)+'</div>'+
+      '</div><span class="status-badge status-'+r.status+'">'+r.status.replace(/_/g,' ')+'</span></div>'+
+      '<div class="card-meta">'+
+        '<span><strong>Por:</strong> '+escH(r.requested_by||'—')+'</span>'+
+        '<span><strong>Criado:</strong> '+(r.created_at?r.created_at.slice(0,10):'—')+'</span>'+
+        '<span><strong>Atualizado:</strong> '+(r.updated_at?r.updated_at.slice(0,10):'—')+'</span>'+
+        (r.source_module?'<span><strong>Módulo:</strong> '+escH(r.source_module)+'</span>':'')+
+      '</div>'+
+      (r.notes?'<div class="card-notes">'+escH(r.notes)+'</div>':'')+
+      '<div class="card-actions">'+actions+'</div></div>';
+  }).join('');
+}
 
-  showToast(code + ' → ' + newStatus + '  ·  Auditado em bih_audit_log ✓', 'success');
+async function updateVQ(id, code, cur, next) {
+  if ((VQ_ALLOWED[cur]||[]).indexOf(next)===-1) { toast('Transição não permitida.','error'); return; }
+  var el=document.getElementById('vq-'+id);
+  if(el) el.querySelectorAll('.btn-action').forEach(function(b){b.disabled=true;});
+  var res = await sb.from('bih_validation_queue').update({status:next,updated_at:new Date().toISOString()}).eq('id',id).eq('is_active',true);
+  if (res.error) { toast('Erro: '+res.error.message,'error'); if(el) el.querySelectorAll('.btn-action').forEach(function(b){b.disabled=false;}); return; }
+  toast(code+' → '+next+'  ·  Auditado ✓','success');
   loadQueue();
 }
 
-var _toastTimer = null;
-function showToast(msg, type) {
-  var el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className   = 'show ' + (type || '');
-  if (_toastTimer) clearTimeout(_toastTimer);
-  _toastTimer = setTimeout(function() { el.className = ''; }, 3800);
+// ── REGISTRY ─────────────────────────────────────────────────
+function showNewForm(open) {
+  document.getElementById('reg-form-panel').classList.toggle('open', open);
+  if (!open) {
+    ['f-code','f-name','f-desc','f-module','f-mission','f-decref','f-path','f-url','f-notes'].forEach(function(id){
+      var el=document.getElementById(id); if(el) el.value='';
+    });
+    document.getElementById('f-type').value='';
+    document.getElementById('f-priority').value='MEDIA';
+  }
 }
 
-function escHtml(s) {
-  if (!s) return '';
+async function loadRegistry() {
+  var listEl = document.getElementById('reg-list');
+  var sumEl  = document.getElementById('reg-summary');
+  listEl.innerHTML = '<div class="state-msg">Carregando...</div>';
+  var res = await sb.from('bih_registry').select('*').eq('is_active',true).order('created_at',{ascending:true});
+  if (res.error) {
+    listEl.innerHTML = '<div class="state-msg" style="color:#fca5a5;">Erro: '+escH(res.error.message)+'</div>';
+    sumEl.textContent = 'Erro'; return;
+  }
+  var rows = res.data||[];
+  var c = {ATIVO:0,EM_REVISAO:0,HOMOLOGADO:0,PAUSADO:0};
+  rows.forEach(function(r){ if(c[r.status]!==undefined) c[r.status]++; });
+  sumEl.textContent = rows.length+' registros · '+c.HOMOLOGADO+' homologados · '+c.ATIVO+' ativos · '+c.EM_REVISAO+' em revisão';
+  if (!rows.length) { listEl.innerHTML='<div class="state-msg">Nenhum registro ativo no Registry.</div>'; return; }
+  var pri={ALTA:0,MEDIA:1,BAIXA:2};
+  rows.sort(function(a,b){ return (pri[a.priority]||9)-(pri[b.priority]||9); });
+  listEl.innerHTML = rows.map(function(r) {
+    var tr = REG_TR[r.status]||[];
+    var stBtns = tr.map(function(t){
+      return '<button class="btn-action '+t[1]+'" onclick="updateReg(\''+r.id+'\',\''+esc(r.registry_code)+'\',\''+t[0]+'\')">'+t[2]+'</button>';
+    }).join('');
+    var archBtn = r.status!=='ARQUIVADO'
+      ? '<button class="btn-action btn-archive" onclick="softDel(\''+r.id+'\',\''+esc(r.registry_code)+'\')">Arquivar</button>' : '';
+    var editBtn = '<button class="btn-action btn-edit-sm" onclick="toggleEdit(\''+r.id+'\')">Editar</button>';
+    return '<div class="reg-card" id="reg-'+r.id+'">'+
+      '<div class="card-top"><div>'+
+        '<div class="card-code">'+escH(r.registry_code)+
+          ' · <span style="font-size:10px;color:var(--accent2);">'+escH(r.registry_type)+'</span>'+
+          ' · <span class="priority-'+r.priority+'">'+r.priority+'</span></div>'+
+        '<div class="card-name">'+escH(r.artifact_name)+'</div>'+
+        (r.artifact_description?'<div class="card-type-label">'+escH(r.artifact_description)+'</div>':'')+
+      '</div><span class="status-badge status-'+r.status+'">'+r.status.replace(/_/g,' ')+'</span></div>'+
+      '<div class="card-meta">'+
+        (r.source_module?'<span><strong>Módulo:</strong> '+escH(r.source_module)+'</span>':'')+
+        (r.source_mission?'<span><strong>Missão:</strong> '+escH(r.source_mission)+'</span>':'')+
+        (r.owner_name?'<span><strong>Owner:</strong> '+escH(r.owner_name)+'</span>':'')+
+        '<span><strong>Criado:</strong> '+(r.created_at?r.created_at.slice(0,10):'—')+'</span>'+
+      '</div>'+
+      (r.notes?'<div class="card-notes">'+escH(r.notes)+'</div>':'')+
+      '<div class="card-actions">'+stBtns+archBtn+editBtn+'</div>'+
+      '<div class="edit-panel" id="ep-'+r.id+'">'+
+        '<div class="edit-grid">'+
+          '<div class="field"><label>Caminho</label><input type="text" id="ep-path-'+r.id+'" value="'+escA(r.artifact_path||'')+'"></div>'+
+          '<div class="field"><label>URL</label><input type="text" id="ep-url-'+r.id+'" value="'+escA(r.artifact_url||'')+'"></div>'+
+          '<div class="field span2"><label>Notas</label><textarea id="ep-notes-'+r.id+'">'+escH(r.notes||'')+'</textarea></div>'+
+          '<div class="field span2"><label>Tags (JSON array)</label><input type="text" id="ep-tags-'+r.id+'" value="'+escA(JSON.stringify(r.tags||[]))+'"></div>'+
+        '</div>'+
+        '<div class="edit-actions">'+
+          '<button class="btn-save" onclick="saveEdit(\''+r.id+'\',\''+esc(r.registry_code)+'\')">Salvar</button>'+
+          '<button class="btn-cancel" onclick="toggleEdit(\''+r.id+'\')">Cancelar</button>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+function toggleEdit(id) {
+  var p=document.getElementById('ep-'+id); if(p) p.classList.toggle('open');
+}
+
+async function createRecord() {
+  var code=document.getElementById('f-code').value.trim();
+  var type=document.getElementById('f-type').value;
+  var name=document.getElementById('f-name').value.trim();
+  if (!code||!type||!name) { toast('Código, Tipo e Nome são obrigatórios.','error'); return; }
+  var btn=document.getElementById('btn-create');
+  btn.disabled=true; btn.textContent='Salvando...';
+  var res = await sb.from('bih_registry').insert({
+    registry_code:      code,
+    registry_type:      type,
+    artifact_name:      name,
+    artifact_description: document.getElementById('f-desc').value.trim()||null,
+    artifact_path:      document.getElementById('f-path').value.trim()||null,
+    artifact_url:       document.getElementById('f-url').value.trim()||null,
+    source_module:      document.getElementById('f-module').value.trim()||null,
+    source_mission:     document.getElementById('f-mission').value.trim()||null,
+    decision_reference: document.getElementById('f-decref').value.trim()||null,
+    priority:           document.getElementById('f-priority').value,
+    notes:              document.getElementById('f-notes').value.trim()||null,
+    is_active:          true
+  });
+  btn.disabled=false; btn.textContent='Salvar Registro';
+  if (res.error) { toast('Erro: '+res.error.message,'error'); return; }
+  toast(code+' criado · Auditado ✓','success');
+  showNewForm(false); loadRegistry();
+}
+
+async function updateReg(id, code, newStatus) {
+  var el=document.getElementById('reg-'+id);
+  if(el) el.querySelectorAll('.btn-action').forEach(function(b){b.disabled=true;});
+  var res = await sb.from('bih_registry').update({status:newStatus,updated_at:new Date().toISOString()}).eq('id',id).eq('is_active',true);
+  if (res.error) { toast('Erro: '+res.error.message,'error'); if(el) el.querySelectorAll('.btn-action').forEach(function(b){b.disabled=false;}); return; }
+  toast(code+' → '+newStatus+'  ·  Auditado ✓','success'); loadRegistry();
+}
+
+async function softDel(id, code) {
+  if (!confirm('Arquivar "'+code+'"?\n\nSoft delete — nenhum dado será perdido.\nEsta ação é auditada em bih_audit_log.')) return;
+  var el=document.getElementById('reg-'+id);
+  if(el) el.querySelectorAll('.btn-action').forEach(function(b){b.disabled=true;});
+  var now=new Date().toISOString();
+  var res = await sb.from('bih_registry').update({is_active:false,deleted_at:now,updated_at:now}).eq('id',id);
+  if (res.error) { toast('Erro: '+res.error.message,'error'); if(el) el.querySelectorAll('.btn-action').forEach(function(b){b.disabled=false;}); return; }
+  toast(code+' arquivado (soft delete) · Auditado ✓','success'); loadRegistry();
+}
+
+async function saveEdit(id, code) {
+  var tagsRaw=document.getElementById('ep-tags-'+id).value.trim();
+  var tags;
+  try { tags=JSON.parse(tagsRaw||'[]'); if(!Array.isArray(tags)) throw 0; }
+  catch(e) { toast('Tags inválido — use ["tag1","tag2"]','error'); return; }
+  var panel=document.getElementById('ep-'+id);
+  if(panel) panel.querySelectorAll('.btn-save').forEach(function(b){b.disabled=true;b.textContent='Salvando...';});
+  var user=(await sb.auth.getUser()).data.user;
+  var res = await sb.from('bih_registry').update({
+    artifact_path:  document.getElementById('ep-path-'+id).value.trim()||null,
+    artifact_url:   document.getElementById('ep-url-'+id).value.trim()||null,
+    notes:          document.getElementById('ep-notes-'+id).value.trim()||null,
+    tags:           tags,
+    updated_by:     user?user.email:null,
+    updated_at:     new Date().toISOString()
+  }).eq('id',id).eq('is_active',true);
+  if(panel) panel.querySelectorAll('.btn-save').forEach(function(b){b.disabled=false;b.textContent='Salvar';});
+  if (res.error) { toast('Erro: '+res.error.message,'error'); return; }
+  toast(code+' atualizado · Auditado ✓','success'); loadRegistry();
+}
+
+// TOAST
+var _tt=null;
+function toast(msg,type) {
+  var el=document.getElementById('toast');
+  el.textContent=msg; el.className='show '+(type||'');
+  if(_tt) clearTimeout(_tt);
+  _tt=setTimeout(function(){el.className='';},3800);
+}
+
+// UTILS
+function escH(s) {
+  if(!s) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-function esc(s) { return String(s || '').replace(/'/g,"\\'"); }
+function escA(s) { return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function esc(s)  { return String(s||'').replace(/'/g,"\\'"); }
 
-document.getElementById('inp-pass').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') doLogin();
-});
-document.getElementById('inp-email').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') document.getElementById('inp-pass').focus();
-});
+// KEYBOARD
+document.getElementById('inp-email').addEventListener('keydown',function(e){ if(e.key==='Enter') document.getElementById('inp-pass').focus(); });
+document.getElementById('inp-pass').addEventListener('keydown',function(e){ if(e.key==='Enter') doLogin(); });
 </script>
 
 </body>
