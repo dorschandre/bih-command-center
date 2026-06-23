@@ -340,8 +340,8 @@ var VQ_LABEL = { 'EM_VALIDACAO':'Iniciar Validação','APROVADO':'Aprovar','REJE
 // TRANSIÇÕES REGISTRY
 var REG_TR = {
   'ATIVO':      [['EM_REVISAO','btn-validate','Revisar'],['HOMOLOGADO','btn-homolog','Homologar'],['PAUSADO','btn-pause','Pausar']],
-  'EM_REVISAO': [['ATIVO','btn-validate','Reativar'],['HOMOLOGADO','btn-homolog','Homologar'],['ARQUIVADO','btn-reject','Arquivar']],
-  'HOMOLOGADO': [['EM_REVISAO','btn-validate','Revisar'],['ARQUIVADO','btn-reject','Arquivar']],
+  'EM_REVISAO': [['ATIVO','btn-validate','Reativar'],['HOMOLOGADO','btn-homolog','Homologar']],
+  'HOMOLOGADO': [['EM_REVISAO','btn-validate','Revisar']],
   'PAUSADO':    [['ATIVO','btn-validate','Reativar'],['EM_REVISAO','btn-validate','Revisar']],
   'ARQUIVADO':  []
 };
@@ -552,7 +552,7 @@ async function softDel(id, code) {
   var el=document.getElementById('reg-'+id);
   if(el) el.querySelectorAll('.btn-action').forEach(function(b){b.disabled=true;});
   var now=new Date().toISOString();
-  var res = await sb.from('bih_registry').update({is_active:false,deleted_at:now,updated_at:now}).eq('id',id);
+  var res = await sb.from('bih_registry').update({status:'ARQUIVADO',is_active:false,deleted_at:now,updated_at:now}).eq('id',id);
   if (res.error) { toast('Erro: '+res.error.message,'error'); if(el) el.querySelectorAll('.btn-action').forEach(function(b){b.disabled=false;}); return; }
   toast(code+' arquivado (soft delete) · Auditado ✓','success'); loadRegistry();
 }
