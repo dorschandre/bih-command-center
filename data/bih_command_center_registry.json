@@ -1,0 +1,60 @@
+{
+  "versao": "1",
+  "atualizado_em": "2026-06-25",
+  "fonte": "registro público sanitizado · sem dados sensíveis",
+  "release": "R2.0 Fase 2",
+  "bms_geral": 65.75,
+  "bms_observacao": "BMS mantido — sem recálculo validado neste ciclo",
+  "publicacoes": [
+    {
+      "codigo": "PUB-V3.1",
+      "titulo": "Apresentação Institucional BIH V3.1",
+      "status": "PUBLICADO",
+      "link_publico": "https://dorschandre.github.io/BIH_Publications/",
+      "repositorio_publico": "dorschandre/BIH_Publications",
+      "rota": "ROTA_4 · repositório público separado",
+      "sha256": "1b21f7b0213300e7a2250e9d7d362430382e821375c37de43be4d9a38c837a3a",
+      "integridade": "byte-a-byte preservado",
+      "repositorio_fonte_privado": "Andre_AI_Workspace (permanece privado)"
+    }
+  ],
+  "governanca": [
+    {
+      "codigo": "GOV-V1",
+      "titulo": "Governança Operacional BIH V1",
+      "status": "INTEGRADA À MAIN PRIVADA",
+      "pr": 13,
+      "pr_estado": "MERGED",
+      "merge_commit": "ccfff549f6aea656160dad11b0b8b1b2556cc566",
+      "merge_commit_curto": "ccfff54",
+      "documentos": [
+        "BIH_ORGANOGRAMA_OPERACIONAL_V1.md",
+        "BIH_MISSION_ORDER_TEMPLATE_V1.md",
+        "BIH_CHECKPOINT_RETURN_TEMPLATE_V1.md",
+        "BIH_COMPLIANCE_CHECKLIST_OPERACIONAL_V1.md"
+      ],
+      "caminho": "01_BIGDATA/BIH/00_GOVERNANCE/",
+      "branch_temporaria": "deletada pós-merge (evidência preservada no PR #13)",
+      "canal_oficial_retorno": "CHATGPT_HQ_BIH_STRATEGIC_RADAR",
+      "atribuicao_visual_final": "Claude Design (único produtor/corretor visual)",
+      "execucao_tecnica": "Regente (executor técnico e validador)",
+      "fluxo": "HQ -> Mission Order -> Execução -> Checkpoint -> Validação HQ"
+    }
+  ],
+  "seguranca": {
+    "repositorio_privado_preservado": true,
+    "dados_sensiveis_expostos": false,
+    "supabase_anon_key": "publishable · pública por design · RLS ativo · sem service_role no frontend",
+    "documentos_internos_no_painel_publico": false
+  },
+  "autoupdate": {
+    "modelo": "ROTA C híbrida",
+    "fontes": [
+      "Supabase REST (live) — 8 módulos dinâmicos",
+      "registry JSON versionado (este arquivo) — fallback/marcos públicos",
+      "fallback estático embutido no index.html"
+    ],
+    "deploy": "GitHub Actions (.github/workflows/deploy-pages.yml) em push para main: build -> deploy Pages -> valida HTTP 200",
+    "trigger": "push em main OU mudança de registros Supabase (sem novo deploy)"
+  }
+}

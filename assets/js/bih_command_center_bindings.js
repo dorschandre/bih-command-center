@@ -29,7 +29,7 @@
     { codigo: 'B-01', tipo: 'EXTERNO',           status: 'ATIVO',    descricao: 'Cliente contábil estratégico — reunião pendente', plano_resolucao: 'Retomar contato comercial · proposta expirada · reagendar validação' },
     { codigo: 'B-02', tipo: 'TECNICO',            status: 'RESOLVIDO',descricao: 'Supabase Fase 1 não executada',               plano_resolucao: 'RESOLVIDO 2026-06-20 · 8 tabelas criadas · RLS ativo' },
     { codigo: 'B-03', tipo: 'TECNICO',            status: 'ATIVO',    descricao: 'Command Center R2.0 binding em construção',   plano_resolucao: 'MO-026 em execução — scripts JS em binding' },
-    { codigo: 'B-04', tipo: 'GOVERNANCA',         status: 'ATIVO',    descricao: 'H-04 / C-01 P&B Compliance pendente',        plano_resolucao: 'Andre contata C-01 via andre@noqera.com' },
+    { codigo: 'B-04', tipo: 'GOVERNANCA',         status: 'ATIVO',    descricao: 'H-04 / parceiro PLD-FT C-01 pendente',       plano_resolucao: 'Andre contata C-01 via canal interno HQ' },
     { codigo: 'B-05', tipo: 'DECISAO_PENDENTE',   status: 'ATIVO',    descricao: 'PROGRAMA_001 agenda institucional municipal', plano_resolucao: '6 municípios target · deadline 04/07' }
   ];
 
